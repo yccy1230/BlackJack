@@ -1,4 +1,5 @@
 import constants.MsgType;
+import controller.GameController;
 import listener.NetworkListener;
 import service.ServerCommunicateService;
 
@@ -8,12 +9,15 @@ import service.ServerCommunicateService;
  * @create 2017-10-17 13:01
  */
 public class ServerDriver implements NetworkListener{
-    private ServerCommunicateService communicateService;
     public static void main(String[] args) {
         //创建驱动类
         ServerDriver driver = new ServerDriver();
-        //绑定通讯器
-        driver.setCommunicateService(new ServerCommunicateService(driver));
+        //创建主控制器
+        GameController gameController = new GameController();
+        //创建通讯器
+        ServerCommunicateService communicator = new ServerCommunicateService(driver,gameController);
+        //为主控制器绑定通讯器
+        gameController.setCommunicateService(communicator);
     }
 
     @Override
@@ -36,11 +40,4 @@ public class ServerDriver implements NetworkListener{
 
     }
 
-    public ServerCommunicateService getCommunicateService() {
-        return communicateService;
-    }
-
-    public void setCommunicateService(ServerCommunicateService communicateService) {
-        this.communicateService = communicateService;
-    }
 }

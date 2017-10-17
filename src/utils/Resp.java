@@ -17,14 +17,14 @@ public class Resp implements Serializable {
 
     private MsgType msgType;
     private String resMsg;
-    private String resCode;
+    private int resCode;
     private Object data;
     private Date resTime;
 
     public Resp() {}
 
     /**通常用于发生错误时返回数据体*/
-    public Resp(String resCode, String resMsg,MsgType msgType) {
+    public Resp(int resCode, String resMsg,MsgType msgType) {
         this.resCode = resCode;
         this.msgType = msgType;
         this.resMsg = resMsg;
@@ -61,11 +61,11 @@ public class Resp implements Serializable {
         this.resTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public String getResCode() {
+    public int getResCode() {
         return resCode;
     }
 
-    public void setResCode(String resCode) {
+    public void setResCode(int resCode) {
         this.resCode = resCode;
     }
 

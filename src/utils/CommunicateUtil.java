@@ -15,7 +15,7 @@ import java.util.Map;
 */
 public class CommunicateUtil {
     /**
-     * 内部方法，用于向服务器发送请求
+     * 用于发送UDP请求
      * @param msgType 消息类别
      * @param param 传递参数
      * @return 请求返回结果，如果发生异常返回null

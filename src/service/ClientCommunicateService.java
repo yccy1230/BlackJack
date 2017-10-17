@@ -2,6 +2,7 @@ package service;
 
 import constants.Constants;
 import constants.MsgType;
+import listener.MsgReceiveListener;
 import listener.NetworkListener;
 import thread.ClientMsgReceiveThread;
 import utils.CommunicateUtil;
@@ -40,7 +41,7 @@ public class ClientCommunicateService {
      * 构造通讯器，并绑定端口
      * @param networkListener
      */
-    public ClientCommunicateService(NetworkListener networkListener) {
+    public ClientCommunicateService(NetworkListener networkListener, MsgReceiveListener msgReceiveListener) {
         this.networkListener = networkListener;
         try {
             socket = new DatagramSocket();
@@ -54,7 +55,7 @@ public class ClientCommunicateService {
             return;
         }
         //创建并启动信息接受线程
-        clientMsgReceiveThread = new ClientMsgReceiveThread(socket);
+        clientMsgReceiveThread = new ClientMsgReceiveThread(socket,msgReceiveListener);
         clientMsgReceiveThread.start();
     }
 

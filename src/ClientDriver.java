@@ -1,4 +1,5 @@
 import constants.MsgType;
+import controller.UIController;
 import listener.NetworkListener;
 import service.ClientCommunicateService;
 
@@ -8,13 +9,16 @@ import service.ClientCommunicateService;
  * @create 2017-10-17 13:01
  */
 public class ClientDriver implements NetworkListener {
-    private ClientCommunicateService communicateService;
 
     public static void main(String[] args) {
         //创建驱动类
         ClientDriver driver = new ClientDriver();
-        //绑定通讯器
-        driver.setCommunicateService(new ClientCommunicateService(driver));
+        //创建主控制器
+        UIController uiController = new UIController();
+        //创建通讯器
+        ClientCommunicateService communicator = new ClientCommunicateService(driver,uiController);
+        //为UI主控制器绑定通讯器
+        uiController.setCommunicateService(communicator);
     }
 
     @Override
@@ -35,14 +39,6 @@ public class ClientDriver implements NetworkListener {
     @Override
     public void connectServerFailure(String msg) {
 
-    }
-
-    public ClientCommunicateService getCommunicateService() {
-        return communicateService;
-    }
-
-    public void setCommunicateService(ClientCommunicateService communicateService) {
-        this.communicateService = communicateService;
     }
 
 }

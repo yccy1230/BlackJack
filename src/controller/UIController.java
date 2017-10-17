@@ -1,16 +1,16 @@
 package controller;
 
 import listener.MsgReceiveListener;
-import service.ServerCommunicateService;
+import service.ClientCommunicateService;
 import utils.Resp;
 
 /**
-* @description 游戏主控制器
+* @description UI总控制器，负责客户端交互
 * @author Jack Chen
 * @date 2017/10/17
 */
-public class GameController implements MsgReceiveListener {
-    private ServerCommunicateService communicateService;
+public class UIController implements MsgReceiveListener{
+    private ClientCommunicateService communicateService;
 
     @Override
     public void onReceiveMsg(Resp resp) {
@@ -34,7 +34,7 @@ public class GameController implements MsgReceiveListener {
         }
     }
 
-    public void setCommunicateService(ServerCommunicateService communicateService) {
+    public void setCommunicateService(ClientCommunicateService communicateService) {
         this.communicateService = communicateService;
     }
 }

@@ -1,6 +1,8 @@
 package service;
+import listener.MsgReceiveListener;
 import listener.NetworkListener;
 import thread.ServerMsgReceiveThread;
+import utils.Resp;
 
 import java.net.*;
 /**
@@ -26,7 +28,7 @@ public class ServerCommunicateService {
      * 构造通讯器，并绑定端口
      * @param networkListener
      */
-    public ServerCommunicateService(NetworkListener networkListener) {
+    public ServerCommunicateService(NetworkListener networkListener, MsgReceiveListener msgReceiveListener) {
         this.networkListener = networkListener;
         try {
             socket = new DatagramSocket(COMMUNICATE_PORT);
@@ -39,12 +41,19 @@ public class ServerCommunicateService {
             return;
         }
         //创建并启动信息接受线程
-        serverMsgReceiveThread = new ServerMsgReceiveThread(socket);
+        serverMsgReceiveThread = new ServerMsgReceiveThread(socket,msgReceiveListener);
         serverMsgReceiveThread.start();
     }
 
+    /**
+     * 用户上线广播消息
+     */
     public void userConnectedBroadcast(){
 
     }
 
+
+    public void userLogin(Resp resp){
+
+    }
 }
