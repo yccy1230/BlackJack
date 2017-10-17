@@ -6,6 +6,8 @@ package entity;
  * @create 2017-10-17 13:13
  */
 public class Player {
+    private Hand hand;
+
     //hit OR hold
     //current bet
     //剩余赌资

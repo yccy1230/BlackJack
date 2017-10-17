@@ -1,7 +1,7 @@
 package ui;
 
 import listener.OperationListener;
-import listener.UiListener;
+import listener.UIListener;
 
 import javax.swing.*;
 
@@ -10,7 +10,7 @@ import javax.swing.*;
 * @author Jack Chen
 * @date 2017/10/17
 */
-public class UIFrame extends JFrame implements UiListener,OperationListener {
+public class UIFrame extends JFrame implements UIListener,OperationListener {
 
 
 

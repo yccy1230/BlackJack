@@ -5,7 +5,7 @@ package listener;
 * @author Jack Chen
 * @date 2017/10/17
 */
-public interface UiListener {
+public interface UIListener {
     /**
      * 负责显示系统通知，如：“请等待其他玩家准备”，“请进行操作”
      * @param msg

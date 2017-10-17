@@ -3,6 +3,7 @@ package utils;
 import constants.MsgType;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -18,52 +19,46 @@ public class Resp implements Serializable {
     private Date resTime;
     private Object data;
 
-    /**
-     * @return the resTime
-     */
-    public Long getResTime() {
-        if (resTime == null) {
-            return 0L;
-        }
-        return resTime.getTime();
+    public Resp() {}
+
+    public Resp(MsgType msgType, String resMsg) {
+        this.msgType = msgType;
+        this.resMsg = resMsg;
+        this.resTime = new Timestamp(System.currentTimeMillis());
     }
 
-    /**
-     * @param resTime the resTime to set
-     */
+    public Resp(MsgType msgType, Object data) {
+        this.msgType = msgType;
+        this.data = data;
+        this.resTime = new Timestamp(System.currentTimeMillis());
+    }
+
+    public Resp(MsgType msgType, String resMsg, Date resTime) {
+        this.msgType = msgType;
+        this.resMsg = resMsg;
+        this.resTime = resTime;
+    }
+
+    public Resp(MsgType msgType, String resMsg, Date resTime, Object data) {
+        this.msgType = msgType;
+        this.resMsg = resMsg;
+        this.resTime = resTime;
+        this.data = data;
+    }
+
+    public Resp(MsgType msgType, String resMsg, Object data) {
+        this.msgType = msgType;
+        this.resMsg = resMsg;
+        this.data = data;
+        this.resTime = new Timestamp(System.currentTimeMillis());
+    }
+
+    public Date getResTime() {
+        return resTime;
+    }
+
     public void setResTime(Date resTime) {
         this.resTime = resTime;
-    }
-
-    public Resp() {
-
-    }
-
-
-    public Resp(MsgType resCode, String resMsg) {
-        this.msgType = resCode;
-        this.resMsg = resMsg;
-
-    }
-
-    public Resp(MsgType resCode, String resMsg, Date resTime) {
-        this.msgType = resCode;
-        this.resMsg = resMsg;
-        this.resTime = resTime;
-
-    }
-
-    public Resp(MsgType resCode, String resMsg, Date resTime, Object data) {
-        this.msgType = resCode;
-        this.resMsg = resMsg;
-        this.resTime = resTime;
-        this.data = data;
-    }
-
-    public Resp(MsgType resCode, String resMsg, Object data) {
-        this.msgType = resCode;
-        this.resMsg = resMsg;
-        this.data = data;
     }
 
     public MsgType getMsgType() {
