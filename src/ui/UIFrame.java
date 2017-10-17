@@ -12,6 +12,8 @@ import javax.swing.*;
 */
 public class UIFrame extends JFrame implements UiListener,OperationListener {
 
+
+
     @Override
     public void showNotification(String msg) {
 

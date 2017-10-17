@@ -6,4 +6,5 @@ package controller;
 * @date 2017/10/17
 */
 public class GameController {
+
 }
