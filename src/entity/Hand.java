@@ -1,4 +1,4 @@
-package controller;
+package entity;
 
 /**
  * 手牌
