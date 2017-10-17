@@ -37,7 +37,7 @@ public class ServerUtil {
         try
         {
             Map<String,Object> param = new HashMap<>(16);
-            param.put("",)
+            param.put("type",);
             /*使用UTF-8编码*/
             byte[] msg = (JSON.toJSONString(param)).getBytes("UTF-8");
             /*得到主机的internet地址*/
