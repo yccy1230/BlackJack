@@ -4,6 +4,8 @@ import listener.MsgReceiveListener;
 import service.ServerCommunicateService;
 import utils.Resp;
 
+import java.net.DatagramPacket;
+
 /**
 * @description 游戏主控制器
 * @author Jack Chen
@@ -13,7 +15,7 @@ public class GameController implements MsgReceiveListener {
     private ServerCommunicateService communicateService;
 
     @Override
-    public void onReceiveMsg(Resp resp) {
+    public void onReceiveMsg(Resp resp, DatagramPacket datagramPacket) {
         switch(resp.getMsgType()){
             case METHOD_LOGIN:
                 break;

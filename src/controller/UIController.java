@@ -4,6 +4,8 @@ import listener.MsgReceiveListener;
 import service.ClientCommunicateService;
 import utils.Resp;
 
+import java.net.DatagramPacket;
+
 /**
 * @description UI总控制器，负责客户端交互
 * @author Jack Chen
@@ -13,7 +15,7 @@ public class UIController implements MsgReceiveListener{
     private ClientCommunicateService communicateService;
 
     @Override
-    public void onReceiveMsg(Resp resp) {
+    public void onReceiveMsg(Resp resp, DatagramPacket dp) {
         switch(resp.getMsgType()){
             case METHOD_LOGIN:
                 break;

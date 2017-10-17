@@ -6,6 +6,7 @@ import constants.MsgType;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketAddress;
 import java.util.Map;
 
 /**
@@ -15,12 +16,12 @@ import java.util.Map;
 */
 public class CommunicateUtil {
     /**
-     * 用于发送UDP请求
+     * 用于发送UDP请求（指定IP、Port）
      * @param msgType 消息类别
      * @param param 传递参数
      * @return 请求返回结果，如果发生异常返回null
      */
-    public static Resp sendUDPMsg(MsgType msgType, Map<String,Object> param,
+    public static boolean sendUDPMsg(MsgType msgType, Map<String,Object> param,
                                   String targetIp, int targetPort, DatagramSocket socket){
         try
         {
@@ -34,18 +35,38 @@ public class CommunicateUtil {
             socket.send(packet);
 
             //接收服务器反馈数据
-            byte[] backBuf = new byte[1024];
-            DatagramPacket backPacket = new DatagramPacket(backBuf, backBuf.length);
-            socket.receive(backPacket);
-            String backMsg = new String(backBuf, 0, backPacket.getLength());
-            Resp response = JSON.parseObject(backMsg,Resp.class);
-            return response;
+            return true;
         }
         catch (Exception e)
         {
             System.out.println("发送UDP消息异常，详细堆栈信息如下：");
             e.printStackTrace();
-            return null;
+            return false;
+        }
+    }
+
+    /**
+     * 用于发送UDP请求（指定SocketAddress）
+     * @param msgType 消息类别
+     * @param param 传递参数
+     * @return 请求返回结果，如果发生异常返回null
+     */
+    public static boolean sendUDPMsgBySocket(MsgType msgType, Map<String,Object> param,
+                                          DatagramPacket datagramPacket, DatagramSocket socket){
+        try
+        {
+            Resp resp = new Resp(msgType,param);
+            byte[] msg = (JSON.toJSONString(resp)).getBytes("UTF-8");
+            DatagramPacket packet = new DatagramPacket(msg, msg.length, datagramPacket.getAddress(), datagramPacket.getPort());
+            packet.setSocketAddress(datagramPacket.getSocketAddress());
+            socket.send(packet);
+            return true;
+        }
+        catch (Exception e)
+        {
+            System.out.println("发送UDP消息异常，详细堆栈信息如下：");
+            e.printStackTrace();
+            return false;
         }
     }
 }

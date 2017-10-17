@@ -37,7 +37,8 @@ public class ClientMsgReceiveThread extends Thread {
                 if(resp==null){
                     throw new Exception("接收到的消息体为空！");
                 }else{
-                    msgReceiveListener.onReceiveMsg(resp);
+                    System.out.println(resp);
+                    msgReceiveListener.onReceiveMsg(resp,dp);
                 }
             } catch (Exception e) {
                 System.out.println("解析客户端数据出错，详细堆栈信息如下：");

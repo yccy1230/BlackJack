@@ -21,6 +21,7 @@ import java.util.Map;
 public class ClientCommunicateService {
     /**服务器IP*/
     private final String SERVER_IP = "115.159.35.11";
+//    private final String SERVER_IP = "192.168.31.139";
     /**服务器Port*/
     private final int SERVER_PORT = 6666;
     /**通讯超时时间*/
@@ -45,7 +46,7 @@ public class ClientCommunicateService {
         this.networkListener = networkListener;
         try {
             socket = new DatagramSocket();
-            localPort = socket.getPort();
+            localPort = socket.getLocalPort();
         } catch (SocketException e) {
             if(networkListener!=null){
                 networkListener.bindPortError();
@@ -66,19 +67,10 @@ public class ClientCommunicateService {
     public void connectServer(String nickName){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_NICK_NAME,nickName);
-        Resp resp = CommunicateUtil.sendUDPMsg(MsgType.METHOD_LOGIN,param,SERVER_IP,SERVER_PORT,socket);
-        if(networkListener!=null){
-            //失败，服务器不理人
-            if(resp==null){
-                networkListener.sendUDPMsgError(MsgType.METHOD_LOGIN,"连接服务器失败！");
-                return;
-            }
-            //成功
-            if(resp.getResCode()==Constants.SUCCESS_CODE){
-                networkListener.connectServerSuccess();
-            }else{//失败，有原因的那种
-                networkListener.connectServerFailure(resp.getResMsg());
-            }
+        boolean resp = CommunicateUtil.sendUDPMsg(MsgType.METHOD_LOGIN,param,SERVER_IP,SERVER_PORT,socket);
+        if(resp==false){
+            networkListener.sendUDPMsgError(MsgType.METHOD_LOGIN,"连接服务器失败！");
+            return;
         }
     }
 
