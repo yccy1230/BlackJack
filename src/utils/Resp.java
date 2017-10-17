@@ -1,5 +1,6 @@
 package utils;
 
+import constants.Constants;
 import constants.MsgType;
 
 import java.io.Serializable;
@@ -16,30 +17,36 @@ public class Resp implements Serializable {
 
     private MsgType msgType;
     private String resMsg;
-    private Date resTime;
+    private String resCode;
     private Object data;
+    private Date resTime;
 
     public Resp() {}
 
-    public Resp(MsgType msgType, String resMsg) {
+    /**通常用于发生错误时返回数据体*/
+    public Resp(String resCode, String resMsg,MsgType msgType) {
+        this.resCode = resCode;
         this.msgType = msgType;
         this.resMsg = resMsg;
         this.resTime = new Timestamp(System.currentTimeMillis());
     }
 
     public Resp(MsgType msgType, Object data) {
+        this.resCode = Constants.SUCCESS_CODE;
         this.msgType = msgType;
         this.data = data;
         this.resTime = new Timestamp(System.currentTimeMillis());
     }
 
     public Resp(MsgType msgType, String resMsg, Date resTime) {
+        this.resCode = Constants.SUCCESS_CODE;
         this.msgType = msgType;
         this.resMsg = resMsg;
         this.resTime = resTime;
     }
 
     public Resp(MsgType msgType, String resMsg, Date resTime, Object data) {
+        this.resCode = Constants.SUCCESS_CODE;
         this.msgType = msgType;
         this.resMsg = resMsg;
         this.resTime = resTime;
@@ -47,10 +54,19 @@ public class Resp implements Serializable {
     }
 
     public Resp(MsgType msgType, String resMsg, Object data) {
+        this.resCode = Constants.SUCCESS_CODE;
         this.msgType = msgType;
         this.resMsg = resMsg;
         this.data = data;
         this.resTime = new Timestamp(System.currentTimeMillis());
+    }
+
+    public String getResCode() {
+        return resCode;
+    }
+
+    public void setResCode(String resCode) {
+        this.resCode = resCode;
     }
 
     public Date getResTime() {

@@ -13,11 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
-* @description Client信息发送器
+* @description Client通讯服务
 * @author Jack Chen
 * @date 2017/10/17
 */
-public class ClientSenderService {
+public class ClientCommunicateService {
     /**服务器IP*/
     private final String SERVER_IP = "115.159.35.11";
     /**服务器Port*/
@@ -40,7 +40,7 @@ public class ClientSenderService {
      * 构造通讯器，并绑定端口
      * @param networkListener
      */
-    public ClientSenderService(NetworkListener networkListener) {
+    public ClientCommunicateService(NetworkListener networkListener) {
         this.networkListener = networkListener;
         try {
             socket = new DatagramSocket();
@@ -67,13 +67,18 @@ public class ClientSenderService {
         param.put(Constants.PARAM_NICK_NAME,nickName);
         Resp resp = CommunicateUtil.sendUDPMsg(MsgType.METHOD_LOGIN,param,SERVER_IP,SERVER_PORT,socket);
         if(networkListener!=null){
+            //失败，服务器不理人
             if(resp==null){
-                networkListener.connectServerFailure("");
-            }else{
+                networkListener.sendUDPMsgError(MsgType.METHOD_LOGIN,"连接服务器失败！");
+                return;
+            }
+            //成功
+            if(resp.getResCode()==Constants.SUCCESS_CODE){
                 networkListener.connectServerSuccess();
+            }else{//失败，有原因的那种
+                networkListener.connectServerFailure(resp.getResMsg());
             }
         }
-
     }
 
 }
