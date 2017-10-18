@@ -4,7 +4,7 @@ import constants.Constants;
 import constants.MsgType;
 import listener.MsgReceiveListener;
 import listener.NetworkListener;
-import thread.ClientMsgReceiveThread;
+import thread.MsgReceiveThread;
 import utils.CommunicateUtil;
 import utils.Resp;
 
@@ -20,8 +20,8 @@ import java.util.Map;
 */
 public class ClientCommunicateService {
     /**服务器IP*/
-    private final String SERVER_IP = "115.159.35.11";
-//    private final String SERVER_IP = "192.168.31.139";
+//    private final String SERVER_IP = "115.159.35.11";
+    private final String SERVER_IP = "192.168.31.139";
     /**服务器Port*/
     private final int SERVER_PORT = 6666;
     /**通讯超时时间*/
@@ -36,7 +36,7 @@ public class ClientCommunicateService {
     /**通讯结果回调*/
     private NetworkListener networkListener;
     /**消息接收线程*/
-    private ClientMsgReceiveThread clientMsgReceiveThread;
+    private MsgReceiveThread clientMsgReceiveThread;
 
     /**
      * 构造通讯器，并绑定端口
@@ -56,7 +56,7 @@ public class ClientCommunicateService {
             return;
         }
         //创建并启动信息接受线程
-        clientMsgReceiveThread = new ClientMsgReceiveThread(socket,msgReceiveListener);
+        clientMsgReceiveThread = new MsgReceiveThread(socket,msgReceiveListener);
         clientMsgReceiveThread.start();
     }
 
@@ -67,8 +67,8 @@ public class ClientCommunicateService {
     public void connectServer(String nickName){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_NICK_NAME,nickName);
-        boolean resp = CommunicateUtil.sendUDPMsg(MsgType.METHOD_LOGIN,param,SERVER_IP,SERVER_PORT,socket);
-        if(resp==false){
+        Resp resp = CommunicateUtil.sendUDPMsg(MsgType.METHOD_LOGIN,param,SERVER_IP,SERVER_PORT,socket);
+        if(resp==null||resp.getResCode()!=Constants.SUCCESS_CODE){
             networkListener.sendUDPMsgError(MsgType.METHOD_LOGIN,"连接服务器失败！");
             return;
         }

@@ -3,23 +3,24 @@ package thread;
 import com.alibaba.fastjson.JSON;
 import listener.MsgReceiveListener;
 import utils.Resp;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
 /**
-* @description Server数据接收器（线程）
+* @description Client数据接收器（线程）
 *             该线程只负责接收及转换数据，数据处理交由主控制器处理
 * @author Jack Chen
 * @date 2017/10/17
 */
-public class ServerMsgReceiveThread extends Thread {
+public class MsgReceiveThread extends Thread {
     /**套接字*/
     private DatagramSocket socket;
 
     /**消息接收回调*/
     private MsgReceiveListener msgReceiveListener;
 
-    public ServerMsgReceiveThread(DatagramSocket socket,MsgReceiveListener msgReceiveListener) {
+    public MsgReceiveThread(DatagramSocket socket,MsgReceiveListener msgReceiveListener){
         this.socket = socket;
         this.msgReceiveListener = msgReceiveListener;
     }

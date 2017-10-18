@@ -1,15 +1,11 @@
 package service;
-import constants.Constants;
-import constants.MsgType;
+
 import listener.MsgReceiveListener;
 import listener.NetworkListener;
-import thread.ServerMsgReceiveThread;
-import utils.CommunicateUtil;
+import thread.MsgReceiveThread;
 import utils.Resp;
 
 import java.net.*;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
 * @description Server通讯服务,维护通讯清单
@@ -28,7 +24,7 @@ public class ServerCommunicateService {
     /**通讯结果回调*/
     private NetworkListener networkListener;
     /**消息接收线程*/
-    private ServerMsgReceiveThread serverMsgReceiveThread;
+    private MsgReceiveThread serverMsgReceiveThread;
 
     /**
      * 构造通讯器，并绑定端口
@@ -47,7 +43,7 @@ public class ServerCommunicateService {
             return;
         }
         //创建并启动信息接受线程
-        serverMsgReceiveThread = new ServerMsgReceiveThread(socket,msgReceiveListener);
+        serverMsgReceiveThread = new MsgReceiveThread(socket,msgReceiveListener);
         serverMsgReceiveThread.start();
     }
 

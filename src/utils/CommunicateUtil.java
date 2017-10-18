@@ -21,7 +21,7 @@ public class CommunicateUtil {
      * @param param 传递参数
      * @return 请求返回结果，如果发生异常返回null
      */
-    public static boolean sendUDPMsg(MsgType msgType, Map<String,Object> param,
+    public static Resp sendUDPMsg(MsgType msgType, Map<String,Object> param,
                                   String targetIp, int targetPort, DatagramSocket socket){
         try
         {
@@ -35,13 +35,18 @@ public class CommunicateUtil {
             socket.send(packet);
 
             //接收服务器反馈数据
-            return true;
+            byte[] backBuf = new byte[1024];
+            DatagramPacket backPacket = new DatagramPacket(backBuf, backBuf.length);
+            socket.receive(backPacket);
+            String backMsg = new String(backBuf, 0, backPacket.getLength());
+            Resp response = JSON.parseObject(backMsg,Resp.class);
+            return response;
         }
         catch (Exception e)
         {
             System.out.println("发送UDP消息异常，详细堆栈信息如下：");
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -51,7 +56,7 @@ public class CommunicateUtil {
      * @param param 传递参数
      * @return 请求返回结果，如果发生异常返回null
      */
-    public static boolean sendUDPMsgBySocket(MsgType msgType, Map<String,Object> param,
+    public static Resp sendUDPMsgBySocket(MsgType msgType, Map<String,Object> param,
                                           DatagramPacket datagramPacket, DatagramSocket socket){
         try
         {
@@ -60,13 +65,20 @@ public class CommunicateUtil {
             DatagramPacket packet = new DatagramPacket(msg, msg.length, datagramPacket.getAddress(), datagramPacket.getPort());
             packet.setSocketAddress(datagramPacket.getSocketAddress());
             socket.send(packet);
-            return true;
+
+            //接收服务器反馈数据
+            byte[] backBuf = new byte[1024];
+            DatagramPacket backPacket = new DatagramPacket(backBuf, backBuf.length);
+            socket.receive(backPacket);
+            String backMsg = new String(backBuf, 0, backPacket.getLength());
+            Resp response = JSON.parseObject(backMsg,Resp.class);
+            return response;
         }
         catch (Exception e)
         {
             System.out.println("发送UDP消息异常，详细堆栈信息如下：");
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 }
