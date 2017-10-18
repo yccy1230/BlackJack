@@ -18,13 +18,4 @@ public interface NetworkListener {
      */
     void sendUDPMsgError(MsgType msgType, String msg);
 
-    /**连接服务器成功*/
-    void connectServerSuccess();
-
-    /**
-     * 连接服务器失败
-     * @param msg 失败原因
-     */
-    void connectServerFailure(String msg);
-
 }

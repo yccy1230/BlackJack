@@ -30,14 +30,4 @@ public class ServerDriver implements NetworkListener{
 
     }
 
-    @Override
-    public void connectServerSuccess() {
-
-    }
-
-    @Override
-    public void connectServerFailure(String msg) {
-
-    }
-
 }

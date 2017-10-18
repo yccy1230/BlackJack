@@ -6,6 +6,7 @@ import thread.MsgReceiveThread;
 import utils.Resp;
 
 import java.net.*;
+import java.util.HashMap;
 
 /**
 * @description Server通讯服务,维护通讯清单
@@ -25,6 +26,8 @@ public class ServerCommunicateService {
     private NetworkListener networkListener;
     /**消息接收线程*/
     private MsgReceiveThread serverMsgReceiveThread;
+    /**Session*/
+    private HashMap<String, SocketAddress> hashTable;
 
     /**
      * 构造通讯器，并绑定端口
@@ -42,32 +45,39 @@ public class ServerCommunicateService {
             e.printStackTrace();
             return;
         }
+        //初始化session空间
+        hashTable = new HashMap<>();
         //创建并启动信息接受线程
         serverMsgReceiveThread = new MsgReceiveThread(socket,msgReceiveListener);
         serverMsgReceiveThread.start();
     }
 
     /**
-     * 用户上线广播消息
+     * 用户上线广播消息，同时添加用户到session维护
      */
-    public void userConnectedBroadcast(DatagramPacket datagramPacket){
+    public void userConnectedBroadcast(){
 
     }
 
+    /**
+     * 发送操作请求(By Socket Address)
+     * @param socketAddress 目标地址
+     */
+    public Resp requireUserOperation(SocketAddress socketAddress){
+        return null;
+    }
 
-    public void userLogin(Resp resp){
-//        if(networkListener!=null){
-//            //失败，服务器不理人
-//            if(resp==null){
-//                networkListener.sendUDPMsgError(MsgType.METHOD_LOGIN,"连接服务器失败！");
-//                return;
-//            }
-//            //成功
-//            if(resp.getResCode()==Constants.SUCCESS_CODE){
-//                networkListener.connectServerSuccess();
-//            }else{//失败，有原因的那种
-//                networkListener.connectServerFailure(resp.getResMsg());
-//            }
-//        }
+    /**
+     * 发送操作请求
+     */
+    public Resp requireUserOperate(){
+        return null;
+    }
+
+    /**
+     * 发送 UI数据 更新请求
+     */
+    public Resp invalidateUserUI(){
+        return null;
     }
 }

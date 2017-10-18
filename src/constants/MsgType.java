@@ -10,6 +10,7 @@ import java.io.Serializable;
 public enum MsgType implements Serializable{
     //Local Method
     METHOD_LOGIN,       //连接服务器
+    METHOD_LOGOUT,       //断开服务器
     METHOD_READY,       //准备，并下注
     METHOD_HIT,         //要牌
     METHOD_STAND,       //停牌

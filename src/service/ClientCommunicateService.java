@@ -9,6 +9,7 @@ import utils.CommunicateUtil;
 import utils.Resp;
 
 import java.net.DatagramSocket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +21,7 @@ import java.util.Map;
 */
 public class ClientCommunicateService {
     /**服务器IP*/
-//    private final String SERVER_IP = "115.159.35.11";
-    private final String SERVER_IP = "192.168.31.139";
+    private final String SERVER_IP = "115.159.35.11";
     /**服务器Port*/
     private final int SERVER_PORT = 6666;
     /**通讯超时时间*/
@@ -61,17 +61,33 @@ public class ClientCommunicateService {
     }
 
     /**
-     * 连接服务器
+     * 连接服务器（加入房间）
      * @param nickName 用户登陆昵称
+     * @return 返回结果
      */
-    public void connectServer(String nickName){
+    public Resp connectServer(String nickName){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_NICK_NAME,nickName);
-        Resp resp = CommunicateUtil.sendUDPMsg(MsgType.METHOD_LOGIN,param,SERVER_IP,SERVER_PORT,socket);
-        if(resp==null||resp.getResCode()!=Constants.SUCCESS_CODE){
-            networkListener.sendUDPMsgError(MsgType.METHOD_LOGIN,"连接服务器失败！");
-            return;
-        }
+        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGIN,param,SERVER_IP,SERVER_PORT,socket);
+        return resp;
     }
 
+    /**
+     * 断开服务器（退出房间）
+     * @return 返回结果
+     */
+    public Resp disconnectServer(){
+        Map<String,Object> param = new HashMap<>(16);
+        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGOUT,param,SERVER_IP,SERVER_PORT,socket);
+        return resp;
+    }
+
+    /**
+     * 发送操作请求(By IP Address)
+     */
+    public Resp sendUserOperation(MsgType msgType){
+        Map<String,Object> param = new HashMap<>(16);
+        Resp resp = CommunicateUtil.sendUDPMsgByIP(msgType,param,SERVER_IP,SERVER_PORT,socket);
+        return resp;
+    }
 }

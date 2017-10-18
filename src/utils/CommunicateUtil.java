@@ -6,7 +6,6 @@ import constants.MsgType;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketAddress;
 import java.util.Map;
 
 /**
@@ -21,7 +20,7 @@ public class CommunicateUtil {
      * @param param 传递参数
      * @return 请求返回结果，如果发生异常返回null
      */
-    public static Resp sendUDPMsg(MsgType msgType, Map<String,Object> param,
+    public static Resp sendUDPMsgByIP(MsgType msgType, Map<String,Object> param,
                                   String targetIp, int targetPort, DatagramSocket socket){
         try
         {
