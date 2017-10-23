@@ -1,5 +1,6 @@
 package service;
 
+import entity.Player;
 import listener.MsgReceiveListener;
 import listener.NetworkListener;
 import thread.MsgReceiveThread;
@@ -55,8 +56,8 @@ public class ServerCommunicateService {
     /**
      * 用户上线广播消息，同时添加用户到session维护
      */
-    public void userConnectedBroadcast(){
-
+    public void userConnectedBroadcast(Player player,SocketAddress address){
+        hashTable.put(player.getId(),address);
     }
 
     /**
