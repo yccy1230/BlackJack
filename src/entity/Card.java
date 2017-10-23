@@ -8,7 +8,30 @@ package entity;
  */
 public class Card {
     String faceValue;
-    int suit;
     int value;
+    boolean visible;
 
+    public boolean getVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public String getFaceValue() {
+        return faceValue;
+    }
+
+    public void setFaceValue(String faceValue) {
+        this.faceValue = faceValue;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 }

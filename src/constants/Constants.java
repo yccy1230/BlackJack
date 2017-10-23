@@ -6,6 +6,13 @@ public class Constants {
     public static final String PARAM_NICK_NAME ="nickname";
     public static final int SUCCESS_CODE = 200;
 
+    /**用户状态*/
+    public static final int USER_IDEL = 0;
+    public static final int USER_READY = 1;
+    public static final int USER_SURRENDER = -1;
+    public static final int USER_STAND = 2;
+    public static final int USER_OVER = 3;
+
     /**卡牌定义类*/
     public static final String CLUBS_1 = "Clubs_1";
     public static final String CLUBS_2 = "Clubs_2";
