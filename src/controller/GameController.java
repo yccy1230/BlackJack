@@ -37,17 +37,8 @@ public class GameController implements MsgReceiveListener {
                     room.initPlayers(resp);
                 }
                 break;
-            case METHOD_HIT:
-
-                break;
             case METHOD_READY:
                 room.checkAllReady();
-                break;
-            case METHOD_STAND:
-                break;
-            case METHOD_DOUBLE:
-                break;
-            case METHOD_RESULT:
                 break;
             case METHOD_SURRENDER:
                 break;

@@ -12,6 +12,7 @@ public class Constants {
     public static final int USER_SURRENDER = -1;
     public static final int USER_STAND = 2;
     public static final int USER_OVER = 3;
+    public static final int USER_BLACKJACK = 4;
 
     /**卡牌定义类*/
     public static final String CLUBS_1 = "Clubs_1";

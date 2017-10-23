@@ -8,26 +8,21 @@ import java.util.List;
  * @create 2017-10-17 13:14
  */
 public class Dealer {
-    private int cardsNum;
-    private int cardsSum;
-    private List<Card> cards;
+    private Hand hand;
+
+    public Hand getHand() {
+        return hand;
+    }
+
+    public void setHand(Hand hand) {
+        this.hand = hand;
+    }
 
     public boolean dealerStand(){
-        if(cardsSum <17)
+        if(hand.computeValue()<17)
             return false;
         else
             return true;
     }
 
-    public void dealerHit(){
-        //要牌
-    }
-
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
-    }
 }

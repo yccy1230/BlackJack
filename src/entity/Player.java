@@ -48,14 +48,29 @@ public class Player {
         this.nickname = nickname;
     }
 
+    public int getBet() {
+        return bet;
+    }
 
-    public void doubleBet(){
+    public void setBet(int bet) {
+        this.bet = bet;
+    }
+
+    public int getProperty() {
+        return property;
+    }
+
+    public void setProperty(int property) {
+        this.property = property;
+    }
+
+    public boolean doubleBet(){
         if(property-bet>=0) {
             bet = bet * 2;
             property =property -bet;
-        }else{
-            //弹出提醒，余额不足
-        }
+            return true;
+        }else
+            return false;
     }
 
 }
