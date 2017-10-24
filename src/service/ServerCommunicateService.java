@@ -63,13 +63,13 @@ public class ServerCommunicateService {
      * 用户上线广播消息，同时添加用户到session维护
      */
     public void userConnectedBroadcast(Room room,Player player, DatagramPacket address){
+        hashTable.put(player.getId(),address);
        for(String key : hashTable.keySet()){
            DatagramPacket dp = hashTable.get(key);
            Map<String,Object> param = new HashMap<>();
            param.put(Constants.PARAM_PLAYER,player);
            CommunicateUtil.broadcast(MsgType.METHOD_NEWUSER,param,dp,socket);
        }
-        hashTable.put(player.getId(),address);
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_INIT_USER,room);
         CommunicateUtil.broadcast(MsgType.METHOD_RESULT,param,address,socket);

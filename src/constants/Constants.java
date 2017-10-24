@@ -2,11 +2,12 @@ package constants;
 
 public class Constants {
 
-    /**昵称变量名*/
+    /**参数变量名*/
     public static final String PARAM_NICK_NAME ="nickname";
     public static final String PARAM_INIT_USER ="inituser";
     public static final String PARAM_PLAYER ="player";
     public static final String PARAM_USER_ID = "userid";
+    public static final String PARAM_BET ="bet";
     public static final int SUCCESS_CODE = 200;
 
     /**用户状态*/
@@ -16,6 +17,14 @@ public class Constants {
     public static final int USER_STAND = 2;
     public static final int USER_OVER = 3;
     public static final int USER_BLACKJACK = 4;
+
+    /**Player Panel Size*/
+    public static final int PLAYER_PANEL_WIDTH = 360;
+    public static final int PLAYER_PANEL_HEIGHT = 180;
+
+    /**卡牌View Size*/
+    public static final int CARD_WIDTH = 100;
+    public static final int CARD_HEIGHT = 160;
 
     /**卡牌定义类*/
     public static final String CLUBS_1 = "Clubs_1";

@@ -1,53 +1,45 @@
 package ui;
 
-import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+
+import listener.OperationListener;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import constants.ConstantsMsg;
+
 import javax.swing.JButton;
 
-public class LoginFrame extends JFrame {
+public class LoginFrame extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JTextField ipTextField;
 	private JTextField portTextField;
 	private JTextField nameTextField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginFrame frame = new LoginFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public LoginFrame() {
+	private JButton loginBtn;
+	private JButton exitBtn;
+	
+	private OperationListener operationListener;
+	
+	public LoginFrame(OperationListener operationListener) {
+		this.operationListener = operationListener;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblip = new JLabel("服务器IP：");
+		JLabel lblip = new JLabel(ConstantsMsg.LABEL_IP);
 		lblip.setBounds(100, 60, 74, 15);
 		contentPane.add(lblip);
 		
-		JLabel label = new JLabel("服务器端口:");
+		JLabel label = new JLabel(ConstantsMsg.LABEL_PORT);
 		label.setBounds(100, 97, 74, 15);
 		contentPane.add(label);
 		
@@ -61,15 +53,7 @@ public class LoginFrame extends JFrame {
 		contentPane.add(portTextField);
 		portTextField.setColumns(10);
 		
-		JButton loginBtn = new JButton("连接服务器");
-		loginBtn.setBounds(100, 170, 106, 23);
-		contentPane.add(loginBtn);
-		
-		JButton exitBtn = new JButton("退出程序");
-		exitBtn.setBounds(229, 170, 106, 23);
-		contentPane.add(exitBtn);
-		
-		JLabel label_1 = new JLabel("登录昵称：");
+		JLabel label_1 = new JLabel(ConstantsMsg.LABEL_NICKNAME);
 		label_1.setBounds(100, 137, 74, 15);
 		contentPane.add(label_1);
 		
@@ -77,5 +61,43 @@ public class LoginFrame extends JFrame {
 		nameTextField.setColumns(10);
 		nameTextField.setBounds(184, 134, 129, 21);
 		contentPane.add(nameTextField);
+		
+		exitBtn = new JButton(ConstantsMsg.BUTTON_EXIT);
+		exitBtn.setBounds(229, 170, 106, 23);
+		exitBtn.addActionListener(this);
+
+		contentPane.add(exitBtn);
+		
+		loginBtn = new JButton(ConstantsMsg.BUTTON_CONNECT_SERVER);
+		loginBtn.setBounds(100, 170, 106, 23);
+		loginBtn.addActionListener(this);
+		contentPane.add(loginBtn);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch(e.getActionCommand()){
+			case ConstantsMsg.BUTTON_CONNECT_SERVER:
+				String ip = ipTextField.getText();
+				String port = portTextField.getText();
+				String nickName = nameTextField.getText();
+				if(ip==null||"".equals(ip)||port==null|!port.matches("\\d+")
+						||nickName==null||"".equals(nickName)){
+					JOptionPane.showMessageDialog(contentPane,ConstantsMsg.MSG_EMPTY_INPUT);
+					return;
+				}
+				if(operationListener!=null){
+					loginBtn.setEnabled(false);
+					exitBtn.setEnabled(false);
+					operationListener.onConnectClicked(ip,Integer.parseInt(port),nickName);
+				}
+				break;
+			case ConstantsMsg.BUTTON_EXIT:
+				System.exit(0);
+				break;
+			default:
+				break;
+		}
+		
 	}
 }

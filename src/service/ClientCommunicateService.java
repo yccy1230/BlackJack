@@ -9,7 +9,6 @@ import utils.CommunicateUtil;
 import utils.Resp;
 
 import java.net.DatagramSocket;
-import java.net.SocketAddress;
 import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,16 +20,16 @@ import java.util.Map;
 */
 public class ClientCommunicateService {
     /**服务器IP*/
-    private final String SERVER_IP = "115.159.35.11";
+    private String serverIP = "115.159.35.11";
     /**服务器Port*/
-    private final int SERVER_PORT = 6666;
+    private int serverPort = 6666;
     /**通讯超时时间*/
     private final int TIME_OUT = 30000;
 
     /**本地Port*/
     private int localPort;
     /**标识ID*/
-    private int deviceID;
+    private String deviceID;
     /**套接字*/
     private DatagramSocket socket;
     /**通讯结果回调*/
@@ -68,7 +67,11 @@ public class ClientCommunicateService {
     public Resp connectServer(String nickName){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_NICK_NAME,nickName);
-        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGIN,param,SERVER_IP,SERVER_PORT,socket);
+        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGIN,param,serverIP,serverPort,socket);
+        if(resp.getResCode()==Constants.SUCCESS_CODE){//初始化设备标识ID（用户ID）
+        	Map<String,Object> retParam = (Map<String, Object>) resp.getData();
+        	deviceID = (String) retParam.get(Constants.PARAM_USER_ID);
+        }
         return resp;
     }
 
@@ -78,16 +81,39 @@ public class ClientCommunicateService {
      */
     public Resp disconnectServer(){
         Map<String,Object> param = new HashMap<>(16);
-        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGOUT,param,SERVER_IP,SERVER_PORT,socket);
+        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGOUT,param,serverIP,serverPort,socket);
+        return resp;
+    }
+    
+    /**
+     * 发送准备请求(By IP Address)
+     */
+    public Resp sendUserReadyMsg(int bet){
+        Map<String,Object> param = new HashMap<>(16);
+        param.put(Constants.PARAM_BET, bet);
+        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_READY,param,serverIP,serverPort,socket);
         return resp;
     }
 
     /**
-     * 发送操作请求(By IP Address)
+     * 发送操作请求(By IP Address)    
      */
     public Resp sendUserOperation(MsgType msgType){
         Map<String,Object> param = new HashMap<>(16);
-        Resp resp = CommunicateUtil.sendUDPMsgByIP(msgType,param,SERVER_IP,SERVER_PORT,socket);
+        Resp resp = CommunicateUtil.sendUDPMsgByIP(msgType,param,serverIP,serverPort,socket);
         return resp;
     }
+
+	public void setServerIP(String serverIP) {
+		this.serverIP = serverIP;
+	}
+
+	public void setServerPort(int serverPort) {
+		this.serverPort = serverPort;
+	}
+
+
+    
+    
+    
 }

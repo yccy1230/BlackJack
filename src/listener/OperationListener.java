@@ -31,11 +31,16 @@ public interface OperationListener {
      * 点击准备按钮回调
      * @param bet 所下赌资
      */
-    void onReadyClicked(Double bet);
+    void onReadyClicked(int bet);
 
+    /**
+     * 取消准备按钮
+     */
+    void onCancelReady();
+    
     /**
      * 点击连接服务器按钮回调
      */
-    void onConnectClicked();
+    void onConnectClicked(String ip, int port, String nickName);
 
 }
