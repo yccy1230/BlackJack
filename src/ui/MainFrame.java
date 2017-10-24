@@ -2,6 +2,8 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,22 +22,20 @@ import listener.OperationListener;
 * @date 2017/10/17
 */
 public class MainFrame extends JFrame {
-	//登录界面
     private LoginFrame loginFrame;					
     
 	private JPanel contentPane;
-	//庄家界面
     private PlayerPanel dealerPanel;
-    //操作按钮界面
-    private OperationPanel operationPanel;		
-	//用户界面
+    private OperationPanel operationPanel;
 	private Map<String,PlayerPanel> playerPanels;
 	
 	private OperationListener operationListener;
+	private ExecutorService threadPool;
 
 	
 	public MainFrame(OperationListener operationListener) {
 		this.operationListener = operationListener;
+		this.loginFrame = new LoginFrame(operationListener);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 500);
 		contentPane = new JPanel();
@@ -50,10 +50,12 @@ public class MainFrame extends JFrame {
 	 * @param room
 	 */
 	public void initFrame(Room room){
+		//初始化庄家界面
 		dealerPanel = new PlayerPanel(room.getDealer());
 		dealerPanel.setBounds(300, 30,Constants.PLAYER_PANEL_WIDTH, Constants.PLAYER_PANEL_HEIGHT);
 		add(dealerPanel);
-		
+
+		//初始化操作面板
 		operationPanel = new OperationPanel();
 		operationPanel.setBounds(300, 45+Constants.PLAYER_PANEL_HEIGHT,Constants.PLAYER_PANEL_WIDTH, Constants.PLAYER_PANEL_HEIGHT);
 		add(operationPanel);

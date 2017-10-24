@@ -11,7 +11,8 @@ public class ConstantsMsg {
 	public static final String MSG_WAIT_OTHER_USER ="等待其他用户准备...";
 	public static final String MSG_ENTER_BET ="请输入赌资：";
     public static final String MSG_EMPTY_INPUT ="参数不能为空";
-    public static final String MSG_ ="请等待其他玩家准备";
+    public static final String MSG_BIND_PORT_ERROR ="绑定端口失败，请尝试重启应用~";
+    public static final String MSG_SEND_UDPMSG_ERROR ="发送数据包出错~";
     
     /**按钮文字常量*/
     public static final String BUTTON_READY = "准备";

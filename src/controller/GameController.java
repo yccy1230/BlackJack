@@ -1,8 +1,6 @@
 package controller;
 
-import com.alibaba.fastjson.JSON;
 import constants.Constants;
-import entity.Hand;
 import entity.Player;
 import entity.Room;
 import listener.MsgReceiveListener;
@@ -10,11 +8,7 @@ import service.ServerCommunicateService;
 import utils.Resp;
 
 import java.net.DatagramPacket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 /**
 * @description 游戏主控制器
 * @author Jack Chen
@@ -34,8 +28,10 @@ public class GameController implements MsgReceiveListener {
         switch(resp.getMsgType()){
             case METHOD_LOGIN:
                 if(resp.getResCode()== Constants.SUCCESS_CODE){
-                    if(room.playerFull())
+                    if(room.playerFull()) {
                         communicateService.sendUDPMsgWithoutResult(datagramPacket);
+                        return;
+                    }
                     Player player = room.addPlayers(resp);
                     communicateService.userConnectedBroadcast(room,player,datagramPacket);
                 }

@@ -89,7 +89,12 @@ public class LoginFrame extends JFrame implements ActionListener {
 				if(operationListener!=null){
 					loginBtn.setEnabled(false);
 					exitBtn.setEnabled(false);
-					operationListener.onConnectClicked(ip,Integer.parseInt(port),nickName);
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							operationListener.onConnectClicked(ip,Integer.parseInt(port),nickName);
+						}
+					}).start();
 				}
 				break;
 			case ConstantsMsg.BUTTON_EXIT:

@@ -1,6 +1,8 @@
 package controller;
 
+import constants.MsgType;
 import listener.MsgReceiveListener;
+import listener.NetworkListener;
 import listener.OperationListener;
 import service.ClientCommunicateService;
 import ui.MainFrame;
@@ -18,12 +20,14 @@ import entity.Player;
 * @author Jack Chen
 * @date 2017/10/17
 */
-public class UIController implements MsgReceiveListener,OperationListener{
-    private ClientCommunicateService communicateService;//通讯器
-    private MainFrame mainFrame;	//主UI
+public class UIController implements MsgReceiveListener,OperationListener, NetworkListener {
+
+    private ClientCommunicateService communicateService;
+    private MainFrame mainFrame;
     
     public UIController() {
     	mainFrame = new MainFrame(this);
+		communicateService = new ClientCommunicateService(this,this);
     	mainFrame.showLoginFrame();
 	}
 
@@ -35,7 +39,7 @@ public class UIController implements MsgReceiveListener,OperationListener{
 				case METHOD_NEWUSER:
 					mainFrame.addUserPanel((Player) param.get(Constants.PARAM_PLAYER));
 					break;
-				case METHOD_READY:
+				case METHOD_GAME_BEGIN:
 					break;
 				case METHOD_STAND:
 					break;
@@ -49,11 +53,6 @@ public class UIController implements MsgReceiveListener,OperationListener{
 					break;
 			}
 		}
-    }
-
-    public void setCommunicateService(ClientCommunicateService communicateService) {
-        this.communicateService = communicateService;
-        mainFrame.showLoginFrame();
     }
 
 	@Override
@@ -88,7 +87,7 @@ public class UIController implements MsgReceiveListener,OperationListener{
 	}
 
 	@Override
-	public void onCancelReady() {
+	public void onCancelReadyClicked() {
 
 	}
 
@@ -103,5 +102,16 @@ public class UIController implements MsgReceiveListener,OperationListener{
 			Map<String,Object> param = (Map<String, Object>) resp.getData();
 			mainFrame.showMessage((String) param.get("msg"));
 		}
+	}
+
+	@Override
+	public void bindPortError() {
+		mainFrame.showMessage(ConstantsMsg.MSG_BIND_PORT_ERROR);
+		System.exit(0);
+	}
+
+	@Override
+	public void sendUDPMsgError(MsgType msgType, String msg) {
+		mainFrame.showMessage(ConstantsMsg.MSG_SEND_UDPMSG_ERROR);
 	}
 }

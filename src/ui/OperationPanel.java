@@ -158,7 +158,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 			break;
 		case ConstantsMsg.BUTTON_CANCEL_READY:
 			if(operationListener!=null){
-				operationListener.onCancelReady();
+				operationListener.onCancelReadyClicked();
 				hideAll();
 			}
 			

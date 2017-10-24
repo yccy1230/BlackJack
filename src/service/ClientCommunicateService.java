@@ -81,6 +81,7 @@ public class ClientCommunicateService {
      */
     public Resp disconnectServer(){
         Map<String,Object> param = new HashMap<>(16);
+        param.put(Constants.PARAM_USER_ID,deviceID);
         Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGOUT,param,serverIP,serverPort,socket);
         return resp;
     }
@@ -91,6 +92,7 @@ public class ClientCommunicateService {
     public Resp sendUserReadyMsg(int bet){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_BET, bet);
+        param.put(Constants.PARAM_USER_ID,deviceID);
         Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_READY,param,serverIP,serverPort,socket);
         return resp;
     }
@@ -100,6 +102,7 @@ public class ClientCommunicateService {
      */
     public Resp sendUserOperation(MsgType msgType){
         Map<String,Object> param = new HashMap<>(16);
+        param.put(Constants.PARAM_USER_ID,deviceID);
         Resp resp = CommunicateUtil.sendUDPMsgByIP(msgType,param,serverIP,serverPort,socket);
         return resp;
     }

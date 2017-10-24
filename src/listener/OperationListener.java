@@ -34,9 +34,9 @@ public interface OperationListener {
     void onReadyClicked(int bet);
 
     /**
-     * 取消准备按钮
+     * 点击取消准备按钮
      */
-    void onCancelReady();
+    void onCancelReadyClicked();
     
     /**
      * 点击连接服务器按钮回调
