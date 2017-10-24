@@ -34,13 +34,28 @@ public class GameController implements MsgReceiveListener {
         switch(resp.getMsgType()){
             case METHOD_LOGIN:
                 if(resp.getResCode()== Constants.SUCCESS_CODE){
-                    room.initPlayers(resp);
+                    if(room.playerFull())
+                        communicateService.sendUDPMsgWithoutResult(datagramPacket);
+                    Player player = room.addPlayers(resp);
+                    communicateService.userConnectedBroadcast(room,player,datagramPacket);
                 }
                 break;
             case METHOD_READY:
                 room.checkAllReady();
+                communicateService.sendUDPMsgWithoutResult(datagramPacket);
                 break;
             case METHOD_SURRENDER:
+                if(resp.getResCode()==Constants.SUCCESS_CODE){
+                    Map<String,Object> param = (Map<String, Object>) resp.getData();
+                    String id = (String) param.get(Constants.PARAM_USER_ID);
+                    for(int i=0; i<room.getPlayers().size();i++){
+                        if(room.getPlayers().get(i).getId().equals(id)) {
+                            room.getPlayers().get(i).setStatus(Constants.USER_SURRENDER);
+                            break;
+                        }
+                    }
+                    communicateService.sendUDPMsgWithoutResult(datagramPacket);
+                }
                 break;
             default:
                 break;

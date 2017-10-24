@@ -17,6 +17,8 @@ public enum MsgType implements Serializable{
     METHOD_DOUBLE,      //加倍，输本金+加倍金，赢两倍
     METHOD_SURRENDER,   //投降，输一半
     METHOD_RESULT,      //返回值
+    METHOD_NEWUSER,    //新用户
+    METHOD_GAME_BEGIN, //游戏开始
 
     //Server Method
 

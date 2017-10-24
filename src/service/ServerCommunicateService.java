@@ -1,13 +1,19 @@
 package service;
 
+import constants.Constants;
+import constants.MsgType;
 import entity.Player;
+import entity.Room;
 import listener.MsgReceiveListener;
 import listener.NetworkListener;
 import thread.MsgReceiveThread;
+import utils.CommunicateUtil;
 import utils.Resp;
 
 import java.net.*;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
 * @description Server通讯服务,维护通讯清单
@@ -28,7 +34,7 @@ public class ServerCommunicateService {
     /**消息接收线程*/
     private MsgReceiveThread serverMsgReceiveThread;
     /**Session*/
-    private HashMap<String, SocketAddress> hashTable;
+    private HashMap<String, DatagramPacket> hashTable;
 
     /**
      * 构造通讯器，并绑定端口
@@ -56,8 +62,17 @@ public class ServerCommunicateService {
     /**
      * 用户上线广播消息，同时添加用户到session维护
      */
-    public void userConnectedBroadcast(Player player,SocketAddress address){
+    public void userConnectedBroadcast(Room room,Player player, DatagramPacket address){
+       for(String key : hashTable.keySet()){
+           DatagramPacket dp = hashTable.get(key);
+           Map<String,Object> param = new HashMap<>();
+           param.put(Constants.PARAM_PLAYER,player);
+           CommunicateUtil.broadcast(MsgType.METHOD_NEWUSER,param,dp,socket);
+       }
         hashTable.put(player.getId(),address);
+        Map<String,Object> param = new HashMap<>(16);
+        param.put(Constants.PARAM_INIT_USER,room);
+        CommunicateUtil.broadcast(MsgType.METHOD_RESULT,param,address,socket);
     }
 
     /**
@@ -81,4 +96,18 @@ public class ServerCommunicateService {
     public Resp invalidateUserUI(){
         return null;
     }
+
+    public void sendUDPMsgWithoutResult(DatagramPacket datagramPacket){
+        Map<String,Object> param = new HashMap<>(16);
+        CommunicateUtil.broadcast(MsgType.METHOD_RESULT,param,datagramPacket,socket);
+    }
+
+    public void sendBroadcast() {
+        for (String key : hashTable.keySet()) {
+            DatagramPacket dp = hashTable.get(key);
+            Map<String, Object> param = new HashMap<>();
+            CommunicateUtil.broadcast(MsgType.METHOD_NEWUSER, param, dp, socket);
+        }
+    }
+
 }

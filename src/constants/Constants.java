@@ -4,6 +4,9 @@ public class Constants {
 
     /**昵称变量名*/
     public static final String PARAM_NICK_NAME ="nickname";
+    public static final String PARAM_INIT_USER ="inituser";
+    public static final String PARAM_PLAYER ="player";
+    public static final String PARAM_USER_ID = "userid";
     public static final int SUCCESS_CODE = 200;
 
     /**用户状态*/

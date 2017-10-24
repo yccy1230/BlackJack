@@ -17,12 +17,28 @@ public class Room {
     private boolean isPlaying;
     private ServerCommunicateService serverCommunicateService;
 
+    public Dealer getDealer() {
+        return dealer;
+    }
+
+    public void setDealer(Dealer dealer) {
+        this.dealer = dealer;
+    }
+
     public Room(ServerCommunicateService serverCommunicateService) {
         this.serverCommunicateService = serverCommunicateService;
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
     //添加用户
-    public void initPlayers(Resp resp){
+    public Player addPlayers(Resp resp){
         Player player = new Player();
         player.setId(UUID.randomUUID().toString());
         player.setHand(new Hand());
@@ -30,8 +46,15 @@ public class Room {
         player.setNickname((String) param.get(Constants.PARAM_NICK_NAME));
         player.setStatus(Constants.USER_IDEL);
         players.add(player);
+        return player;
+    }
 
-        serverCommunicateService.userConnectedBroadcast();
+    //检测当前房间人数
+    public boolean playerFull(){
+        if(players.size() >= 5)
+            return true;
+        else
+            return false;
     }
 
     //检查是否所有用户都已准备好
@@ -47,8 +70,8 @@ public class Room {
 
     //开始游戏
     public void startGame(){
-        serverCommunicateService.userConnectedBroadcast();
-
+        //向客户端发送游戏开始的信息
+        serverCommunicateService.sendBroadcast();
         isPlaying=true;
         //初始化牌组
         deck.initCards();
@@ -57,16 +80,16 @@ public class Room {
         //第一次发牌
         for(int i=0;i<players.size();i++){
             deck.deal2Player(players.get(i));
-            serverCommunicateService.requireUserOperate();
+            serverCommunicateService.sendBroadcast();
         }
         deck.deal2Dealer(dealer,true);
-        serverCommunicateService.requireUserOperate();
+        serverCommunicateService.sendBroadcast();
         for(int i=0;i<players.size();i++){
             deck.deal2Player(players.get(i));
-            serverCommunicateService.requireUserOperate();
+            serverCommunicateService.sendBroadcast();
         }
         deck.deal2Dealer(dealer,false);
-        serverCommunicateService.requireUserOperate();
+        serverCommunicateService.sendBroadcast();
 
         //轮流请求用户操作
         while(playersOver(players) != players.size()) {
@@ -87,7 +110,7 @@ public class Room {
         //电脑操作
         while(!dealer.dealerStand()){
             deck.deal2Dealer(dealer,true);
-            serverCommunicateService.requireUserOperate();
+            serverCommunicateService.sendBroadcast();
         }
 
         //发送游戏结果(用户状态置为结束)
@@ -140,6 +163,7 @@ public class Room {
                 players.get(i).getHand().computeValue();
             }
         }
+        serverCommunicateService.sendBroadcast();
     }
 
     public int playersOver(List<Player> players){

@@ -80,4 +80,21 @@ public class CommunicateUtil {
             return null;
         }
     }
+
+    public static void broadcast(MsgType msgType, Map<String,Object> param,
+                                                       DatagramPacket datagramPacket, DatagramSocket socket){
+        try
+        {
+            Resp resp = new Resp(msgType,param);
+            byte[] msg = (JSON.toJSONString(resp)).getBytes("UTF-8");
+            DatagramPacket packet = new DatagramPacket(msg, msg.length, datagramPacket.getAddress(), datagramPacket.getPort());
+            packet.setSocketAddress(datagramPacket.getSocketAddress());
+            socket.send(packet);
+        }
+        catch (Exception e)
+        {
+            System.out.println("发送UDP消息异常，详细堆栈信息如下：");
+            e.printStackTrace();
+        }
+    }
 }
