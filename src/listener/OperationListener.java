@@ -43,4 +43,8 @@ public interface OperationListener {
      */
     void onConnectClicked(String ip, int port, String nickName);
 
+    /**
+     * 退出游戏回调
+     */
+    void onExitClicked();
 }

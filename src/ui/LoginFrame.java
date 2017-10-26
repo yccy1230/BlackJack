@@ -2,20 +2,20 @@ package ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import listener.OperationListener;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
 import constants.ConstantsMsg;
-
 import javax.swing.JButton;
 
+/**
+* @description 登录界面 Frame
+* @author Jack Chen
+* @date 2017/10/24
+*/
 public class LoginFrame extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
@@ -30,6 +30,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 	public LoginFrame(OperationListener operationListener) {
 		this.operationListener = operationListener;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		setContentPane(contentPane);

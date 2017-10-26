@@ -17,12 +17,7 @@ public class Room {
     private boolean isPlaying;
     private ServerCommunicateService serverCommunicateService;
 
-    public Dealer getDealer() {
-        return dealer;
-    }
-
-    public void setDealer(Dealer dealer) {
-        this.dealer = dealer;
+    public Room() {
     }
 
     public Room(ServerCommunicateService serverCommunicateService) {
@@ -51,21 +46,20 @@ public class Room {
 
     //检测当前房间人数
     public boolean playerFull(){
-        if(players.size() >= 5)
-            return true;
-        else
-            return false;
+        return players.size() >= 5;
     }
 
     //检查是否所有用户都已准备好
     public void checkAllReady() {
         int count=0;
         for(int i=0; i< players.size();i++){
-            if(players.get(i).getStatus()== Constants.USER_READY)
+            if(players.get(i).getStatus()== Constants.USER_READY) {
                 count++;
+            }
         }
-        if(count==players.size())
+        if(count==players.size()) {
             startGame();
+        }
     }
 
     //开始游戏
@@ -169,10 +163,19 @@ public class Room {
     public int playersOver(List<Player> players){
         int count=0;
         for (int i=0;i<players.size();i++){
-            if(players.get(i).getStatus()!=Constants.USER_READY)
+            if(players.get(i).getStatus()!=Constants.USER_READY) {
                 count++;
+            }
         }
         return count;
+    }
+
+    public Dealer getDealer() {
+        return dealer;
+    }
+
+    public void setDealer(Dealer dealer) {
+        this.dealer = dealer;
     }
 
 }

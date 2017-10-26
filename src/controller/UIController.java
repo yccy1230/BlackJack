@@ -28,7 +28,8 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
     public UIController() {
     	mainFrame = new MainFrame(this);
 		communicateService = new ClientCommunicateService(this,this);
-    	mainFrame.showLoginFrame();
+//		mainFrame.showLoginFrame();
+		mainFrame.showMainFrame();
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 
 	@Override
 	public void onHitClicked() {
-		
+
 	}
 
 	@Override
@@ -102,6 +103,12 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 			Map<String,Object> param = (Map<String, Object>) resp.getData();
 			mainFrame.showMessage((String) param.get("msg"));
 		}
+	}
+
+	@Override
+	public void onExitClicked() {
+		communicateService.disconnectServer();
+		System.exit(0);
 	}
 
 	@Override

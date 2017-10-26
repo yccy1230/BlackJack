@@ -1,7 +1,4 @@
-import constants.MsgType;
 import controller.UIController;
-import listener.NetworkListener;
-import service.ClientCommunicateService;
 
 /**
  * 客户端驱动类

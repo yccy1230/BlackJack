@@ -2,6 +2,9 @@ package constants;
 
 public class Constants {
 
+    /**APP NAME*/
+    public static final String APP_NAME = "Black Jack";
+
     /**参数变量名*/
     public static final String PARAM_NICK_NAME ="nickname";
     public static final String PARAM_INIT_USER ="inituser";

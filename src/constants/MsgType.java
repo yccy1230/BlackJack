@@ -21,5 +21,7 @@ public enum MsgType implements Serializable{
     METHOD_GAME_BEGIN, //游戏开始
 
     //Server Method
-
+    METHOD_UPDATE_USER,     //更新user视图
+    METHOD_UPDATE_DEALER,   //更新dealer视图
+    METHOD_SHOW_RESULT      //显示游戏结果
 }

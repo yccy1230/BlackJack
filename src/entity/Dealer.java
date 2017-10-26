@@ -1,7 +1,5 @@
 package entity;
 
-import java.util.List;
-
 /**
  * 庄家
  * @author Jack Chen
@@ -19,10 +17,7 @@ public class Dealer {
     }
 
     public boolean dealerStand(){
-        if(hand.computeValue()<17)
-            return false;
-        else
-            return true;
+        return hand.computeValue() >= 17;
     }
 
 }

@@ -50,6 +50,32 @@ public class CommunicateUtil {
     }
 
     /**
+     * 用于发送UDP请求,不接受返回（指定IP、Port）
+     * @param msgType 消息类别
+     * @param param 传递参数
+     * @return 请求返回结果，如果发生异常返回null
+     */
+    public static void sendUDPMsgWithoutResult(MsgType msgType, Map<String,Object> param,
+                                      String targetIp, int targetPort, DatagramSocket socket){
+        try
+        {
+            Resp resp = new Resp(msgType,param);
+            /*使用UTF-8编码*/
+            byte[] msg = (JSON.toJSONString(resp)).getBytes("UTF-8");
+            /*得到主机的internet地址*/
+            InetAddress address = InetAddress.getByName(targetIp);
+            /*用数据和地址初始化一个数据报分组（数据包）*/
+            DatagramPacket packet = new DatagramPacket(msg, msg.length, address,targetPort);
+            socket.send(packet);
+        }
+        catch (Exception e)
+        {
+            System.out.println("发送UDP消息异常，详细堆栈信息如下：");
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 用于发送UDP请求（指定SocketAddress）
      * @param msgType 消息类别
      * @param param 传递参数

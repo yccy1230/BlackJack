@@ -2,6 +2,8 @@ package ui;
 
 import javax.swing.JPanel;
 import listener.OperationListener;
+
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -25,13 +27,19 @@ public class OperationPanel extends JPanel implements ActionListener{
 	private JButton btnSurrender;
 	private JButton btnReady;
 	private JLabel msgLabel;
-	
-	public OperationPanel() {
-		setLayout(null);
+
+    /**
+     * 默认显示准备界面
+     * @param operationListener
+     */
+	public OperationPanel(OperationListener operationListener) {
+	    this.operationListener = operationListener;
+
+		setLayout(new BorderLayout(0, 0));
 		initButton();
 		initListener();
 		hideAll();
-		setVisible(true);
+		showReadyOperation();
 	}
 
 	/**
@@ -43,6 +51,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnStand.setVisible(true);
 		btnDouble.setVisible(true);
 		btnSurrender.setVisible(true);
+		validate();
 	}
 	
 	/**
@@ -52,18 +61,19 @@ public class OperationPanel extends JPanel implements ActionListener{
 		hideAll();
 		btnReady.setVisible(true);
 		btnReady.setEnabled(true);
+        validate();
 	}
 	
 	/**
 	 * 显示取消准备操作界面
 	 */
-	public void showCancelReadyOperation(){
-		hideAll();
-		btnReady.setText(ConstantsMsg.BUTTON_CANCEL_READY);
-		btnReady.setVisible(true);
-		btnReady.setEnabled(true);
-	}
-	
+	public void showCancelReadyOperation() {
+        hideAll();
+        btnReady.setText(ConstantsMsg.BUTTON_CANCEL_READY);
+        btnReady.setVisible(true);
+        btnReady.setEnabled(true);
+        validate();
+    }
 	
 	/**
 	 * 隐藏所有按钮
@@ -85,6 +95,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnDouble.setEnabled(false);
 		btnSurrender.setEnabled(false);
 		btnReady.setEnabled(false);
+        validate();
 	}
 	
 	/**
@@ -96,6 +107,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnDouble.setEnabled(true);
 		btnSurrender.setEnabled(true);
 		btnReady.setEnabled(true);
+        validate();
 	}
 	
 	/**
@@ -109,30 +121,31 @@ public class OperationPanel extends JPanel implements ActionListener{
 	 * 初始化按钮
 	 */
 	private void initButton(){
+	    JPanel btnPanel = new JPanel();
+	    btnPanel.setLayout(new FlowLayout());
 		btnReady = new JButton(ConstantsMsg.BUTTON_READY);
-		btnReady.setBounds(179, 42, 93, 23);
-		add(btnReady);
+        btnPanel.add(btnReady);
 
 		hitBtn = new JButton(ConstantsMsg.BUTTON_HIT);
-		hitBtn.setBounds(25, 42, 93, 23);
-		add(hitBtn);
+        btnPanel.add(hitBtn);
 		
 		btnStand = new JButton(ConstantsMsg.BUTTON_STAND);
-		btnStand.setBounds(128, 42, 93, 23);
-		add(btnStand);
+        btnPanel.add(btnStand);
 		
 		btnDouble = new JButton(ConstantsMsg.BUTTON_DOUBLE);
-		btnDouble.setBounds(231, 42, 93, 23);
-		add(btnDouble);
+        btnPanel.add(btnDouble);
 		
 		btnSurrender = new JButton(ConstantsMsg.BUTTON_SURRENDER);
-		btnSurrender.setBounds(335, 42, 93, 23);
-		add(btnSurrender);
-		
+        btnPanel.add(btnSurrender);
+
+        btnPanel.setOpaque(false);
+        add(btnPanel,BorderLayout.CENTER);
+
 		msgLabel = new JLabel("");
 		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		msgLabel.setBounds(101, 9, 251, 23);
-		add(msgLabel);
+
+        msgLabel.setOpaque(false);
+        add(msgLabel,BorderLayout.NORTH);
 	}
 	
 	private void initListener() {
@@ -147,9 +160,10 @@ public class OperationPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		switch(arg0.getActionCommand()){
 		case ConstantsMsg.BUTTON_READY:
-			String bet = new String();
+			String bet;
 			do {
 				bet = JOptionPane.showInputDialog(OperationPanel.this,ConstantsMsg.MSG_ENTER_BET);
+				if(bet==null) {return;}
 			}while (!bet.matches("\\d+"));
 			if(operationListener!=null){
 				operationListener.onReadyClicked(Integer.parseInt(bet));

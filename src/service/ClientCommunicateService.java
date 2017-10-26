@@ -79,11 +79,10 @@ public class ClientCommunicateService {
      * 断开服务器（退出房间）
      * @return 返回结果
      */
-    public Resp disconnectServer(){
+    public void disconnectServer(){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_USER_ID,deviceID);
-        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGOUT,param,serverIP,serverPort,socket);
-        return resp;
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGOUT,param,serverIP,serverPort,socket);
     }
     
     /**
