@@ -19,14 +19,14 @@ import listener.OperationListener;
 * @date 2017/10/17
 */
 public class MainFrame extends JFrame {
+	//登录界面
     private LoginFrame loginFrame;					
     
 	private JPanel contentPane;
-	private JPanel userPane;
 
-    private DealerPanel dealerPanel;
     private OperationPanel operationPanel;
-	private Map<String,PlayerPanel> playerPanels;
+    private DealerPanel dealerPanel;
+	private UserPanel userPanel;
 	
 	private OperationListener operationListener;
 
@@ -36,17 +36,11 @@ public class MainFrame extends JFrame {
 		this.loginFrame = new LoginFrame(operationListener);
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 600, 500);
+		setResizable(false);
+		setBounds(new Rectangle(0, 0, 1200, 750));
 		setTitle(Constants.APP_NAME);
 
-		contentPane = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-                ImageIcon image = new ImageIcon(getClass().getResource("/assets/deck.png"));
-				g.drawImage(image.getImage(), 0, 0, image.getIconWidth(), image.getIconHeight(), image.getImageObserver());
-			}
-		};
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane = new JPanel();
 		contentPane.setLayout(null);
 
 		initFrame();
@@ -72,7 +66,7 @@ public class MainFrame extends JFrame {
 
 		//初始化庄家界面
 		dealerPanel = new DealerPanel();
-		dealerPanel.setVisible(true);
+		dealerPanel.setInUsed(true);
 		contentPane.add(dealerPanel);
 
 		//初始化操作面板
@@ -80,16 +74,6 @@ public class MainFrame extends JFrame {
 		operationPanel.setBounds(45, 208, 200, 60);
         operationPanel.setOpaque(false);
 		contentPane.add(operationPanel);
-
-		//用户面板(FlowLayout)
-		userPane = new JPanel();
-		userPane.setLayout(new FlowLayout());
-		userPane.setPreferredSize(new Dimension(600, Constants.CARD_HEIGHT));
-		contentPane.add(userPane);
-
-		//调整size
-        setSize(Constants.MAIN_FRAME_WIDTH,Constants.MAIN_FRAME_HEIGHT+30);
-        setResizable(false);
 	}
 	
 	/**
@@ -121,13 +105,7 @@ public class MainFrame extends JFrame {
 	 * @param player
 	 */
 	public void addUserPanel(Player player){
-		PlayerPanel playerPanel = new PlayerPanel(player);
-		int size = playerPanels.size();
-		playerPanel.setBounds(Constants.PLAYER_PANEL_WIDTH * size, 45+Constants.PLAYER_PANEL_HEIGHT*2, Constants.PLAYER_PANEL_WIDTH, Constants.PLAYER_PANEL_HEIGHT);
-		setBounds(Constants.PLAYER_PANEL_WIDTH * (size+1), Constants.PLAYER_PANEL_HEIGHT*2+30,
-				Constants.PLAYER_PANEL_WIDTH, Constants.PLAYER_PANEL_HEIGHT);
-		userPane.add(playerPanel);
-		playerPanels.put(player.getId(), playerPanel);
+		
 	}
 	
 	/**

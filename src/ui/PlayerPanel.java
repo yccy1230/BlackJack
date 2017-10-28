@@ -4,7 +4,6 @@ import javax.swing.*;
 
 import constants.Constants;
 import entity.Card;
-import entity.Dealer;
 import entity.Player;
 
 import java.awt.*;
@@ -12,64 +11,99 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-* @description Player主界面
+* @description 单个Player界面
 * @author Jack Chen
 * @date 2017/10/24
 */
 public class PlayerPanel extends JPanel {
 	protected List<CardView> cardViews;
-	protected JPanel cardPanel;
-	protected JPanel userInfoPanel;
+	protected List<Card> cardData;
+	protected JLabel nickNameLabel;
+	private boolean inUsed;
 
 	public PlayerPanel() {
 		initView();
 	}
 
+	/**
+	 * 根据玩家信息构造界面
+	 * @param player
+	 */
 	public PlayerPanel(Player player) {
 		initView();
-
-		JLabel label = new JLabel("玩家：");
-		userInfoPanel.add(label);
+		setPlayer(player);
+		JLabel nameLabel = new JLabel("玩家：");
+		nameLabel.setForeground(Color.WHITE);
+		nameLabel.setBounds(43, 188, 54, 15);
+		add(nameLabel);
 		
-		JLabel nickNameLabel = new JLabel(player.getNickname());
-		label.setLabelFor(nickNameLabel);
-		userInfoPanel.add(nickNameLabel);
+		nickNameLabel = new JLabel(player.getNickname());
+		nameLabel.setForeground(Color.WHITE);
+		nameLabel.setBounds(92, 188, 54, 15);
+		nameLabel.setLabelFor(nickNameLabel);
+		add(nickNameLabel);
+	}
 
-		add(cardPanel,BorderLayout.CENTER);
-		add(userInfoPanel,BorderLayout.SOUTH);
+	/**
+	 * 设置用户资料，并启用界面
+	 * @param player
+	 */
+	public void setPlayer(Player player){
+		nickNameLabel.setText(player.getNickname());
+		refreashUI(player);
 	}
 
 	/**
 	 * 刷新UI
-	 * @param cards
 	 */
-	public void refreshCards(List<Card> cards){
-		cardViews.clear();
-		int size = cards.size();
-		int cardViewSize = cardViews.size();
-		int x = 0,y = 30;
-		for (int i =0;i<size;i++) {
-			Card card  = cards.get(i);
-			//若视图中已经卡牌数量足够则更新，否则添加新的卡牌
-			if(i<cardViewSize){
-				cardViews.get(i).setFaceValue(card.getFaceValue());
+	public void refreashUI(Player player){
+		List<Card> cards = player.getHand().getCards();
+		for (int i = 0; i <cardViews.size(); i++) {
+			if(i<cards.size()){
+				cardViews.get(i).setFaceValue(cards.get(i).getFaceValue());
+				cardViews.get(i).setInUsed(true);
 			}else{
-				CardView c = new CardView(card.getFaceValue());
-				c.setBounds(x+30, y, Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
-				cardPanel.add(c);
-				cardViews.add(c);
+				cardViews.get(i).setInUsed(false);
 			}
 		}
 	}
+	
+	public boolean isInUsed() {
+		return inUsed;
+	}
 
+	public void setInUsed(boolean inUsed) {
+		this.inUsed = inUsed;
+		if(inUsed){
+			setVisible(true);
+		}else{
+			setVisible(false);
+		}
+	}
+	
+	/**
+	 * 初始化UI
+	 */
 	private void initView(){
-		setLayout(new BorderLayout());
+		inUsed = false;
+		setLayout(null);
+		cardData = new ArrayList<>();
 		cardViews = new ArrayList<>();
-		cardPanel = new JPanel();
-		cardPanel.setLayout(null);
-		userInfoPanel = new JPanel();
-		userInfoPanel.setLayout(new FlowLayout());
-		cardPanel.setOpaque(false);
-		userInfoPanel.setOpaque(false);
+		nickNameLabel = new JLabel();
+		
+		for (int i = 0; i < 5; i++) {
+			CardView card = new CardView();
+			card.setBounds(20+i*Constants.CARD_WIDTH_DISTANCE, 10, Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
+			card.setInUsed(false);
+			cardViews.add(card);
+		}
+		
+		for (int i = 0; i < 5; i++) {
+			CardView card = new CardView();
+			card.setBounds(20+i*Constants.CARD_WIDTH_DISTANCE, 10+Constants.CARD_WIDTH_DISTANCE, Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
+			card.setInUsed(false);
+			cardViews.add(card);
+		}
+		
 	}
 }

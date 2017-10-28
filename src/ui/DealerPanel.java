@@ -1,10 +1,7 @@
 package ui;
 
-import constants.Constants;
-import entity.Dealer;
-
-import javax.swing.*;
-import java.awt.*;
+import entity.Card;
+import java.util.List;
 
 /**
 * @description Player主界面
@@ -13,19 +10,11 @@ import java.awt.*;
 */
 public class DealerPanel extends PlayerPanel {
 
+	protected List<CardView> cardViews;
+	protected List<Card> cardData;
+	
 	public DealerPanel() {
-	    super();
-		JLabel nickNameLabel = new JLabel("庄家");
-        userInfoPanel.add(nickNameLabel);
-        cardPanel.setPreferredSize(new Dimension(600, Constants.CARD_HEIGHT));
-        add(cardPanel,BorderLayout.CENTER);
-        add(userInfoPanel,BorderLayout.SOUTH);
+	    nickNameLabel.setText("庄家");
 	}
-	/**
-	 * 刷新UI
-	 * @param dealer
-	 */
-	public void refreshUI(Dealer dealer){
-		super.refreshCards(dealer.getHand().getCards());
-	}
+	
 }

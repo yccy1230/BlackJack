@@ -26,8 +26,11 @@ public class Constants {
     public static final int PLAYER_PANEL_HEIGHT = 180;
 
     /**卡牌View Size*/
-    public static final int CARD_WIDTH = 100;
-    public static final int CARD_HEIGHT = 160;
+    public static final int CARD_WIDTH = 77;
+    public static final int CARD_HEIGHT = 111;
+    public static final int CARD_WIDTH_DISTANCE = 25;
+    public static final int CARD_HEIGHT_DISTANCE = 60;
+    
 
     /**MainFrame Size*/
     public static final int MAIN_FRAME_WIDTH = 1200;
