@@ -29,6 +29,11 @@ public class Constants {
     public static final int CARD_WIDTH = 100;
     public static final int CARD_HEIGHT = 160;
 
+    /**MainFrame Size*/
+    public static final int MAIN_FRAME_WIDTH = 1200;
+    public static final int MAIN_FRAME_HEIGHT = 750;
+
+
     /**卡牌定义类*/
     public static final String CLUBS_1 = "Clubs_1";
     public static final String CLUBS_2 = "Clubs_2";

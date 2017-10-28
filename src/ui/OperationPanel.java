@@ -1,15 +1,12 @@
 package ui;
 
-import javax.swing.JPanel;
+import javax.swing.*;
+
 import listener.OperationListener;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 import constants.ConstantsMsg;
 
@@ -35,7 +32,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 	public OperationPanel(OperationListener operationListener) {
 	    this.operationListener = operationListener;
 
-		setLayout(new BorderLayout(0, 0));
+		setLayout(null);
 		initButton();
 		initListener();
 		hideAll();
@@ -122,32 +119,39 @@ public class OperationPanel extends JPanel implements ActionListener{
 	 */
 	private void initButton(){
 	    JPanel btnPanel = new JPanel();
-	    btnPanel.setLayout(new FlowLayout());
+	    btnPanel.setLayout(null);
 		btnReady = new JButton(ConstantsMsg.BUTTON_READY);
+//		btnReady.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+		btnReady.setBounds(45, 208, 76, 23);
         btnPanel.add(btnReady);
 
 		hitBtn = new JButton(ConstantsMsg.BUTTON_HIT);
+		hitBtn.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+        hitBtn.setBounds(45, 208, 76, 23);
         btnPanel.add(hitBtn);
 		
 		btnStand = new JButton(ConstantsMsg.BUTTON_STAND);
-        btnPanel.add(btnStand);
+		btnStand.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+        btnStand.setBounds(45, 208, 76, 23);
+		btnPanel.add(btnStand);
 		
 		btnDouble = new JButton(ConstantsMsg.BUTTON_DOUBLE);
+		btnDouble.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+        btnDouble.setBounds(45, 208, 76, 23);
         btnPanel.add(btnDouble);
 		
 		btnSurrender = new JButton(ConstantsMsg.BUTTON_SURRENDER);
-        btnPanel.add(btnSurrender);
-
-        btnPanel.setOpaque(false);
-        add(btnPanel,BorderLayout.CENTER);
+		btnSurrender.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+        btnSurrender.setBounds(45, 208, 76, 23);
+		btnPanel.add(btnSurrender);
+        add(btnPanel);
 
 		msgLabel = new JLabel("");
 		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        msgLabel.setOpaque(false);
-        add(msgLabel,BorderLayout.NORTH);
+        add(msgLabel);
 	}
-	
+
 	private void initListener() {
 		hitBtn.addActionListener(this);
 		btnStand.addActionListener(this);

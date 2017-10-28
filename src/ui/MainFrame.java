@@ -3,9 +3,7 @@ package ui;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -44,13 +42,12 @@ public class MainFrame extends JFrame {
 		contentPane = new JPanel() {
 			@Override
 			protected void paintComponent(Graphics g) {
-				ImageIcon icon = new ImageIcon(getClass().getResource("/assets/deck.png"));
-				Image img = icon.getImage();
-				g.drawImage(img, 0, 0, icon.getIconWidth(), icon.getIconHeight(), icon.getImageObserver());
+                ImageIcon image = new ImageIcon(getClass().getResource("/assets/deck.png"));
+				g.drawImage(image.getImage(), 0, 0, image.getIconWidth(), image.getIconHeight(), image.getImageObserver());
 			}
 		};
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
+		contentPane.setLayout(null);
 
 		initFrame();
 
@@ -72,35 +69,27 @@ public class MainFrame extends JFrame {
 	 * 初始化界面
 	 */
 	public void initFrame(){
-		//初始化背景图片
-		ImageIcon img = new ImageIcon(CardView.class.getResource("/assets/deck.png"));
-		JLabel imgLabel = new JLabel(img);//将背景图放在标签里。
-
-		getLayeredPane().add(imgLabel, new Integer(Integer.MIN_VALUE));
 
 		//初始化庄家界面
 		dealerPanel = new DealerPanel();
 		dealerPanel.setVisible(true);
-		JButton bnt = new JButton("123");
-		dealerPanel.setOpaque(false);
-		contentPane.add(dealerPanel,BorderLayout.NORTH);
+		contentPane.add(dealerPanel);
 
 		//初始化操作面板
 		operationPanel = new OperationPanel(operationListener);
-		operationPanel.setOpaque(false);
-		contentPane.add(operationPanel,BorderLayout.CENTER);
+		operationPanel.setBounds(45, 208, 200, 60);
+        operationPanel.setOpaque(false);
+		contentPane.add(operationPanel);
 
 		//用户面板(FlowLayout)
 		userPane = new JPanel();
 		userPane.setLayout(new FlowLayout());
 		userPane.setPreferredSize(new Dimension(600, Constants.CARD_HEIGHT));
-		userPane.setOpaque(false);
-		contentPane.add(userPane,BorderLayout.SOUTH);
+		contentPane.add(userPane);
 
 		//调整size
-		contentPane.setOpaque(false);
-		setSize(img.getIconWidth(), img.getIconHeight()+30);
-		setResizable(false);
+        setSize(Constants.MAIN_FRAME_WIDTH,Constants.MAIN_FRAME_HEIGHT+30);
+        setResizable(false);
 	}
 	
 	/**
