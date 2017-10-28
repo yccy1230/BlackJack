@@ -4,7 +4,6 @@ import javax.swing.*;
 
 import listener.OperationListener;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,14 +15,14 @@ import constants.ConstantsMsg;
  *
  */
 public class OperationPanel extends JPanel implements ActionListener{
-
-	private OperationListener operationListener;
+	
 	private JButton hitBtn;
 	private JButton btnStand;
 	private JButton btnDouble;
 	private JButton btnSurrender;
 	private JButton btnReady;
-	private JLabel msgLabel;
+	
+	private OperationListener operationListener;
 
     /**
      * 默认显示准备界面
@@ -48,7 +47,6 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnStand.setVisible(true);
 		btnDouble.setVisible(true);
 		btnSurrender.setVisible(true);
-		validate();
 	}
 	
 	/**
@@ -58,7 +56,6 @@ public class OperationPanel extends JPanel implements ActionListener{
 		hideAll();
 		btnReady.setVisible(true);
 		btnReady.setEnabled(true);
-        validate();
 	}
 	
 	/**
@@ -69,7 +66,6 @@ public class OperationPanel extends JPanel implements ActionListener{
         btnReady.setText(ConstantsMsg.BUTTON_CANCEL_READY);
         btnReady.setVisible(true);
         btnReady.setEnabled(true);
-        validate();
     }
 	
 	/**
@@ -92,7 +88,6 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnDouble.setEnabled(false);
 		btnSurrender.setEnabled(false);
 		btnReady.setEnabled(false);
-        validate();
 	}
 	
 	/**
@@ -104,52 +99,36 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnDouble.setEnabled(true);
 		btnSurrender.setEnabled(true);
 		btnReady.setEnabled(true);
-        validate();
-	}
-	
-	/**
-	 * 显示消息
-	 */
-	public void toastMessage(String msg){
-		msgLabel.setText(msg);
 	}
 	
 	/**
 	 * 初始化按钮
 	 */
 	private void initButton(){
-	    JPanel btnPanel = new JPanel();
-	    btnPanel.setLayout(null);
 		btnReady = new JButton(ConstantsMsg.BUTTON_READY);
-//		btnReady.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
-		btnReady.setBounds(45, 208, 76, 23);
-        btnPanel.add(btnReady);
-
-		hitBtn = new JButton(ConstantsMsg.BUTTON_HIT);
-		hitBtn.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
-        hitBtn.setBounds(45, 208, 76, 23);
-        btnPanel.add(hitBtn);
+		btnReady.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+		btnReady.setBounds(800, 50, 80, 80);
+        add(btnReady);
 		
 		btnStand = new JButton(ConstantsMsg.BUTTON_STAND);
 		btnStand.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
-        btnStand.setBounds(45, 208, 76, 23);
-		btnPanel.add(btnStand);
+		btnStand.setBounds(800, 50, 80, 80);
+		add(btnStand);
+
+		hitBtn = new JButton(ConstantsMsg.BUTTON_HIT);
+		hitBtn.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+		hitBtn.setBounds(700, 60, 80, 80);
+        add(hitBtn);
 		
 		btnDouble = new JButton(ConstantsMsg.BUTTON_DOUBLE);
 		btnDouble.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
-        btnDouble.setBounds(45, 208, 76, 23);
-        btnPanel.add(btnDouble);
+		btnDouble.setBounds(900, 40, 80, 80);
+        add(btnDouble);
 		
 		btnSurrender = new JButton(ConstantsMsg.BUTTON_SURRENDER);
 		btnSurrender.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
-        btnSurrender.setBounds(45, 208, 76, 23);
-		btnPanel.add(btnSurrender);
-        add(btnPanel);
-
-		msgLabel = new JLabel("");
-		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        add(msgLabel);
+		btnSurrender.setBounds(1000, 20, 80, 80);
+		add(btnSurrender);
 	}
 
 	private void initListener() {
@@ -166,7 +145,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 		case ConstantsMsg.BUTTON_READY:
 			String bet;
 			do {
-				bet = JOptionPane.showInputDialog(OperationPanel.this,ConstantsMsg.MSG_ENTER_BET);
+				bet = JOptionPane.showInputDialog(null,ConstantsMsg.MSG_ENTER_BET);
 				if(bet==null) {return;}
 			}while (!bet.matches("\\d+"));
 			if(operationListener!=null){

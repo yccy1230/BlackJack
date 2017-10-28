@@ -22,7 +22,7 @@ public class PlayerPanel extends JPanel {
 	private boolean inUsed;
 
 	public PlayerPanel() {
-		initView();
+		initData();
 	}
 
 	/**
@@ -30,6 +30,7 @@ public class PlayerPanel extends JPanel {
 	 * @param player
 	 */
 	public PlayerPanel(Player player) {
+		initData();
 		initView();
 		setPlayer(player);
 		JLabel nameLabel = new JLabel("玩家：");
@@ -38,8 +39,8 @@ public class PlayerPanel extends JPanel {
 		add(nameLabel);
 		
 		nickNameLabel = new JLabel(player.getNickname());
-		nameLabel.setForeground(Color.WHITE);
-		nameLabel.setBounds(92, 188, 54, 15);
+		nickNameLabel.setForeground(Color.WHITE);
+		nickNameLabel.setBounds(92, 188, 54, 15);
 		nameLabel.setLabelFor(nickNameLabel);
 		add(nickNameLabel);
 	}
@@ -85,11 +86,6 @@ public class PlayerPanel extends JPanel {
 	 * 初始化UI
 	 */
 	private void initView(){
-		inUsed = false;
-		setLayout(null);
-		cardData = new ArrayList<>();
-		cardViews = new ArrayList<>();
-		nickNameLabel = new JLabel();
 		
 		for (int i = 0; i < 5; i++) {
 			CardView card = new CardView();
@@ -103,7 +99,14 @@ public class PlayerPanel extends JPanel {
 			card.setBounds(20+i*Constants.CARD_WIDTH_DISTANCE, 10+Constants.CARD_WIDTH_DISTANCE, Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
 			card.setInUsed(false);
 			cardViews.add(card);
-		}
-		
+		}	
+	}
+	
+	private void initData(){
+		inUsed = false;
+		setLayout(null);
+		cardData = new ArrayList<>();
+		cardViews = new ArrayList<>();
+		nickNameLabel = new JLabel();
 	}
 }

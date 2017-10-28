@@ -27,6 +27,7 @@ public class MainFrame extends JFrame {
     private OperationPanel operationPanel;
     private DealerPanel dealerPanel;
 	private UserPanel userPanel;
+	private JLabel msgLabel;
 	
 	private OperationListener operationListener;
 
@@ -64,16 +65,38 @@ public class MainFrame extends JFrame {
 	 */
 	public void initFrame(){
 
+		//初始化消息显示框
+		msgLabel = new JLabel();
+		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		msgLabel.setFont(new Font("宋体", Font.PLAIN, 19));
+		msgLabel.setForeground(Color.WHITE);
+		msgLabel.setBounds(400, 340, 400, 30);
+		contentPane.add(msgLabel);
+		
+		
 		//初始化庄家界面
 		dealerPanel = new DealerPanel();
-		dealerPanel.setInUsed(true);
+		dealerPanel.setOpaque(false);
+		dealerPanel.setBounds(330, 0, 610, 180);
 		contentPane.add(dealerPanel);
 
 		//初始化操作面板
 		operationPanel = new OperationPanel(operationListener);
-		operationPanel.setBounds(45, 208, 200, 60);
-        operationPanel.setOpaque(false);
+		operationPanel.setBounds(0, 590, 1180, 150);
+		operationPanel.setOpaque(false);
 		contentPane.add(operationPanel);
+		
+		//初始化玩家界面
+		userPanel = new UserPanel();
+		userPanel.setOpaque(false);
+		userPanel.setBounds(0, 330, 1190, 280);
+		contentPane.add(userPanel);
+		
+		//初始化背景
+		JLabel background = new JLabel("");
+		background.setIcon(new ImageIcon(test.class.getResource("/assets/deck.png")));
+		background.setBounds(0, 0, 1194, 750);
+		contentPane.add(background);
 	}
 	
 	/**
@@ -96,7 +119,7 @@ public class MainFrame extends JFrame {
 	 * 显示取消准备界面
 	 */
 	public void showReadyCancelFrame(){
-		operationPanel.toastMessage(ConstantsMsg.MSG_WAIT_OTHER_USER);
+		msgLabel.setText(ConstantsMsg.MSG_WAIT_OTHER_USER);
 		operationPanel.showCancelReadyOperation();
 	}
 	
@@ -105,7 +128,7 @@ public class MainFrame extends JFrame {
 	 * @param player
 	 */
 	public void addUserPanel(Player player){
-		
+		userPanel.addUserPanel(player);
 	}
 	
 	/**
@@ -119,7 +142,7 @@ public class MainFrame extends JFrame {
 	 * 显示普通消息
 	 */
 	public void showToastMsg(String msg){
-		operationPanel.toastMessage(msg);
+		msgLabel.setText(msg);
 	}
 	
 }

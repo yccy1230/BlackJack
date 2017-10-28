@@ -1,5 +1,6 @@
 package ui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +61,9 @@ public class UserPanel extends JPanel {
 	 * 初始化UI，默认构造5个PlayerPanel并固定位置
 	 */
 	public UserPanel() {
+		playerPanels = new ArrayList<>();
+		playerData = new ArrayList<>();
+		
 		PlayerPanel playerPanel1 = new PlayerPanel();
 		playerPanel1.setOpaque(false);
 		playerPanel1.setBounds(19, 3, 216, 209);

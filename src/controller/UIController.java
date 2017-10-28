@@ -58,7 +58,8 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 
 	@Override
 	public void onHitClicked() {
-
+		mainFrame.showToastMsg("hit clicked");
+		mainFrame.showMessage("hit clicked");
 	}
 
 	@Override
