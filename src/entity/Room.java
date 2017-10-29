@@ -11,17 +11,26 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Room {
-    private List<Player> players = new ArrayList<>();
+    private List<Player> players;
     private Deck deck;
     private Dealer dealer;
     private boolean isPlaying;
     private ServerCommunicateService serverCommunicateService;
 
     public Room() {
+        init();
     }
 
     public Room(ServerCommunicateService serverCommunicateService) {
+        init();
         this.serverCommunicateService = serverCommunicateService;
+    }
+
+    private void init(){
+        this.deck=new Deck();
+        this.players = new ArrayList<>();
+        this.dealer=new Dealer();
+        this.isPlaying=false;
     }
 
     public List<Player> getPlayers() {
@@ -61,7 +70,7 @@ public class Room {
     //开始游戏
     public void startGame(){
         //向客户端发送游戏开始的信息
-        serverCommunicateService.sendBroadcast();
+        //serverCommunicateService.sendBroadcast();
         isPlaying=true;
         //初始化牌组
         deck.initCards();
@@ -191,7 +200,7 @@ public class Room {
     public void userExit(String userID){
         for (int i=0;i<players.size();i++) {
             if(players.get(i).getId().equals(userID)) {
-                players.get(i).setStatus(Constants.USER_OVER);
+                players.remove(i);
                 return;
             }
         }

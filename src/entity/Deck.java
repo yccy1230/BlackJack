@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +18,10 @@ public class Deck {
 
     //是否完整
     private boolean isCompleted;
+
+    public Deck(){
+        this.cards=new ArrayList<>();
+    }
 
     //洗牌
     public void shuffle(){

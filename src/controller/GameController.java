@@ -40,11 +40,11 @@ public class GameController implements MsgReceiveListener {
                 communicateService.userConnectedBroadcast(room,player,datagramPacket);
                 break;
             case MsgType.METHOD_READY:
+                communicateService.sendReadyMsgWithoutResult(datagramPacket);
                 int bet = (int)param.get(Constants.PARAM_BET);
                 String userId = (String) param.get(Constants.PARAM_USER_ID);
                 room.userReady(userId,bet);
                 room.checkAllReady();
-                communicateService.sendReadyMsgWithoutResult(datagramPacket);
                 break;
             case MsgType.METHOD_CANCLE_READY:
                 userId =(String) param.get(Constants.PARAM_USER_ID);
