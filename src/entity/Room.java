@@ -50,15 +50,12 @@ public class Room {
 
     //检查是否所有用户都已准备好
     public void checkAllReady() {
-        int count=0;
         for(int i=0; i< players.size();i++){
-            if(players.get(i).getStatus()== Constants.USER_READY) {
-                count++;
+            if(players.get(i).getStatus()!= Constants.USER_READY) {
+                return;
             }
         }
-        if(count==players.size()) {
-            startGame();
-        }
+        startGame();
     }
 
     //开始游戏
@@ -170,6 +167,16 @@ public class Room {
             }
         }
         return count;
+    }
+
+    public void userReady(String userID,int bet){
+        for (int i=0;i<players.size();i++) {
+            if(players.get(i).getId().equals(userID)) {
+                players.get(i).setStatus(Constants.USER_READY);
+                players.get(i).setBet(bet);
+                return;
+            }
+        }
     }
 
     public Dealer getDealer() {

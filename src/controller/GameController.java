@@ -26,19 +26,23 @@ public class GameController implements MsgReceiveListener {
 
     @Override
     public void onReceiveMsg(Resp resp, DatagramPacket datagramPacket) {
+
+        Map<String,Object> param = (Map<String, Object>) resp.getData();
         switch(resp.getMsgType()){
             case MsgType.METHOD_LOGIN:
                 if(room.playerFull()) {
                     communicateService.sendUDPMsgWithoutResult(datagramPacket);
                     return;
                 }
-                Map<String,Object> param = (Map<String, Object>) resp.getData();
                 String nickName = (String) param.get(Constants.PARAM_NICK_NAME);
                 Player player = room.addPlayers(nickName);
-                communicateService.sendLoginResult(room.getPlayers(),datagramPacket);
+                communicateService.sendLoginResult(player.getId(),room.getPlayers(),datagramPacket);
                 communicateService.userConnectedBroadcast(room,player,datagramPacket);
                 break;
             case MsgType.METHOD_READY:
+                int bet = (int)param.get(Constants.PARAM_BET);
+                String userId = (String) param.get(Constants.PARAM_USER_ID);
+                room.userReady(userId,bet);
                 room.checkAllReady();
                 communicateService.sendUDPMsgWithoutResult(datagramPacket);
                 break;

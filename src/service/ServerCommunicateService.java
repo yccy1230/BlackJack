@@ -100,6 +100,12 @@ public class ServerCommunicateService {
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_RESULT,param,datagramPacket,socket);
     }
 
+
+    public void sendReadyMsgWithoutResult(DatagramPacket datagramPacket){
+        Map<String,Object> param = new HashMap<>(16);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_RESULT,param,datagramPacket,socket);
+    }
+
     public void sendBroadcast() {
         for (String key : hashTable.keySet()) {
             DatagramPacket dp = hashTable.get(key);
@@ -108,11 +114,11 @@ public class ServerCommunicateService {
         }
     }
 
-    public void sendLoginResult(List<Player> players,DatagramPacket datagramPacket){
+    public void sendLoginResult(String userId,List<Player> players,DatagramPacket datagramPacket){
         Map<String,Object> param =new HashMap<>();
-        param.put(Constants.PARAM_USER_ID,players);
+        param.put(Constants.PARAM_INIT_USER,players);
+        param.put(Constants.PARAM_USER_ID,userId);
         param.put(Constants.PARAM_LOGIN_RESULT, Constants.LOGIN_SUCCESS);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,datagramPacket,socket);
     }
-
 }

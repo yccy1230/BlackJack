@@ -15,6 +15,9 @@ public class Player {
     private int bet;
     private int property;
 
+    public Player(){
+        this.hand=new Hand();
+    }
 
     public int getStatus() {
         return status;
