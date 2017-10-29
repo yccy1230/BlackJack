@@ -14,6 +14,7 @@ public class Constants {
     public static final String PARAM_USER_ID = "userid";
     public static final String PARAM_LOGIN_RESULT = "loginresult";
     public static final String PARAM_BET ="bet";
+    public static final String PARAM_READY_RESULT = "readyresult";
 
     /**用户状态*/
     public static final int USER_IDEL = 0;
@@ -26,6 +27,7 @@ public class Constants {
 
     /**返回结果*/
     public static final int LOGIN_SUCCESS = 200;
+    public static final int READY_SUCCESS = 200;
     public static final int SUCCESS_CODE= 200;
 
     /**Player Panel Size*/

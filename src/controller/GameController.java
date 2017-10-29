@@ -44,7 +44,7 @@ public class GameController implements MsgReceiveListener {
                 String userId = (String) param.get(Constants.PARAM_USER_ID);
                 room.userReady(userId,bet);
                 room.checkAllReady();
-                communicateService.sendUDPMsgWithoutResult(datagramPacket);
+                communicateService.sendReadyMsgWithoutResult(datagramPacket);
                 break;
             case MsgType.METHOD_SURRENDER:
                 if(resp.getResCode()==Constants.SUCCESS_CODE){

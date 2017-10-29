@@ -103,6 +103,13 @@ public class ServerCommunicateService {
 
     public void sendReadyMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);
+        param.put(Constants.PARAM_READY_RESULT, Constants.READY_SUCCESS);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_RESULT,param,datagramPacket,socket);
+    }
+
+
+    public void sendExitMsgWithoutResult(DatagramPacket datagramPacket){
+        Map<String,Object> param = new HashMap<>(16);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_RESULT,param,datagramPacket,socket);
     }
 
