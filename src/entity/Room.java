@@ -117,22 +117,22 @@ public class Room {
         do {
             resp = serverCommunicateService.requireUserOperate();
                 switch (resp.getMsgType()) {
-                    case METHOD_HIT:
+                    case MsgType.METHOD_HIT:
                         deck.deal2Player(players.get(i));
                         if(players.get(i).getHand().bust()){
                             players.get(i).setStatus(Constants.USER_OVER);
                         }
                         serverCommunicateService.requireUserOperate();
                         break;
-                    case METHOD_STAND:
+                    case MsgType.METHOD_STAND:
                         players.get(i).setStatus(Constants.USER_STAND);
                         serverCommunicateService.requireUserOperate();
                         break;
-                    case METHOD_DOUBLE:
+                    case MsgType.METHOD_DOUBLE:
                         players.get(i).doubleBet();
                         serverCommunicateService.requireUserOperate();
                         break;
-                    case METHOD_SURRENDER:
+                    case MsgType.METHOD_SURRENDER:
                         players.get(i).setStatus(Constants.USER_SURRENDER);
                         serverCommunicateService.requireUserOperate();
                         break;

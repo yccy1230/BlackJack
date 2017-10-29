@@ -37,18 +37,18 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
     	if(resp.getResCode()==Constants.SUCCESS_CODE) {
     		Map<String,Object> param = (Map<String, Object>) resp.getData();
 			switch (resp.getMsgType()) {
-				case METHOD_NEWUSER:
+				case MsgType.METHOD_NEWUSER:
 					mainFrame.addUserPanel((Player) param.get(Constants.PARAM_PLAYER));
 					break;
-				case METHOD_GAME_BEGIN:
+				case MsgType.METHOD_GAME_BEGIN:
 					break;
-				case METHOD_STAND:
+				case MsgType.METHOD_STAND:
 					break;
-				case METHOD_DOUBLE:
+				case MsgType.METHOD_DOUBLE:
 					break;
-				case METHOD_RESULT:
+				case MsgType.METHOD_RESULT:
 					break;
-				case METHOD_SURRENDER:
+				case MsgType.METHOD_SURRENDER:
 					break;
 				default:
 					break;

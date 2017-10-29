@@ -1,6 +1,7 @@
 package controller;
 
 import constants.Constants;
+import constants.MsgType;
 import entity.Player;
 import entity.Room;
 import listener.MsgReceiveListener;
@@ -26,7 +27,7 @@ public class GameController implements MsgReceiveListener {
     @Override
     public void onReceiveMsg(Resp resp, DatagramPacket datagramPacket) {
         switch(resp.getMsgType()){
-            case METHOD_LOGIN:
+            case MsgType.METHOD_LOGIN:
                 if(room.playerFull()) {
                     communicateService.sendUDPMsgWithoutResult(datagramPacket);
                     return;
@@ -37,11 +38,11 @@ public class GameController implements MsgReceiveListener {
                 communicateService.sendLoginResult(player,datagramPacket);
                 communicateService.userConnectedBroadcast(room,player,datagramPacket);
                 break;
-            case METHOD_READY:
+            case MsgType.METHOD_READY:
                 room.checkAllReady();
                 communicateService.sendUDPMsgWithoutResult(datagramPacket);
                 break;
-            case METHOD_SURRENDER:
+            case MsgType.METHOD_SURRENDER:
                 if(resp.getResCode()==Constants.SUCCESS_CODE){
                     param = (Map<String, Object>) resp.getData();
                     String id = (String) param.get(Constants.PARAM_USER_ID);
