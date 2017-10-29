@@ -28,6 +28,7 @@ public class ClientCommunicateService {
 
     /**本地Port*/
     private int localPort;
+
     /**标识ID*/
     private String deviceID;
     /**套接字*/
@@ -64,16 +65,10 @@ public class ClientCommunicateService {
      * @param nickName 用户登陆昵称
      * @return 返回结果
      */
-    public Resp connectServer(String nickName){
+    public void connectServer(String nickName){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_NICK_NAME,nickName);
-        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGIN,param,serverIP,serverPort,socket);
-
-        if(resp != null){//初始化设备标识ID（用户ID）
-        	Map<String,Object> retParam = (Map<String, Object>) resp.getData();
-        	deviceID = (String) retParam.get(Constants.PARAM_USER_ID);
-        }
-        return resp;
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN,param,serverIP,serverPort,socket);
     }
 
     /**
@@ -115,7 +110,9 @@ public class ClientCommunicateService {
 		this.serverPort = serverPort;
 	}
 
-
+    public void setDeviceID(String deviceID) {
+        this.deviceID = deviceID;
+    }
     
     
     

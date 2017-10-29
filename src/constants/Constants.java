@@ -14,6 +14,7 @@ public class Constants {
     public static final String PARAM_USER_ID = "userid";
     public static final String PARAM_LOGIN_RESULT = "loginresult";
     public static final String PARAM_BET ="bet";
+    public static final String PARAM_ERROR_MSG ="errormsg";
     public static final String PARAM_READY_RESULT = "readyresult";
 
     /**用户状态*/

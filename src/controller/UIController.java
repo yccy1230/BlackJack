@@ -1,5 +1,7 @@
 package controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import constants.MsgType;
 import listener.MsgReceiveListener;
 import listener.NetworkListener;
@@ -9,6 +11,7 @@ import ui.MainFrame;
 import utils.Resp;
 
 import java.net.DatagramPacket;
+import java.util.List;
 import java.util.Map;
 
 import constants.Constants;
@@ -29,7 +32,6 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
     	mainFrame = new MainFrame(this);
 		communicateService = new ClientCommunicateService(this,this);
 		mainFrame.showLoginFrame();
-//		mainFrame.showMainFrame();
 	}
 
 	@Override
@@ -38,7 +40,8 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
     		Map<String,Object> param = (Map<String, Object>) resp.getData();
 			switch (resp.getMsgType()) {
 				case MsgType.METHOD_NEWUSER:
-					mainFrame.addUserPanel((Player) param.get(Constants.PARAM_PLAYER));
+					Player playerParam = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
+					mainFrame.addUserPanel(playerParam);
 					break;
 				case MsgType.METHOD_GAME_BEGIN:
 					break;
@@ -46,9 +49,27 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 					break;
 				case MsgType.METHOD_DOUBLE:
 					break;
-				case MsgType.METHOD_RESULT:
+				case MsgType.METHOD_READY_RESULT:
+					if(Constants.SUCCESS_CODE == (int)param.get(Constants.PARAM_READY_RESULT)){
+						mainFrame.showUserCancelReadyBtn();
+					}else{
+						mainFrame.showUserReadyBtn();
+					}
 					break;
-				case MsgType.METHOD_SURRENDER:
+				case MsgType.METHOD_USER_EXIT:
+					break;
+				case MsgType.METHOD_LOGIN_RESULT:
+					if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_LOGIN_RESULT)){
+						communicateService.setDeviceID((String) param.get(Constants.PARAM_USER_ID));
+						mainFrame.showMainFrame();
+						List<Player> players = JSONObject.parseArray(((JSONArray)param.get(Constants.PARAM_INIT_USER)).toJSONString(),Player.class);
+						for (int i = 0; i < players.size(); i++) {
+							Player player = players.get(i);
+							mainFrame.addUserPanel(player);
+						}
+					}else{
+						mainFrame.showMessage((String) param.get(Constants.PARAM_ERROR_MSG));
+					}
 					break;
 				default:
 					break;
@@ -98,12 +119,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 	public void onConnectClicked(String ip, int port, String nickName) {
 		communicateService.setServerIP(ip);
 		communicateService.setServerPort(port);
-		Resp resp = communicateService.connectServer(nickName);
-		if(resp.getResCode()==Constants.SUCCESS_CODE){
-			mainFrame.showMainFrame();
-		}else{
-			mainFrame.showMessage(resp.getResMsg());
-		}
+		communicateService.connectServer(nickName);
 	}
 
 	@Override

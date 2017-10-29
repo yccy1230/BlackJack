@@ -41,7 +41,7 @@ public class UserPanel extends JPanel {
 	
 	/**
 	 * 删除玩家
-	 * @param player 包含用户ID即可
+	 * @param playerParam 包含用户ID即可
 	 */
 	public void removeUserPanel(Player playerParam){
 		//以data为基准进行遍历

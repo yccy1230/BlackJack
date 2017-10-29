@@ -50,9 +50,6 @@ public class MainFrame extends JFrame {
 
 		initFrame();
 		
-		//test
-		test();
-		
 		setContentPane(contentPane);
 
 		addWindowListener(new WindowAdapter() {
@@ -73,7 +70,7 @@ public class MainFrame extends JFrame {
 	public void initFrame(){
 
 		//初始化消息显示框
-		msgLabel = new JLabel("maglabel");
+		msgLabel = new JLabel();
 		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		msgLabel.setFont(new Font("宋体", Font.PLAIN, 19));
 		msgLabel.setForeground(Color.WHITE);
@@ -123,13 +120,23 @@ public class MainFrame extends JFrame {
 	}
 	
 	/**
-	 * 显示用户准备按钮
+	 * 显示用户 准备 按钮
 	 */
 	public void showUserReadyBtn(){
 		setVisible(true);
 		operationPanel.showReadyOperation();
 		loginFrame.setVisible(false);
 	}
+
+	/**
+	 * 显示 取消准备 按钮
+	 */
+	public void showUserCancelReadyBtn(){
+		setVisible(true);
+		operationPanel.showReadyOperation();
+		loginFrame.setVisible(false);
+	}
+
 	
 	/**
 	 * 添加用户
@@ -153,48 +160,48 @@ public class MainFrame extends JFrame {
 		msgLabel.setText(msg);
 	}
 
-	private void test(){
-		//测试玩家1
-		Player player = new Player();
-		player.setNickname("玩家1");
-		player.setId("玩家1");
-		Hand hand = new Hand();
-		List<Card> cards = new ArrayList<>();
-		cards.add(new Card(Constants.CLUBS_1));
-		cards.add(new Card(Constants.DIAMONDS_1));
-		cards.add(new Card(Constants.CLUBS_3));
-		cards.add(new Card(Constants.DIAMONDS_1));
-		cards.add(new Card(Constants.CLUBS_5));
-		cards.add(new Card(Constants.DIAMONDS_1));
-		cards.add(new Card(Constants.CLUBS_7));
-		cards.add(new Card(Constants.DIAMONDS_1));
-		cards.add(new Card(Constants.CLUBS_9));
-		hand.setCards(cards);
-		player.setHand(hand);
-		addUserPanel(player);
-
-		//测试玩家2
-		Player player2 = new Player();
-		player2.setNickname("玩家2");
-		player2.setId("玩家2");
-		player2.setHand(hand);
-		addUserPanel(player2);
-
-		//测试玩家3
-		Player player3 = new Player();
-		player3.setNickname("玩家3");
-		player3.setId("玩家3");
-		player3.setHand(hand);
-		addUserPanel(player3);
-		
-		Dealer dealer = new Dealer();
-		dealer.setHand(hand);
-		dealerPanel.refreashCardView(dealer);
-		
-		addUserPanel(player3);
-		addUserPanel(player3);
-		
-		operationPanel.showTurnOperation();
-	}
+//	private void test(){
+//		//测试玩家1
+//		Player player = new Player();
+//		player.setNickname("玩家1");
+//		player.setId("玩家1");
+//		Hand hand = new Hand();
+//		List<Card> cards = new ArrayList<>();
+//		cards.add(new Card(Constants.CLUBS_1));
+//		cards.add(new Card(Constants.DIAMONDS_1));
+//		cards.add(new Card(Constants.CLUBS_3));
+//		cards.add(new Card(Constants.DIAMONDS_1));
+//		cards.add(new Card(Constants.CLUBS_5));
+//		cards.add(new Card(Constants.DIAMONDS_1));
+//		cards.add(new Card(Constants.CLUBS_7));
+//		cards.add(new Card(Constants.DIAMONDS_1));
+//		cards.add(new Card(Constants.CLUBS_9));
+//		hand.setCards(cards);
+//		player.setHand(hand);
+//		addUserPanel(player);
+//
+//		//测试玩家2
+//		Player player2 = new Player();
+//		player2.setNickname("玩家2");
+//		player2.setId("玩家2");
+//		player2.setHand(hand);
+//		addUserPanel(player2);
+//
+//		//测试玩家3
+//		Player player3 = new Player();
+//		player3.setNickname("玩家3");
+//		player3.setId("玩家3");
+//		player3.setHand(hand);
+//		addUserPanel(player3);
+//
+//		Dealer dealer = new Dealer();
+//		dealer.setHand(hand);
+//		dealerPanel.refreashCardView(dealer);
+//
+//		addUserPanel(player3);
+//		addUserPanel(player3);
+//
+//		operationPanel.showTurnOperation();
+//	}
 	
 }
