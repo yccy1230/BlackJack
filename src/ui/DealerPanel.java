@@ -6,6 +6,8 @@ import entity.Dealer;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -19,7 +21,6 @@ import constants.Constants;
 * @date 2017/10/24
 */
 public class DealerPanel extends PlayerPanel {
-	private JLabel nickNameLabel;
 	
 	public DealerPanel() {
 		super();
@@ -45,16 +46,24 @@ public class DealerPanel extends PlayerPanel {
 	    nickNameLabel.setForeground(Color.WHITE);
 	    nickNameLabel.setFont(new Font("宋体", Font.PLAIN, 16));
 	    nickNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-	    nickNameLabel.setBounds(240, 145, 54, 15);
+	    nickNameLabel.setBounds(240, 160, 54, 15);
 	    add(nickNameLabel);
 	}
 	
 	private void initCardView(){
-		for (int i = 0; i < 10; i++) {
+		//	清除原卡片
+		for (CardView card : cardViews) {
+			remove(card);
+		}
+		cardViews.clear();
+		//创建新卡片
+		for (int i = 9; i >= 0 ; i--) {
 			CardView card = new CardView();
-			card.setBounds(70+i*Constants.DEALER_CARD_WIDTH_DISTANCE, 10, Constants.DEALER_CARD_WIDTH, Constants.DEALER_CARD_WIDTH);
+			card.setBounds(70+i*Constants.DEALER_CARD_WIDTH_DISTANCE, 10, Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
 			card.setInUsed(false);
 			cardViews.add(card);
+			add(card);
 		}
+		Collections.reverse(cardViews);
 	}
 }

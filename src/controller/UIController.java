@@ -82,9 +82,10 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 		Resp resp = communicateService.sendUserReadyMsg(bet);
 		if(resp.getResCode()==Constants.SUCCESS_CODE){
 			mainFrame.showToastMsg(ConstantsMsg.MSG_WAIT_OTHER_USER);
-			mainFrame.showReadyCancelFrame();
 		}else{
+			//准备出错
 			mainFrame.showMessage(resp.getResMsg());
+			mainFrame.showUserReadyBtn();
 		}
 	}
 

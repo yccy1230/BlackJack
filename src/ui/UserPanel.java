@@ -91,23 +91,23 @@ public class UserPanel extends JPanel {
 		setLayout(null);
 		
 		PlayerPanel playerPanel1 = new PlayerPanel();
-		playerPanel1.setBounds(20, 5, 215, 210);
+		playerPanel1.setBounds(20, 15, 215, 210);
 		add(playerPanel1);
 		
 		PlayerPanel playerPanel2 = new PlayerPanel();
-		playerPanel2.setBounds(260, 45, 215, 210);
+		playerPanel2.setBounds(260, 55, 215, 210);
 		add(playerPanel2);
 		
 		PlayerPanel playerPanel3 = new PlayerPanel();
-		playerPanel3.setBounds(490, 70, 215, 210);
+		playerPanel3.setBounds(490, 80, 215, 210);
 		add(playerPanel3);
 		
 		PlayerPanel playerPanel4 = new PlayerPanel();
-		playerPanel4.setBounds(720, 45, 215, 210);
+		playerPanel4.setBounds(720, 55, 215, 210);
 		add(playerPanel4);
 		
 		PlayerPanel playerPanel5 = new PlayerPanel();
-		playerPanel5.setBounds(960, 5, 215, 210);
+		playerPanel5.setBounds(960, 15, 215, 210);
 		add(playerPanel5);
 		
 		//UI

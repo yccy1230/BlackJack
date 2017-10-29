@@ -21,6 +21,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 	private JButton btnDouble;
 	private JButton btnSurrender;
 	private JButton btnReady;
+	private JButton btnCancel;
 	
 	private OperationListener operationListener;
 
@@ -61,11 +62,10 @@ public class OperationPanel extends JPanel implements ActionListener{
 	/**
 	 * 显示取消准备操作界面
 	 */
-	public void showCancelReadyOperation() {
+	private void showCancelReadyOperation() {
         hideAll();
-        btnReady.setText(ConstantsMsg.BUTTON_CANCEL_READY);
-        btnReady.setVisible(true);
-        btnReady.setEnabled(true);
+        btnCancel.setVisible(true);
+        btnCancel.setEnabled(true);
     }
 	
 	/**
@@ -77,6 +77,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnDouble.setVisible(false);
 		btnSurrender.setVisible(false);
 		btnReady.setVisible(false);
+		btnCancel.setVisible(false);
 	}
 	
 	/**
@@ -88,6 +89,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnDouble.setEnabled(false);
 		btnSurrender.setEnabled(false);
 		btnReady.setEnabled(false);
+		btnCancel.setEnabled(false);
 	}
 	
 	/**
@@ -99,35 +101,53 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnDouble.setEnabled(true);
 		btnSurrender.setEnabled(true);
 		btnReady.setEnabled(true);
+		btnCancel.setEnabled(true);
 	}
 	
 	/**
 	 * 初始化按钮
 	 */
 	private void initButton(){
-		btnReady = new JButton(ConstantsMsg.BUTTON_READY);
-		btnReady.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+		btnReady = new JButton();
+		btnReady.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/btn_ready.png")));
 		btnReady.setBounds(800, 50, 80, 80);
+		setBtnProperty(btnReady);
+		btnReady.setToolTipText(ConstantsMsg.BUTTON_READY);
         add(btnReady);
 		
-		btnStand = new JButton(ConstantsMsg.BUTTON_STAND);
-		btnStand.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+        btnCancel = new JButton();
+        btnCancel.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/btn_cancel_ready.png")));
+        btnCancel.setBounds(800, 50, 80, 80);
+		setBtnProperty(btnCancel);
+		btnCancel.setToolTipText(ConstantsMsg.BUTTON_CANCEL_READY);
+        add(btnCancel);
+        
+		btnStand = new JButton();
+		btnStand.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/btn_stand.png")));
 		btnStand.setBounds(800, 50, 80, 80);
+		setBtnProperty(btnStand);
+		btnStand.setToolTipText(ConstantsMsg.BUTTON_STAND);
 		add(btnStand);
 
-		hitBtn = new JButton(ConstantsMsg.BUTTON_HIT);
-		hitBtn.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+		hitBtn = new JButton();
+		hitBtn.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/btn_hit.png")));
 		hitBtn.setBounds(700, 60, 80, 80);
+		setBtnProperty(hitBtn);
+		hitBtn.setToolTipText(ConstantsMsg.BUTTON_HIT);
         add(hitBtn);
 		
-		btnDouble = new JButton(ConstantsMsg.BUTTON_DOUBLE);
-		btnDouble.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+		btnDouble = new JButton();
+		btnDouble.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/btn_double.png")));
 		btnDouble.setBounds(900, 40, 80, 80);
+		setBtnProperty(btnDouble);
+		btnDouble.setToolTipText(ConstantsMsg.BUTTON_DOUBLE);
         add(btnDouble);
 		
-		btnSurrender = new JButton(ConstantsMsg.BUTTON_SURRENDER);
-		btnSurrender.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/BackGround.jpg")));
+		btnSurrender = new JButton();
+		btnSurrender.setIcon(new ImageIcon(OperationPanel.class.getResource("/assets/btn_surround.png")));
 		btnSurrender.setBounds(1000, 20, 80, 80);
+		setBtnProperty(btnSurrender);
+		btnSurrender.setToolTipText(ConstantsMsg.BUTTON_SURRENDER);
 		add(btnSurrender);
 	}
 
@@ -137,12 +157,19 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnDouble.addActionListener(this);
 		btnSurrender.addActionListener(this);
 		btnReady.addActionListener(this);
+		btnCancel.addActionListener(this);
 	}
 
+	private void setBtnProperty(JButton button){
+		button.setContentAreaFilled(false);
+		button.setFocusPainted(false);
+		button.setBorder(null);
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		switch(arg0.getActionCommand()){
-		case ConstantsMsg.BUTTON_READY:
+		JButton curBtn = (JButton) arg0.getSource();
+		if(curBtn==btnReady){
 			String bet;
 			do {
 				bet = JOptionPane.showInputDialog(null,ConstantsMsg.MSG_ENTER_BET);
@@ -152,40 +179,31 @@ public class OperationPanel extends JPanel implements ActionListener{
 				operationListener.onReadyClicked(Integer.parseInt(bet));
 				btnReady.setEnabled(false);
 			}
-			break;
-		case ConstantsMsg.BUTTON_CANCEL_READY:
+		}else if(curBtn==btnCancel){
 			if(operationListener!=null){
 				operationListener.onCancelReadyClicked();
 				hideAll();
 			}
-			
-			break;
-		case ConstantsMsg.BUTTON_HIT:
+		}else if(curBtn==hitBtn){
 			if(operationListener!=null){
 				operationListener.onHitClicked();
 				hideAll();
 			}
-			break;
-		case ConstantsMsg.BUTTON_STAND:
+		}else if(curBtn==btnStand){
 			if(operationListener!=null){
 				operationListener.onStandClicked();
 				hideAll();
 			}
-			break;
-		case ConstantsMsg.BUTTON_DOUBLE:
+		}else if(curBtn==btnDouble){
 			if(operationListener!=null){
 				operationListener.onDoubleClicked();
 				disableAll();
 			}
-			break;
-		case ConstantsMsg.BUTTON_SURRENDER:
+		}else if(curBtn==btnSurrender){
 			if(operationListener!=null){
 				operationListener.onSurrenderClicked();
 				disableAll();
 			}
-			break;
-		default:
-			break;
 		}
 	}
 }

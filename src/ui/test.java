@@ -27,7 +27,7 @@ public class test extends JFrame {
 	private JPanel contentPane;
 	private JLabel background;
 
-	public static void main(String                                                                                                                                                  [] args) {
+	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -208,14 +208,20 @@ public class test extends JFrame {
 		contentPane.add(operationPanel);
 		operationPanel.setLayout(null);
 		
-		JButton button = new JButton("");
-		button.setOpaque(false);
+		JButton button = new JButton("123");
+		button.setToolTipText("123");
+		button.setOpaque(true);
 		button.setContentAreaFilled(false);
 		button.setBorder(null);
 		button.setBounds(700, 60, 80, 80);
 		operationPanel.add(button);
 		
-		JButton btnHit = new JButton("");
+		JButton btnHit = new JButton("取消准备");
+		btnHit.setFocusPainted(false);
+		btnHit.setForeground(Color.WHITE);
+		btnHit.setFont(new Font("宋体", Font.PLAIN, 5));
+		btnHit.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnHit.setIcon(new ImageIcon(test.class.getResource("/assets/btn_cancel_ready.png")));
 		btnHit.setBounds(800, 50, 80, 80);
 		operationPanel.add(btnHit);
 		btnHit.setBorder(null);

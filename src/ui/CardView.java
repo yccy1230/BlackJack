@@ -6,19 +6,22 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import constants.Constants;
+import entity.Card;
 
 public class CardView extends JLabel {
 	private boolean inUsed;
-	
-	
 	
 	public CardView() {
 		setOpaque(false);
 		setInUsed(false);
 	}
 
-	public CardView(String icon) {
-		setFaceValue(icon);
+	public CardView(Card card) {
+		if(card==null || card.getFaceValue()==null){
+			setFaceValue("BackGround");
+		}else{
+			setFaceValue(card.getFaceValue());
+		}
 		setInUsed(true);
 	}
 	

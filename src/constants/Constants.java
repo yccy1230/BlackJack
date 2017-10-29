@@ -29,13 +29,13 @@ public class Constants {
     public static final int PLAYER_PANEL_HEIGHT = 180;
 
     /**卡牌View Size*/
-    public static final int CARD_WIDTH = 77;
-    public static final int CARD_HEIGHT = 111;
-    public static final int CARD_WIDTH_DISTANCE = 25;
-    public static final int CARD_HEIGHT_DISTANCE = 60;
+    public static final int CARD_WIDTH = 90;
+    public static final int CARD_HEIGHT = 140;
+    public static final int CARD_WIDTH_DISTANCE = 30;
+    public static final int CARD_HEIGHT_DISTANCE = 40;
     public static final int DEALER_CARD_WIDTH_DISTANCE = 40;
     public static final int DEALER_CARD_WIDTH = 90;
-    public static final int DEALER_CARD_HEIGHT = 120;
+    public static final int DEALER_CARD_HEIGHT = 140;
     
 
     /**MainFrame Size*/

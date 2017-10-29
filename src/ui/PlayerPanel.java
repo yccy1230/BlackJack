@@ -34,6 +34,7 @@ public class PlayerPanel extends JPanel {
 		setInUsed(false);
 	}
 	
+	
 	/**
 	 * 添加Player
 	 * @param player
@@ -47,11 +48,11 @@ public class PlayerPanel extends JPanel {
 
 		nameLabel.setText("玩家：");
 		nameLabel.setForeground(Color.WHITE);
-		nameLabel.setFont(new Font("宋体", Font.PLAIN, 14));
+		nameLabel.setFont(new Font("宋体", Font.PLAIN, 16));
 		nameLabel.setBounds(60, 188, 54, 15);
 		
 		nickNameLabel.setForeground(Color.WHITE);
-	    nickNameLabel.setFont(new Font("宋体", Font.PLAIN, 14));
+	    nickNameLabel.setFont(new Font("宋体", Font.PLAIN, 16));
 		nickNameLabel.setBounds(110, 188, 54, 15);
 
 		add(nameLabel);
@@ -111,7 +112,7 @@ public class PlayerPanel extends JPanel {
 		List<CardView> tmpCardViews1 = new ArrayList<>();
 		for (int i = 4; i >= 0; i--) {
 			CardView card = new CardView();
-			card.setBounds(20+i*Constants.CARD_WIDTH_DISTANCE, 20+Constants.CARD_WIDTH_DISTANCE, Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
+			card.setBounds(i*Constants.CARD_WIDTH_DISTANCE, Constants.CARD_HEIGHT_DISTANCE, Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
 			card.setInUsed(false);
 			tmpCardViews1.add(card);
 			add(card);
@@ -120,7 +121,7 @@ public class PlayerPanel extends JPanel {
 		List<CardView> tmpCardViews2 = new ArrayList<>();
 		for (int i = 4; i >= 0; i--) {
 			CardView card = new CardView();
-			card.setBounds(20+i*Constants.CARD_WIDTH_DISTANCE, 10, Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
+			card.setBounds(i*Constants.CARD_WIDTH_DISTANCE, 0, Constants.CARD_WIDTH, Constants.CARD_HEIGHT);
 			card.setInUsed(false);
 			tmpCardViews2.add(card);
 			add(card);

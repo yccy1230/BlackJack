@@ -13,6 +13,7 @@ import javax.swing.*;
 import constants.Constants;
 import constants.ConstantsMsg;
 import entity.Card;
+import entity.Dealer;
 import entity.Hand;
 import entity.Player;
 import listener.OperationListener;
@@ -41,7 +42,7 @@ public class MainFrame extends JFrame {
 
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(false);
-		setBounds(new Rectangle(0, 0, 1200, 750));
+		setBounds(new Rectangle(0, 0, 1200, 780));
 		setTitle(Constants.APP_NAME);
 
 		contentPane = new JPanel();
@@ -49,40 +50,8 @@ public class MainFrame extends JFrame {
 
 		initFrame();
 		
-		//测试玩家1
-//		Player player = new Player();
-//		player.setNickname("玩家1");
-//		player.setId("玩家1");
-//		Hand hand = new Hand();
-//		List<Card> cards = new ArrayList<>();
-//		cards.add(new Card(Constants.CLUBS_1));
-//		cards.add(new Card(Constants.CLUBS_2));
-//		cards.add(new Card(Constants.CLUBS_3));
-//		cards.add(new Card(Constants.CLUBS_4));
-//		cards.add(new Card(Constants.CLUBS_5));
-//		cards.add(new Card(Constants.CLUBS_6));
-//		cards.add(new Card(Constants.CLUBS_7));
-//		cards.add(new Card(Constants.CLUBS_8));
-//		cards.add(new Card(Constants.CLUBS_9));
-//		hand.setCards(cards);
-//		player.setHand(hand);
-//		addUserPanel(player);
-//
-//		//测试玩家2
-//		Player player2 = new Player();
-//		player2.setNickname("玩家2");
-//		player2.setId("玩家2");
-//		addUserPanel(player2);
-//
-//		//测试玩家3
-//		Player player3 = new Player();
-//		player3.setNickname("玩家3");
-//		player3.setId("玩家2");
-//		addUserPanel(player3);
-//
-//		addUserPanel(player3);
-//		addUserPanel(player3);
-//		addUserPanel(player3);
+		//test
+		test();
 		
 		setContentPane(contentPane);
 
@@ -97,7 +66,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-
+	
 	/**
 	 * 初始化界面
 	 */
@@ -121,7 +90,7 @@ public class MainFrame extends JFrame {
 		//初始化玩家界面
 		userPanel = new UserPanel();
 		userPanel.setOpaque(false);
-		userPanel.setBounds(0, 330, 1200, 280);
+		userPanel.setBounds(0, 330, 1200, 300);
 		contentPane.add(userPanel);
 		
 		//初始化操作面板
@@ -154,11 +123,12 @@ public class MainFrame extends JFrame {
 	}
 	
 	/**
-	 * 显示取消准备界面
+	 * 显示用户准备按钮
 	 */
-	public void showReadyCancelFrame(){
-		msgLabel.setText(ConstantsMsg.MSG_WAIT_OTHER_USER);
-		operationPanel.showCancelReadyOperation();
+	public void showUserReadyBtn(){
+		setVisible(true);
+		operationPanel.showReadyOperation();
+		loginFrame.setVisible(false);
 	}
 	
 	/**
@@ -181,6 +151,50 @@ public class MainFrame extends JFrame {
 	 */
 	public void showToastMsg(String msg){
 		msgLabel.setText(msg);
+	}
+
+	private void test(){
+		//测试玩家1
+		Player player = new Player();
+		player.setNickname("玩家1");
+		player.setId("玩家1");
+		Hand hand = new Hand();
+		List<Card> cards = new ArrayList<>();
+		cards.add(new Card(Constants.CLUBS_1));
+		cards.add(new Card(Constants.DIAMONDS_1));
+		cards.add(new Card(Constants.CLUBS_3));
+		cards.add(new Card(Constants.DIAMONDS_1));
+		cards.add(new Card(Constants.CLUBS_5));
+		cards.add(new Card(Constants.DIAMONDS_1));
+		cards.add(new Card(Constants.CLUBS_7));
+		cards.add(new Card(Constants.DIAMONDS_1));
+		cards.add(new Card(Constants.CLUBS_9));
+		hand.setCards(cards);
+		player.setHand(hand);
+		addUserPanel(player);
+
+		//测试玩家2
+		Player player2 = new Player();
+		player2.setNickname("玩家2");
+		player2.setId("玩家2");
+		player2.setHand(hand);
+		addUserPanel(player2);
+
+		//测试玩家3
+		Player player3 = new Player();
+		player3.setNickname("玩家3");
+		player3.setId("玩家3");
+		player3.setHand(hand);
+		addUserPanel(player3);
+		
+		Dealer dealer = new Dealer();
+		dealer.setHand(hand);
+		dealerPanel.refreashCardView(dealer);
+		
+		addUserPanel(player3);
+		addUserPanel(player3);
+		
+		operationPanel.showTurnOperation();
 	}
 	
 }
