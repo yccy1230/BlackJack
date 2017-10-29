@@ -22,17 +22,12 @@ import java.awt.Color;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-/**
-* @description ui测试类
-* @author Jack Chen
-* @date 2017/10/29
-*/
 public class test extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel background;
 
-	public static void main(String[] args) {
+	public static void main(String                                                                                                                                                  [] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

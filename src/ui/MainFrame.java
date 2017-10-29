@@ -1,15 +1,19 @@
 package ui;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 import constants.Constants;
 import constants.ConstantsMsg;
+import entity.Card;
+import entity.Hand;
 import entity.Player;
 import listener.OperationListener;
 
@@ -19,7 +23,6 @@ import listener.OperationListener;
 * @date 2017/10/17
 */
 public class MainFrame extends JFrame {
-	//登录界面
     private LoginFrame loginFrame;					
     
 	private JPanel contentPane;
@@ -45,7 +48,42 @@ public class MainFrame extends JFrame {
 		contentPane.setLayout(null);
 
 		initFrame();
-
+		
+		//测试玩家1
+//		Player player = new Player();
+//		player.setNickname("玩家1");
+//		player.setId("玩家1");
+//		Hand hand = new Hand();
+//		List<Card> cards = new ArrayList<>();
+//		cards.add(new Card(Constants.CLUBS_1));
+//		cards.add(new Card(Constants.CLUBS_2));
+//		cards.add(new Card(Constants.CLUBS_3));
+//		cards.add(new Card(Constants.CLUBS_4));
+//		cards.add(new Card(Constants.CLUBS_5));
+//		cards.add(new Card(Constants.CLUBS_6));
+//		cards.add(new Card(Constants.CLUBS_7));
+//		cards.add(new Card(Constants.CLUBS_8));
+//		cards.add(new Card(Constants.CLUBS_9));
+//		hand.setCards(cards);
+//		player.setHand(hand);
+//		addUserPanel(player);
+//
+//		//测试玩家2
+//		Player player2 = new Player();
+//		player2.setNickname("玩家2");
+//		player2.setId("玩家2");
+//		addUserPanel(player2);
+//
+//		//测试玩家3
+//		Player player3 = new Player();
+//		player3.setNickname("玩家3");
+//		player3.setId("玩家2");
+//		addUserPanel(player3);
+//
+//		addUserPanel(player3);
+//		addUserPanel(player3);
+//		addUserPanel(player3);
+		
 		setContentPane(contentPane);
 
 		addWindowListener(new WindowAdapter() {
@@ -66,7 +104,7 @@ public class MainFrame extends JFrame {
 	public void initFrame(){
 
 		//初始化消息显示框
-		msgLabel = new JLabel();
+		msgLabel = new JLabel("maglabel");
 		msgLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		msgLabel.setFont(new Font("宋体", Font.PLAIN, 19));
 		msgLabel.setForeground(Color.WHITE);
@@ -79,23 +117,23 @@ public class MainFrame extends JFrame {
 		dealerPanel.setOpaque(false);
 		dealerPanel.setBounds(330, 0, 610, 180);
 		contentPane.add(dealerPanel);
-
+		
+		//初始化玩家界面
+		userPanel = new UserPanel();
+		userPanel.setOpaque(false);
+		userPanel.setBounds(0, 330, 1200, 280);
+		contentPane.add(userPanel);
+		
 		//初始化操作面板
 		operationPanel = new OperationPanel(operationListener);
 		operationPanel.setBounds(0, 590, 1180, 150);
 		operationPanel.setOpaque(false);
 		contentPane.add(operationPanel);
 		
-		//初始化玩家界面
-		userPanel = new UserPanel();
-		userPanel.setOpaque(false);
-		userPanel.setBounds(0, 330, 1190, 280);
-		contentPane.add(userPanel);
-		
 		//初始化背景
 		JLabel background = new JLabel("");
 		background.setIcon(new ImageIcon(test.class.getResource("/assets/deck.png")));
-		background.setBounds(0, 0, 1194, 750);
+		background.setBounds(0, 0, 1200, 750);
 		contentPane.add(background);
 	}
 	

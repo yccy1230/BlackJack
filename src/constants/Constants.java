@@ -2,9 +2,11 @@ package constants;
 
 public class Constants {
 
-    /**APP NAME*/
-    public static final String APP_NAME = "Black Jack";
 
+    /**系统参数*/
+    public static final String APP_NAME = "Black Jack";
+    public static final int MAX_PLAYER_NUM = 5;
+    
     /**参数变量名*/
     public static final String PARAM_NICK_NAME ="nickname";
     public static final String PARAM_INIT_USER ="inituser";
@@ -16,10 +18,11 @@ public class Constants {
     /**用户状态*/
     public static final int USER_IDEL = 0;
     public static final int USER_READY = 1;
-    public static final int USER_SURRENDER = -1;
-    public static final int USER_STAND = 2;
-    public static final int USER_OVER = 3;
-    public static final int USER_BLACKJACK = 4;
+    public static final int USER_SURRENDER = 2;
+    public static final int USER_STAND = 3;
+    public static final int USER_OVER = 4;
+    public static final int USER_BLACKJACK = 5;
+    public static final int EMPTY_USER = -1;//UI使用
 
     /**Player Panel Size*/
     public static final int PLAYER_PANEL_WIDTH = 360;
@@ -41,7 +44,7 @@ public class Constants {
 
 
     /**卡牌定义类*/
-    public static final String CLUBS_1 = "Clubs_1";
+    public static final String CLUBS_1 = "Clubs_A";
     public static final String CLUBS_2 = "Clubs_2";
     public static final String CLUBS_3 = "Clubs_3";
     public static final String CLUBS_4 = "Clubs_4";
@@ -54,7 +57,7 @@ public class Constants {
     public static final String CLUBS_J = "Clubs_J";
     public static final String CLUBS_Q = "Clubs_Q";
     public static final String CLUBS_K = "Clubs_K";
-    public static final String DIAMONDS_1 = "Diamonds_1";
+    public static final String DIAMONDS_1 = "Diamonds_A";
     public static final String DIAMONDS_2 = "Diamonds_2";
     public static final String DIAMONDS_3 = "Diamonds_3";
     public static final String DIAMONDS_4 = "Diamonds_4";
@@ -67,7 +70,7 @@ public class Constants {
     public static final String DIAMONDS_J = "Diamonds_J";
     public static final String DIAMONDS_Q = "Diamonds_Q";
     public static final String DIAMONDS_K = "Diamonds_K";
-    public static final String HEARTS_1 = "Hearts_1";
+    public static final String HEARTS_1 = "Hearts_A";
     public static final String HEARTS_2 = "Hearts_2";
     public static final String HEARTS_3 = "Hearts_3";
     public static final String HEARTS_4 = "Hearts_4";
@@ -80,7 +83,7 @@ public class Constants {
     public static final String HEARTS_J = "Hearts_J";
     public static final String HEARTS_Q = "Hearts_Q";
     public static final String HEARTS_K = "Hearts_K";
-    public static final String SPADES_1 = "Spades_1";
+    public static final String SPADES_1 = "Spades_A";
     public static final String SPADES_2 = "Spades_2";
     public static final String SPADES_3 = "Spades_3";
     public static final String SPADES_4 = "Spades_4";
