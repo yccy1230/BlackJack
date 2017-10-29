@@ -25,4 +25,6 @@ public class MsgType {
     public static final int METHOD_LOGIN_RESULT =  14;     //登陆结果
     public static final int METHOD_READY_RESULT = 15;   //准备结果
     public static final int METHOD_USER_EXIT = 16;   //用户退出
+    public static final int METHOD_CANCLE_READY = 17;   //取消准备
+    public static final int METHOD_CANCLE_READY_RESULT = 18;   //取消准备结果
 }

@@ -179,6 +179,24 @@ public class Room {
         }
     }
 
+    public void userCancleReady(String userID){
+        for(int i=0;i<players.size();i++){
+            if(players.get(i).getId().equals(userID)){
+                players.get(i).setStatus(Constants.USER_IDEL);
+                return;
+            }
+        }
+    }
+
+    public void userExit(String userID){
+        for (int i=0;i<players.size();i++) {
+            if(players.get(i).getId().equals(userID)) {
+                players.get(i).setStatus(Constants.USER_OVER);
+                return;
+            }
+        }
+    }
+
     public Dealer getDealer() {
         return dealer;
     }

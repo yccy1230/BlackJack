@@ -46,6 +46,11 @@ public class GameController implements MsgReceiveListener {
                 room.checkAllReady();
                 communicateService.sendReadyMsgWithoutResult(datagramPacket);
                 break;
+            case MsgType.METHOD_CANCLE_READY:
+                userId =(String) param.get(Constants.PARAM_USER_ID);
+                room.userCancleReady(userId);
+                communicateService.sendCancleReadyMsgWithoutResult(datagramPacket);
+                break;
             case MsgType.METHOD_SURRENDER:
                 if(resp.getResCode()==Constants.SUCCESS_CODE){
                     param = (Map<String, Object>) resp.getData();
@@ -58,6 +63,11 @@ public class GameController implements MsgReceiveListener {
                     }
                     communicateService.sendUDPMsgWithoutResult(datagramPacket);
                 }
+                break;
+            case MsgType.METHOD_USER_EXIT:
+                userId = (String) param.get(Constants.PARAM_USER_ID);
+                room.userExit(userId);
+                communicateService.sendExitMsgWithoutResult(userId);
                 break;
             default:
                 break;

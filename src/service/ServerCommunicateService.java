@@ -107,10 +107,20 @@ public class ServerCommunicateService {
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_RESULT,param,datagramPacket,socket);
     }
 
-
-    public void sendExitMsgWithoutResult(DatagramPacket datagramPacket){
+    public void sendCancleReadyMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_RESULT,param,datagramPacket,socket);
+        param.put(Constants.PARAM_CANCLE_READY_RESULT, Constants.CANCLE_READY_SUCCESS);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCLE_READY_RESULT,param,datagramPacket,socket);
+    }
+
+    public void sendExitMsgWithoutResult(String userID){
+        hashTable.remove(userID);
+        for(String key : hashTable.keySet()){
+            DatagramPacket dp = hashTable.get(key);
+            Map<String,Object> param = new HashMap<>();
+            param.put(Constants.PARAM_USER_ID,userID);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_USER_EXIT,param,dp,socket);
+        }
     }
 
     public void sendBroadcast() {
