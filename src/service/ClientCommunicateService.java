@@ -68,7 +68,8 @@ public class ClientCommunicateService {
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_NICK_NAME,nickName);
         Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_LOGIN,param,serverIP,serverPort,socket);
-        if(resp.getResCode()==Constants.SUCCESS_CODE){//初始化设备标识ID（用户ID）
+
+        if(resp != null){//初始化设备标识ID（用户ID）
         	Map<String,Object> retParam = (Map<String, Object>) resp.getData();
         	deviceID = (String) retParam.get(Constants.PARAM_USER_ID);
         }
@@ -99,7 +100,7 @@ public class ClientCommunicateService {
     /**
      * 发送操作请求(By IP Address)    
      */
-    public Resp sendUserOperation(MsgType msgType){
+    public Resp sendUserOperation(int msgType){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_USER_ID,deviceID);
         Resp resp = CommunicateUtil.sendUDPMsgByIP(msgType,param,serverIP,serverPort,socket);

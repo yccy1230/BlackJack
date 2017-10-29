@@ -28,8 +28,8 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
     public UIController() {
     	mainFrame = new MainFrame(this);
 		communicateService = new ClientCommunicateService(this,this);
-//		mainFrame.showLoginFrame();
-		mainFrame.showMainFrame();
+		mainFrame.showLoginFrame();
+//		mainFrame.showMainFrame();
 	}
 
 	@Override
@@ -102,8 +102,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 		if(resp.getResCode()==Constants.SUCCESS_CODE){
 			mainFrame.showMainFrame();
 		}else{
-			Map<String,Object> param = (Map<String, Object>) resp.getData();
-			mainFrame.showMessage((String) param.get("msg"));
+			mainFrame.showMessage(resp.getResMsg());
 		}
 	}
 

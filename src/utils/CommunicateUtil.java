@@ -20,7 +20,7 @@ public class CommunicateUtil {
      * @param param 传递参数
      * @return 请求返回结果，如果发生异常返回null
      */
-    public static Resp sendUDPMsgByIP(MsgType msgType, Map<String,Object> param,
+    public static Resp sendUDPMsgByIP(int msgType, Map<String,Object> param,
                                   String targetIp, int targetPort, DatagramSocket socket){
         try
         {
@@ -55,7 +55,7 @@ public class CommunicateUtil {
      * @param param 传递参数
      * @return 请求返回结果，如果发生异常返回null
      */
-    public static void sendUDPMsgWithoutResult(MsgType msgType, Map<String,Object> param,
+    public static void sendUDPMsgWithoutResult(int msgType, Map<String,Object> param,
                                       String targetIp, int targetPort, DatagramSocket socket){
         try
         {
@@ -81,7 +81,7 @@ public class CommunicateUtil {
      * @param param 传递参数
      * @return 请求返回结果，如果发生异常返回null
      */
-    public static Resp sendUDPMsgBySocket(MsgType msgType, Map<String,Object> param,
+    public static Resp sendUDPMsgBySocket(int msgType, Map<String,Object> param,
                                           DatagramPacket datagramPacket, DatagramSocket socket){
         try
         {
@@ -107,7 +107,7 @@ public class CommunicateUtil {
         }
     }
 
-    public static void sendUDPMsgWithoutResult(MsgType msgType, Map<String,Object> param,
+    public static void sendUDPMsgWithoutResult(int msgType, Map<String,Object> param,
                                                        DatagramPacket datagramPacket, DatagramSocket socket){
         try
         {

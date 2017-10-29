@@ -28,7 +28,7 @@ public class MsgReceiveThread extends Thread {
     @Override
     public void run() {
         while (true){
-            byte[] bytes = new byte[1024 * 128];
+            byte[] bytes = new byte[1024 * 1280];
             DatagramPacket dp = new DatagramPacket(bytes, bytes.length);
             try {
                 socket.receive(dp);

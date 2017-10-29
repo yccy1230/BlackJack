@@ -15,7 +15,7 @@ import java.util.Date;
 public class Resp implements Serializable {
     private static final long serialVersionUID = -8660197629749596025L;
 
-    private MsgType msgType;
+    private int msgType;
     private String resMsg;
     private int resCode;
     private Object data;
@@ -24,28 +24,28 @@ public class Resp implements Serializable {
     public Resp() {}
 
     /**通常用于发生错误时返回数据体*/
-    public Resp(int resCode, String resMsg,MsgType msgType) {
+    public Resp(int resCode, String resMsg,int msgType) {
         this.resCode = resCode;
         this.msgType = msgType;
         this.resMsg = resMsg;
         this.resTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public Resp(MsgType msgType, Object data) {
+    public Resp(int msgType, Object data) {
         this.resCode = Constants.SUCCESS_CODE;
         this.msgType = msgType;
         this.data = data;
         this.resTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public Resp(MsgType msgType, String resMsg, Date resTime) {
+    public Resp(int msgType, String resMsg, Date resTime) {
         this.resCode = Constants.SUCCESS_CODE;
         this.msgType = msgType;
         this.resMsg = resMsg;
         this.resTime = resTime;
     }
 
-    public Resp(MsgType msgType, String resMsg, Date resTime, Object data) {
+    public Resp(int msgType, String resMsg, Date resTime, Object data) {
         this.resCode = Constants.SUCCESS_CODE;
         this.msgType = msgType;
         this.resMsg = resMsg;
@@ -53,7 +53,7 @@ public class Resp implements Serializable {
         this.data = data;
     }
 
-    public Resp(MsgType msgType, String resMsg, Object data) {
+    public Resp(int msgType, String resMsg, Object data) {
         this.resCode = Constants.SUCCESS_CODE;
         this.msgType = msgType;
         this.resMsg = resMsg;
@@ -77,11 +77,11 @@ public class Resp implements Serializable {
         this.resTime = resTime;
     }
 
-    public MsgType getMsgType() {
+    public int getMsgType() {
         return msgType;
     }
 
-    public void setMsgType(MsgType msgType) {
+    public void setMsgType(int msgType) {
         this.msgType = msgType;
     }
 
