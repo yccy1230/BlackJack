@@ -1,5 +1,6 @@
 package service;
 
+import com.sun.corba.se.impl.orbutil.closure.Constant;
 import constants.Constants;
 import constants.MsgType;
 import entity.Player;
@@ -63,16 +64,13 @@ public class ServerCommunicateService {
      * 用户上线广播消息，同时添加用户到session维护
      */
     public void userConnectedBroadcast(Room room,Player player, DatagramPacket address){
-        hashTable.put(player.getId(),address);
-       for(String key : hashTable.keySet()){
+        for(String key : hashTable.keySet()){
            DatagramPacket dp = hashTable.get(key);
            Map<String,Object> param = new HashMap<>();
            param.put(Constants.PARAM_PLAYER,player);
            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER,param,dp,socket);
        }
-        Map<String,Object> param = new HashMap<>(16);
-        param.put(Constants.PARAM_INIT_USER,room);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_RESULT,param,address,socket);
+        hashTable.put(player.getId(),address);
     }
 
     /**
@@ -110,9 +108,10 @@ public class ServerCommunicateService {
         }
     }
 
-    public void sendLoginResult(Player player,DatagramPacket datagramPacket){
+    public void sendLoginResult(List<Player> players,DatagramPacket datagramPacket){
         Map<String,Object> param =new HashMap<>();
-        param.put(player.getId(),Constants.PARAM_USER_ID);
+        param.put(Constants.PARAM_USER_ID,players);
+        param.put(Constants.PARAM_LOGIN_RESULT, Constants.LOGIN_SUCCESS);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,datagramPacket,socket);
     }
 

@@ -35,7 +35,7 @@ public class GameController implements MsgReceiveListener {
                 Map<String,Object> param = (Map<String, Object>) resp.getData();
                 String nickName = (String) param.get(Constants.PARAM_NICK_NAME);
                 Player player = room.addPlayers(nickName);
-                communicateService.sendLoginResult(player,datagramPacket);
+                communicateService.sendLoginResult(room.getPlayers(),datagramPacket);
                 communicateService.userConnectedBroadcast(room,player,datagramPacket);
                 break;
             case MsgType.METHOD_READY:

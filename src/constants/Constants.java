@@ -12,8 +12,8 @@ public class Constants {
     public static final String PARAM_INIT_USER ="inituser";
     public static final String PARAM_PLAYER ="player";
     public static final String PARAM_USER_ID = "userid";
+    public static final String PARAM_LOGIN_RESULT = "loginresult";
     public static final String PARAM_BET ="bet";
-    public static final int SUCCESS_CODE = 200;
 
     /**用户状态*/
     public static final int USER_IDEL = 0;
@@ -23,6 +23,10 @@ public class Constants {
     public static final int USER_OVER = 4;
     public static final int USER_BLACKJACK = 5;
     public static final int EMPTY_USER = -1;//UI使用
+
+    /**返回结果*/
+    public static final int LOGIN_SUCCESS = 200;
+    public static final int SUCCESS_CODE= 200;
 
     /**Player Panel Size*/
     public static final int PLAYER_PANEL_WIDTH = 360;
