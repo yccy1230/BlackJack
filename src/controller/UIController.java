@@ -44,19 +44,35 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 					mainFrame.addUserPanel(playerParam);
 					break;
 				case MsgType.METHOD_GAME_BEGIN:
+					mainFrame.onGameStart();
 					break;
 				case MsgType.METHOD_STAND:
 					break;
 				case MsgType.METHOD_DOUBLE:
 					break;
 				case MsgType.METHOD_READY_RESULT:
-					if(Constants.SUCCESS_CODE == (int)param.get(Constants.PARAM_READY_RESULT)){
-						mainFrame.showUserCancelReadyBtn();
+					if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_READY_RESULT)){
+						mainFrame.showToastMsg(ConstantsMsg.MSG_WAIT_OTHER_USER);
+						mainFrame.onUserReady();
 					}else{
-						mainFrame.showUserReadyBtn();
+						mainFrame.showMessage(resp.getResMsg());
+						mainFrame.onUserLogin();
+					}
+					break;
+				case MsgType.METHOD_CANCLE_READY_RESULT:
+					if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_CANCLE_READY_RESULT)){
+						mainFrame.showToastMsg("");
+						mainFrame.onUserLogin();
+					}else{
+						mainFrame.showMessage(resp.getResMsg());
+						mainFrame.onUserReady();
 					}
 					break;
 				case MsgType.METHOD_USER_EXIT:
+					String userid = (String) param.get(Constants.PARAM_USER_ID);
+					if(userid!=null){
+						mainFrame.removeUserPanel(userid);
+					}
 					break;
 				case MsgType.METHOD_LOGIN_RESULT:
 					if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_LOGIN_RESULT)){
@@ -85,34 +101,31 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 
 	@Override
 	public void onStandClicked() {
-		
-	}
+		mainFrame.showToastMsg("onStandClicked");
+		mainFrame.showMessage("onStandClicked");
+    }
 
 	@Override
 	public void onDoubleClicked() {
-		
-	}
+		mainFrame.showToastMsg("onDoubleClicked");
+		mainFrame.showMessage("onDoubleClicked");
+    }
 
 	@Override
 	public void onSurrenderClicked() {
-		
+
+		mainFrame.showToastMsg("onSurrenderClicked");
+		mainFrame.showMessage("onSurrenderClicked");
 	}
 
 	@Override
 	public void onReadyClicked(int bet) {
-		Resp resp = communicateService.sendUserReadyMsg(bet);
-		if(resp.getResCode()==Constants.SUCCESS_CODE){
-			mainFrame.showToastMsg(ConstantsMsg.MSG_WAIT_OTHER_USER);
-		}else{
-			//准备出错
-			mainFrame.showMessage(resp.getResMsg());
-			mainFrame.showUserReadyBtn();
-		}
+		communicateService.sendUserReadyMsg(bet);
 	}
 
 	@Override
 	public void onCancelReadyClicked() {
-
+		communicateService.sendUserCancelReady();
 	}
 
 	@Override

@@ -62,7 +62,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 	/**
 	 * 显示取消准备操作界面
 	 */
-	private void showCancelReadyOperation() {
+	public void showCancelReadyOperation() {
         hideAll();
         btnCancel.setVisible(true);
         btnCancel.setEnabled(true);
@@ -71,7 +71,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 	/**
 	 * 隐藏所有按钮
 	 */
-	private void hideAll(){
+	public void hideAll(){
 		hitBtn.setVisible(false);
 		btnStand.setVisible(false);
 		btnDouble.setVisible(false);

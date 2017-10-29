@@ -41,14 +41,14 @@ public class UserPanel extends JPanel {
 	
 	/**
 	 * 删除玩家
-	 * @param playerParam 包含用户ID即可
+	 * @param userid 包含用户ID即可
 	 */
-	public void removeUserPanel(Player playerParam){
+	public void removeUserPanel(String userid){
 		//以data为基准进行遍历
 		for (int i = 0; i < playerData.size(); i++) {
 			Player player = playerData.get(i);
 			if(player.getProperty()!=Constants.EMPTY_USER
-					&&player.getId().equals(playerParam.getId())){
+					&&player.getId().equals(userid)){
 				playerPanels.get(i).remove();//关闭UI
 				playerData.get(i).setProperty(Constants.EMPTY_USER);//清空该用户数据
 				break;

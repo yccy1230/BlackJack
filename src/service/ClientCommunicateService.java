@@ -78,18 +78,26 @@ public class ClientCommunicateService {
     public void disconnectServer(){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_USER_ID,deviceID);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGOUT,param,serverIP,serverPort,socket);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_USER_EXIT,param,serverIP,serverPort,socket);
     }
     
     /**
      * 发送准备请求(By IP Address)
      */
-    public Resp sendUserReadyMsg(int bet){
+    public void sendUserReadyMsg(int bet){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_BET, bet);
         param.put(Constants.PARAM_USER_ID,deviceID);
-        Resp resp = CommunicateUtil.sendUDPMsgByIP(MsgType.METHOD_READY,param,serverIP,serverPort,socket);
-        return resp;
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_READY,param,serverIP,serverPort,socket);
+    }
+
+    /**
+     * 发送取消准备请求(By IP Address)
+     */
+    public void sendUserCancelReady(){
+        Map<String,Object> param = new HashMap<>(16);
+        param.put(Constants.PARAM_USER_ID,deviceID);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCLE_READY,param,serverIP,serverPort,socket);
     }
 
     /**

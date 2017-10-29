@@ -122,7 +122,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * 显示用户 准备 按钮
 	 */
-	public void showUserReadyBtn(){
+	public void onUserLogin(){
 		setVisible(true);
 		operationPanel.showReadyOperation();
 		loginFrame.setVisible(false);
@@ -131,10 +131,18 @@ public class MainFrame extends JFrame {
 	/**
 	 * 显示 取消准备 按钮
 	 */
-	public void showUserCancelReadyBtn(){
+	public void onUserReady(){
 		setVisible(true);
-		operationPanel.showReadyOperation();
+		operationPanel.showCancelReadyOperation();
 		loginFrame.setVisible(false);
+	}
+
+	/**
+	 * 隐藏 所有 按钮
+	 */
+	public void onGameStart(){
+		operationPanel.hideAll();
+		//TODO: 禁止窗口关闭 10/30
 	}
 
 	
@@ -145,7 +153,16 @@ public class MainFrame extends JFrame {
 	public void addUserPanel(Player player){
 		userPanel.addUserPanel(player);
 	}
-	
+
+	/**
+	 * 删除用户
+	 * @param userid
+	 */
+	public void removeUserPanel(String userid){
+		userPanel.removeUserPanel(userid);
+	}
+
+
 	/**
 	 * 显示弹窗提示信息
 	 */
