@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,10 @@ public class Hand {
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+    }
+
+    public Hand(){
+        this.cards=new ArrayList<>();
     }
 
     //亮牌

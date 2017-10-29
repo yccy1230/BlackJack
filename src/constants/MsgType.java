@@ -19,6 +19,7 @@ public enum MsgType implements Serializable{
     METHOD_RESULT,      //返回值
     METHOD_NEWUSER,    //新用户
     METHOD_GAME_BEGIN, //游戏开始
+    METHOD_LOGIN_RESULT, //登陆结果
 
     //Server Method
     METHOD_UPDATE_USER,     //更新user视图

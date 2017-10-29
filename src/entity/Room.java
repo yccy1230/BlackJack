@@ -33,12 +33,11 @@ public class Room {
     }
 
     //添加用户
-    public Player addPlayers(Resp resp){
+    public Player addPlayers(String nickName){
         Player player = new Player();
         player.setId(UUID.randomUUID().toString());
         player.setHand(new Hand());
-        Map<String,Object> param = (Map<String, Object>) resp.getData();
-        player.setNickname((String) param.get(Constants.PARAM_NICK_NAME));
+        player.setNickname(nickName);
         player.setStatus(Constants.USER_IDEL);
         players.add(player);
         return player;
@@ -110,6 +109,7 @@ public class Room {
         //发送游戏结果(用户状态置为结束)
         sendResult();
 
+        isPlaying=false;
     }
 
     private void handlerUser(int i) {
@@ -142,6 +142,7 @@ public class Room {
         }while (resp.getMsgType() == MsgType.METHOD_DOUBLE);
     }
 
+    //计算牌局结果
     public void sendResult(){
         for(int i=0;i<players.size();i++){
             if(players.get(i).getStatus()==Constants.USER_BLACKJACK){
@@ -160,6 +161,7 @@ public class Room {
         serverCommunicateService.sendBroadcast();
     }
 
+    //判断是否所有玩家均结束
     public int playersOver(List<Player> players){
         int count=0;
         for (int i=0;i<players.size();i++){

@@ -20,21 +20,22 @@ public class GameController implements MsgReceiveListener {
     private Room room;
 
     public GameController() {
-        Room room =new Room(communicateService);
+        this.room =new Room(communicateService);
     }
 
     @Override
     public void onReceiveMsg(Resp resp, DatagramPacket datagramPacket) {
         switch(resp.getMsgType()){
             case METHOD_LOGIN:
-                if(resp.getResCode()== Constants.SUCCESS_CODE){
-                    if(room.playerFull()) {
-                        communicateService.sendUDPMsgWithoutResult(datagramPacket);
-                        return;
-                    }
-                    Player player = room.addPlayers(resp);
-                    communicateService.userConnectedBroadcast(room,player,datagramPacket);
+                if(room.playerFull()) {
+                    communicateService.sendUDPMsgWithoutResult(datagramPacket);
+                    return;
                 }
+                Map<String,Object> param = (Map<String, Object>) resp.getData();
+                String nickName = (String) param.get(Constants.PARAM_NICK_NAME);
+                Player player = room.addPlayers(nickName);
+                communicateService.sendLoginResult(player,datagramPacket);
+                communicateService.userConnectedBroadcast(room,player,datagramPacket);
                 break;
             case METHOD_READY:
                 room.checkAllReady();
@@ -42,7 +43,7 @@ public class GameController implements MsgReceiveListener {
                 break;
             case METHOD_SURRENDER:
                 if(resp.getResCode()==Constants.SUCCESS_CODE){
-                    Map<String,Object> param = (Map<String, Object>) resp.getData();
+                    param = (Map<String, Object>) resp.getData();
                     String id = (String) param.get(Constants.PARAM_USER_ID);
                     for(int i=0; i<room.getPlayers().size();i++){
                         if(room.getPlayers().get(i).getId().equals(id)) {

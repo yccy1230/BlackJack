@@ -107,7 +107,7 @@ public class CommunicateUtil {
         }
     }
 
-    public static void broadcast(MsgType msgType, Map<String,Object> param,
+    public static void sendUDPMsgWithoutResult(MsgType msgType, Map<String,Object> param,
                                                        DatagramPacket datagramPacket, DatagramSocket socket){
         try
         {
