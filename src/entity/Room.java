@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class Room {
+    private int id;
     private List<Player> players;
     private Deck deck;
     private Dealer dealer;
@@ -31,6 +32,14 @@ public class Room {
         this.players = new ArrayList<>();
         this.dealer=new Dealer();
         this.isPlaying=false;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public List<Player> getPlayers() {

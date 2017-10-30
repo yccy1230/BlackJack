@@ -7,10 +7,13 @@ import entity.Player;
 import entity.Room;
 import listener.MsgReceiveListener;
 import listener.NetworkListener;
+import org.omg.PortableInterceptor.INACTIVE;
+import sun.awt.image.IntegerComponentRaster;
 import thread.MsgReceiveThread;
 import utils.CommunicateUtil;
 import utils.Resp;
 
+import java.lang.management.PlatformLoggingMXBean;
 import java.net.*;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +38,7 @@ public class ServerCommunicateService {
     /**消息接收线程*/
     private MsgReceiveThread serverMsgReceiveThread;
     /**Session*/
-    private HashMap<String, DatagramPacket> hashTable;
+    private HashMap<Integer, HashMap<String,DatagramPacket>> hashTable;
 
     /**
      * 构造通讯器，并绑定端口
@@ -64,13 +67,19 @@ public class ServerCommunicateService {
      * 用户上线广播消息，同时添加用户到session维护
      */
     public void userConnectedBroadcast(Room room,Player player, DatagramPacket address){
-        for(String key : hashTable.keySet()){
-           DatagramPacket dp = hashTable.get(key);
-           Map<String,Object> param = new HashMap<>();
-           param.put(Constants.PARAM_PLAYER,player);
-           CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER,param,dp,socket);
-       }
-        hashTable.put(player.getId(),address);
+        int roomId = room.getId();
+        for(Integer key : hashTable.keySet()){
+            if(key == roomId){
+               for(int i =0; i< hashTable.get(key).size(); i++){
+                   DatagramPacket dp = hashTable.get(key).get(i);
+                   Map<String,Object> param = new HashMap<>();
+                   param.put(Constants.PARAM_PLAYER,player);
+                   CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER,param,dp,socket);
+               }
+               hashTable.get(key).put(player.getId(),address);
+               return ;
+            }
+        }
     }
 
     /**
@@ -113,19 +122,24 @@ public class ServerCommunicateService {
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCLE_READY_RESULT,param,datagramPacket,socket);
     }
 
-    public void sendExitMsgWithoutResult(String userID){
-        hashTable.remove(userID);
-        for(String key : hashTable.keySet()){
-            DatagramPacket dp = hashTable.get(key);
-            Map<String,Object> param = new HashMap<>();
-            param.put(Constants.PARAM_USER_ID,userID);
-            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_USER_EXIT,param,dp,socket);
+    public void sendExitMsgWithoutResult(int roomId,String userID){
+        for(Integer key : hashTable.keySet()){
+            if(key == roomId){
+                hashTable.get(key).remove(userID);
+                for(int i =0; i< hashTable.get(key).size(); i++){
+                    DatagramPacket dp = hashTable.get(key).get(i);
+                    Map<String,Object> param = new HashMap<>();
+                    param.put(Constants.PARAM_USER_ID,userID);
+                    CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_USER_EXIT,param,dp,socket);
+                }
+                return ;
+            }
         }
     }
 
     public void sendBroadcast() {
-        for (String key : hashTable.keySet()) {
-            DatagramPacket dp = hashTable.get(key);
+        for (Integer key : hashTable.keySet()) {
+            DatagramPacket dp = hashTable.get(key).get(key);
             Map<String, Object> param = new HashMap<>();
             CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER, param, dp, socket);
         }

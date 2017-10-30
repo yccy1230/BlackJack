@@ -9,6 +9,7 @@ import service.ServerCommunicateService;
 import utils.Resp;
 
 import java.net.DatagramPacket;
+import java.util.HashMap;
 import java.util.Map;
 /**
 * @description 游戏主控制器
@@ -18,10 +19,10 @@ import java.util.Map;
 public class GameController implements MsgReceiveListener {
     private ServerCommunicateService communicateService;
 
-    private Room room;
+    private Map<Integer,Room> rooms;
 
     public GameController() {
-        this.room =new Room(communicateService);
+        this.rooms =new HashMap<>();
     }
 
     @Override
@@ -30,42 +31,62 @@ public class GameController implements MsgReceiveListener {
         Map<String,Object> param = (Map<String, Object>) resp.getData();
         switch(resp.getMsgType()){
             case MsgType.METHOD_LOGIN:
-                if(room.playerFull()) {
+                int roomId =  resp.getRoomId();
+                if(rooms.get(roomId)==null){
+                    Room room =new Room(communicateService);
+                    rooms.put(roomId,room);
+                }
+                if(rooms.get(roomId).playerFull()) {
                     communicateService.sendUDPMsgWithoutResult(datagramPacket);
                     return;
                 }
                 String nickName = (String) param.get(Constants.PARAM_NICK_NAME);
-                Player player = room.addPlayers(nickName);
-                communicateService.sendLoginResult(player.getId(),room.getPlayers(),datagramPacket);
-                communicateService.userConnectedBroadcast(room,player,datagramPacket);
+                Player player = rooms.get(roomId).addPlayers(nickName);
+                communicateService.sendLoginResult(player.getId(),rooms.get(roomId).getPlayers(),datagramPacket);
+                communicateService.userConnectedBroadcast(rooms.get(roomId),player,datagramPacket);
                 break;
             case MsgType.METHOD_READY:
+                roomId =  resp.getRoomId();
+                if(rooms.get(roomId)==null){
+                    return;
+                }
                 communicateService.sendReadyMsgWithoutResult(datagramPacket);
                 int bet = (int)param.get(Constants.PARAM_BET);
                 String userId = (String) param.get(Constants.PARAM_USER_ID);
-                room.userReady(userId,bet);
-                room.checkAllReady();
+                rooms.get(roomId).userReady(userId,bet);
+                rooms.get(roomId).checkAllReady();
                 break;
             case MsgType.METHOD_CANCLE_READY:
+                roomId =  resp.getRoomId();
+                if(rooms.get(roomId)==null){
+                    return;
+                }
                 userId =(String) param.get(Constants.PARAM_USER_ID);
-                room.userCancleReady(userId);
+                rooms.get(roomId).userCancleReady(userId);
                 communicateService.sendCancleReadyMsgWithoutResult(datagramPacket);
                 break;
             case MsgType.METHOD_SURRENDER:
-                param = (Map<String, Object>) resp.getData();
                 String id = (String) param.get(Constants.PARAM_USER_ID);
-                for(int i=0; i<room.getPlayers().size();i++){
-                    if(room.getPlayers().get(i).getId().equals(id)) {
-                        room.getPlayers().get(i).setStatus(Constants.USER_SURRENDER);
+                roomId =  resp.getRoomId();
+                if(rooms.get(roomId)==null){
+                    return;
+                }
+                for(int i=0; i<rooms.get(roomId).getPlayers().size();i++){
+                    if(rooms.get(roomId).getPlayers().get(i).getId().equals(id)) {
+                        rooms.get(roomId).getPlayers().get(i).setStatus(Constants.USER_SURRENDER);
                         break;
                     }
                 }
                 communicateService.sendUDPMsgWithoutResult(datagramPacket);
                 break;
             case MsgType.METHOD_USER_EXIT:
+                roomId =  resp.getRoomId();
+                if(rooms.get(roomId)==null){
+                    return;
+                }
                 userId = (String) param.get(Constants.PARAM_USER_ID);
-                room.userExit(userId);
-                communicateService.sendExitMsgWithoutResult(userId);
+                rooms.get(roomId).userExit(userId);
+                communicateService.sendExitMsgWithoutResult(roomId,userId);
                 break;
             default:
                 break;
