@@ -71,7 +71,7 @@ public class ClientCommunicateService {
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_NICK_NAME,nickName);
         param.put(Constants.PARAM_ROOM_ID,roomID);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN,param,serverIP,serverPort,socket);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN,param,serverIP,serverPort,roomID,socket);
     }
 
     /**
@@ -81,7 +81,7 @@ public class ClientCommunicateService {
     public void disconnectServer(){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_USER_ID,deviceID);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_USER_EXIT,param,serverIP,serverPort,socket);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_USER_EXIT,param,serverIP,serverPort,roomID,socket);
     }
     
     /**
@@ -91,7 +91,7 @@ public class ClientCommunicateService {
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_BET, bet);
         param.put(Constants.PARAM_USER_ID,deviceID);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_READY,param,serverIP,serverPort,socket);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_READY,param,serverIP,serverPort,roomID,socket);
     }
 
     /**
@@ -100,7 +100,7 @@ public class ClientCommunicateService {
     public void sendUserCancelReady(){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_USER_ID,deviceID);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCLE_READY,param,serverIP,serverPort,socket);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCLE_READY,param,serverIP,serverPort,roomID,socket);
     }
 
     /**
@@ -109,7 +109,7 @@ public class ClientCommunicateService {
     public Resp sendUserOperation(int msgType){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_USER_ID,deviceID);
-        Resp resp = CommunicateUtil.sendUDPMsgByIP(msgType,param,serverIP,serverPort,socket);
+        Resp resp = CommunicateUtil.sendUDPMsgByIP(msgType,param,serverIP,serverPort,roomID,socket);
         return resp;
     }
 

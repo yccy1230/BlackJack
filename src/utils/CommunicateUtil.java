@@ -1,7 +1,6 @@
 package utils;
 
 import com.alibaba.fastjson.JSON;
-import constants.MsgType;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -21,10 +20,10 @@ public class CommunicateUtil {
      * @return 请求返回结果，如果发生异常返回null
      */
     public static Resp sendUDPMsgByIP(int msgType, Map<String,Object> param,
-                                  String targetIp, int targetPort, DatagramSocket socket){
+                                  String targetIp, int targetPort,int roomID,DatagramSocket socket){
         try
         {
-            Resp resp = new Resp(msgType,param);
+            Resp resp = new Resp(roomID,msgType,param);
             /*使用UTF-8编码*/
             byte[] msg = (JSON.toJSONString(resp)).getBytes("UTF-8");
             /*得到主机的internet地址*/
@@ -56,10 +55,10 @@ public class CommunicateUtil {
      * @return 请求返回结果，如果发生异常返回null
      */
     public static void sendUDPMsgWithoutResult(int msgType, Map<String,Object> param,
-                                      String targetIp, int targetPort, DatagramSocket socket){
+                                      String targetIp, int targetPort,int roomID, DatagramSocket socket){
         try
         {
-            Resp resp = new Resp(msgType,param);
+            Resp resp = new Resp(roomID,msgType,param);
             /*使用UTF-8编码*/
             byte[] msg = (JSON.toJSONString(resp)).getBytes("UTF-8");
             /*得到主机的internet地址*/

@@ -36,62 +36,60 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 
 	@Override
     public void onReceiveMsg(Resp resp, DatagramPacket dp) {
-    	if(resp.getResCode()==Constants.SUCCESS_CODE) {
-    		Map<String,Object> param = (Map<String, Object>) resp.getData();
-			switch (resp.getMsgType()) {
-				case MsgType.METHOD_NEWUSER:
-					Player playerParam = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
-					mainFrame.addUserPanel(playerParam);
-					break;
-				case MsgType.METHOD_GAME_BEGIN:
-					mainFrame.onGameStart();
-					break;
-				case MsgType.METHOD_STAND:
-					break;
-				case MsgType.METHOD_DOUBLE:
-					break;
-				case MsgType.METHOD_READY_RESULT:
-					if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_READY_RESULT)){
-						mainFrame.showToastMsg(ConstantsMsg.MSG_WAIT_OTHER_USER);
-						mainFrame.onUserReady();
-					}else{
-						mainFrame.showMessage(resp.getResMsg());
-						mainFrame.onUserLogin();
+		Map<String,Object> param = (Map<String, Object>) resp.getData();
+		switch (resp.getMsgType()) {
+			case MsgType.METHOD_NEWUSER:
+				Player playerParam = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
+				mainFrame.addUserPanel(playerParam);
+				break;
+			case MsgType.METHOD_GAME_BEGIN:
+				mainFrame.onGameStart();
+				break;
+			case MsgType.METHOD_STAND:
+				break;
+			case MsgType.METHOD_DOUBLE:
+				break;
+			case MsgType.METHOD_READY_RESULT:
+				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_READY_RESULT)){
+					mainFrame.showToastMsg(ConstantsMsg.MSG_WAIT_OTHER_USER);
+					mainFrame.onUserReady();
+				}else{
+					mainFrame.showMessage(resp.getResMsg());
+					mainFrame.onUserLogin();
+				}
+				break;
+			case MsgType.METHOD_CANCLE_READY_RESULT:
+				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_CANCLE_READY_RESULT)){
+					mainFrame.showToastMsg("");
+					mainFrame.onUserLogin();
+				}else{
+					mainFrame.showMessage(resp.getResMsg());
+					mainFrame.onUserReady();
+				}
+				break;
+			case MsgType.METHOD_USER_EXIT:
+				String userid = (String) param.get(Constants.PARAM_USER_ID);
+				if(userid!=null){
+					mainFrame.removeUserPanel(userid);
+				}
+				break;
+			case MsgType.METHOD_LOGIN_RESULT:
+				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_LOGIN_RESULT)){
+					communicateService.setDeviceID((String) param.get(Constants.PARAM_USER_ID));
+					mainFrame.showMainFrame();
+					List<Player> players = JSONObject.parseArray(((JSONArray)param.get(Constants.PARAM_INIT_USER)).toJSONString(),Player.class);
+					for (int i = 0; i < players.size(); i++) {
+						Player player = players.get(i);
+						mainFrame.addUserPanel(player);
 					}
-					break;
-				case MsgType.METHOD_CANCLE_READY_RESULT:
-					if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_CANCLE_READY_RESULT)){
-						mainFrame.showToastMsg("");
-						mainFrame.onUserLogin();
-					}else{
-						mainFrame.showMessage(resp.getResMsg());
-						mainFrame.onUserReady();
-					}
-					break;
-				case MsgType.METHOD_USER_EXIT:
-					String userid = (String) param.get(Constants.PARAM_USER_ID);
-					if(userid!=null){
-						mainFrame.removeUserPanel(userid);
-					}
-					break;
-				case MsgType.METHOD_LOGIN_RESULT:
-					if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_LOGIN_RESULT)){
-						communicateService.setDeviceID((String) param.get(Constants.PARAM_USER_ID));
-						mainFrame.showMainFrame();
-						List<Player> players = JSONObject.parseArray(((JSONArray)param.get(Constants.PARAM_INIT_USER)).toJSONString(),Player.class);
-						for (int i = 0; i < players.size(); i++) {
-							Player player = players.get(i);
-							mainFrame.addUserPanel(player);
-						}
-					}else{
-						mainFrame.showMessage((String) param.get(Constants.PARAM_ERROR_MSG));
-					}
-					break;
-				default:
-					break;
-			}
+				}else{
+					mainFrame.showMessage((String) param.get(Constants.PARAM_ERROR_MSG));
+				}
+				break;
+			default:
+				break;
 		}
-    }
+	}
 
 	@Override
 	public void onHitClicked() {

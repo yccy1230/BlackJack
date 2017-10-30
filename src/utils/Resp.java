@@ -1,8 +1,5 @@
 package utils;
 
-import constants.Constants;
-import constants.MsgType;
-
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -28,6 +25,20 @@ public class Resp implements Serializable {
         this.roomId = roomId;
         this.msgType = msgType;
         this.resMsg = resMsg;
+        this.resTime = new Timestamp(System.currentTimeMillis());
+    }
+
+    public Resp(int roomId,int msgType, Object object) {
+        this.roomId = roomId;
+        this.msgType = msgType;
+        this.data = object;
+        this.resTime = new Timestamp(System.currentTimeMillis());
+    }
+
+
+    public Resp(int msgType, Object object) {
+        this.msgType = msgType;
+        this.data = object;
         this.resTime = new Timestamp(System.currentTimeMillis());
     }
 
