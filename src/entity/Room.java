@@ -80,7 +80,7 @@ public class Room {
     //开始游戏
     public void startGame(){
         //向客户端发送游戏开始的信息
-        //serverCommunicateService.sendBroadcast();
+        serverCommunicateService.sendStartGameBroadcast(id);
         isPlaying=true;
         //初始化牌组
         deck.initCards();

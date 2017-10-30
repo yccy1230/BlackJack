@@ -109,7 +109,7 @@ public class ServerCommunicateService {
     public void sendLoginErrorMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_ERROR_MSG, ConstantsMsg.LOGIN_ERROR);
-        param.put(Constants.PARAM_LOGIN_RESULT, Constants.LOGIN_SUCCESS);
+        param.put(Constants.PARAM_LOGIN_RESULT, Constants.LOGIN_ERROR);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,datagramPacket,socket);
     }
 
@@ -146,12 +146,27 @@ public class ServerCommunicateService {
         }
     }
 
-    public void sendBroadcast() {
-        for (Integer key : hashTable.keySet()) {
-            DatagramPacket dp = hashTable.get(key).get(key);
-            Map<String, Object> param = new HashMap<>();
-            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER, param, dp, socket);
+    public void sendStartGameBroadcast(int roomId) {
+        HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
+        if(hashTable.get(roomId)!=null){
+            roomAddress.putAll(hashTable.get(roomId));
         }
+        for (DatagramPacket dp: roomAddress.values()) {
+            Map<String,Object> param = new HashMap<>();
+            param.put(Constants.PARAM_START_GAME,Constants.START_SUCCESS);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_GAME_BEGIN,param,dp,socket);
+        }
+        return ;
+    }
+
+
+    public void sendBroadcast() {
+            for (Integer key : hashTable.keySet()) {
+                DatagramPacket dp = hashTable.get(key).get(key);
+                Map<String, Object> param = new HashMap<>();
+                CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER, param, dp, socket);
+            }
+
     }
 
     public void sendLoginResult(String userId,List<Player> players,DatagramPacket datagramPacket){
