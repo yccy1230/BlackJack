@@ -34,6 +34,7 @@ public class MainFrame extends JFrame {
 	private JLabel msgLabel;
 	
 	private OperationListener operationListener;
+	private WindowAdapter windowAdapter;
 
 	
 	public MainFrame(OperationListener operationListener) {
@@ -47,21 +48,21 @@ public class MainFrame extends JFrame {
 
 		contentPane = new JPanel();
 		contentPane.setLayout(null);
-
 		initFrame();
-		
 		setContentPane(contentPane);
 
-		addWindowListener(new WindowAdapter() {
+		windowAdapter = new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				int result = JOptionPane.showConfirmDialog(contentPane,
 						ConstantsMsg.MSG_CONFIRM_LOGOUT,ConstantsMsg.MSG_CONFIRM_LOGOUT_TITLE,JOptionPane.YES_NO_OPTION);
-				if(result == 0 ){
+				if(result == 0){
 					operationListener.onExitClicked();
 				}
 			}
-		});
+		};
+
+		addWindowListener(windowAdapter);
 	}
 	
 	/**
@@ -76,7 +77,6 @@ public class MainFrame extends JFrame {
 		msgLabel.setForeground(Color.WHITE);
 		msgLabel.setBounds(400, 340, 400, 30);
 		contentPane.add(msgLabel);
-		
 		
 		//初始化庄家界面
 		dealerPanel = new DealerPanel();
@@ -178,17 +178,24 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * 隐藏 所有 按钮
+	 * 游戏开始
 	 */
 	public void onGameStart(){
 		operationPanel.hideAll();
-		showToastMsg("游戏开始！");
-		//TODO: 禁止窗口关闭 10/30
+		showToastMsg(ConstantsMsg.MSG_GAME_START);
+		removeWindowListener(windowAdapter);
+	}
+
+	/**
+	 * 游戏结束
+	 */
+	public void onGameOver(){
+
 	}
 
 
 	/**
-	 * 删除用户
+	 * 其他用户退出房间
 	 * @param userid
 	 */
 	public void onOtherUserExit(String userid){
@@ -196,19 +203,12 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
-	 * 用户进入房间
+	 * 其他用户进入房间
 	 * @param player
 	 */
 	public void onOtherUserEnterRoom(Player player){
 		addUserPanel(player);
-	}
-
-	/**
-	 * 添加用户
-	 * @param player
-	 */
-	private void addUserPanel(Player player){
-		userPanel.addUserPanel(player);
+		showToastMsg("玩家："+player.getNickname()+" 进入房间。");
 	}
 
 	/**
@@ -225,48 +225,12 @@ public class MainFrame extends JFrame {
 		msgLabel.setText(msg);
 	}
 
-//	private void test(){
-//		//测试玩家1
-//		Player player = new Player();
-//		player.setNickname("玩家1");
-//		player.setId("玩家1");
-//		Hand hand = new Hand();
-//		List<Card> cards = new ArrayList<>();
-//		cards.add(new Card(Constants.CLUBS_1));
-//		cards.add(new Card(Constants.DIAMONDS_1));
-//		cards.add(new Card(Constants.CLUBS_3));
-//		cards.add(new Card(Constants.DIAMONDS_1));
-//		cards.add(new Card(Constants.CLUBS_5));
-//		cards.add(new Card(Constants.DIAMONDS_1));
-//		cards.add(new Card(Constants.CLUBS_7));
-//		cards.add(new Card(Constants.DIAMONDS_1));
-//		cards.add(new Card(Constants.CLUBS_9));
-//		hand.setCards(cards);
-//		player.setHand(hand);
-//		addUserPanel(player);
-//
-//		//测试玩家2
-//		Player player2 = new Player();
-//		player2.setNickname("玩家2");
-//		player2.setId("玩家2");
-//		player2.setHand(hand);
-//		addUserPanel(player2);
-//
-//		//测试玩家3
-//		Player player3 = new Player();
-//		player3.setNickname("玩家3");
-//		player3.setId("玩家3");
-//		player3.setHand(hand);
-//		addUserPanel(player3);
-//
-//		Dealer dealer = new Dealer();
-//		dealer.setHand(hand);
-//		dealerPanel.refreashCardView(dealer);
-//
-//		addUserPanel(player3);
-//		addUserPanel(player3);
-//
-//		operationPanel.showTurnOperation();
-//	}
-	
+
+	/**
+	 * 添加用户
+	 * @param player
+	 */
+	private void addUserPanel(Player player){
+		userPanel.addUserPanel(player);
+	}
 }

@@ -112,7 +112,6 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 
 	@Override
 	public void onSurrenderClicked() {
-
 		mainFrame.showToastMsg("onSurrenderClicked");
 		mainFrame.showMessage("onSurrenderClicked");
 	}

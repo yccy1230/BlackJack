@@ -108,8 +108,8 @@ public class ServerCommunicateService {
 
     public void sendLoginErrorMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);
-        param.put(Constants.PARAM_ERROR_MSG, ConstantsMsg.LOGIN_ERROR);
         param.put(Constants.PARAM_LOGIN_RESULT, Constants.LOGIN_ERROR);
+        param.put(Constants.PARAM_ERROR_MSG, ConstantsMsg.MSG_USER_FULL);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,datagramPacket,socket);
     }
 
