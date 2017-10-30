@@ -22,6 +22,9 @@ public class ConstantsMsg {
     public static final String MSG_PROPERTY_NOT_ENOUGH = "余额不足！";
     public static final String MSG_USER_INIT_MONEY = "赠送您起始金额1000元，重新进入游戏后重置。";
     public static final String MSG_USER_TURN = "现在是您的轮次，请点击按钮操作。";
+    public static final String MSG_USER_BLACK_JACK = "恭喜您获得BlackJack，游戏结束后将赋予您双倍赌注金额";
+    public static final String MSG_OTHER_USER_BLACK_JACK = "，获得BlackJack，让我们恭喜他吧！";
+
 
     /**按钮文字常量*/
     public static final String BUTTON_READY = "准备";

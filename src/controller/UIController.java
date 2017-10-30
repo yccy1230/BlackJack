@@ -64,9 +64,19 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
                     mainFrame.onDealerUpdate(dealer);
                 }
                 break;
+            //BlackJack
+            case MsgType.METHOD_BLACK_JACK:
+                mainFrame.onUserBlackJack();
+                break;
+            //Other User BlackJack
+            case MsgType.METHOD_OTHER_BLACK_JACK:
+                Player playerBj = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
+                mainFrame.onOtherUserBlackJack(playerBj);
+                break;
             //用户操作轮次
             case MsgType.METHOD_USER_TURN:
                 mainFrame.onUserTurns();
+                break;
             //用户操作结果返回
             case MsgType.METHOD_HIT_RESULT:
             case MsgType.METHOD_SURRENDER_RESULT:

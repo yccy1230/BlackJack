@@ -243,4 +243,14 @@ public class ServerCommunicateService {
         param.put(Constants.PARAM_RESULT_CODE, Constants.SUCCESS_CODE);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,datagramPacket,socket);
     }
+
+    //*******************************************************************
+    /**抽象四大方法*/
+
+    /**
+     * 群发消息，包括自己
+     */
+    public void sendUDPMsg(int msgType,int roomId){
+
+    }
 }

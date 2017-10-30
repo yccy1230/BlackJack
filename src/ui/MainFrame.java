@@ -184,6 +184,21 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
+	 * 用户BlackJack
+	 */
+	public void onUserBlackJack(){
+		showMessage(ConstantsMsg.MSG_OTHER_USER_BLACK_JACK);
+	}
+
+	/**
+	 * 用户BlackJack
+	 * @param playerBj
+	 */
+	public void onOtherUserBlackJack(Player playerBj){
+		showMessage(playerBj.getNickname()+ConstantsMsg.MSG_OTHER_USER_BLACK_JACK);
+	}
+
+	/**
 	 * 用户(加倍)操作成功
 	 */
 	public void onDoubleOperateSuccess(){
