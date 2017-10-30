@@ -219,9 +219,15 @@ public class Room {
                     if(dealer.getHand().getCards().size()>= 5) {
                         players.get(i).setBet(0);
                     }else{
-                        rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
-                        players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*3);
-                        players.get(i).setBet(0);
+                        if(dealer.getHand().isBlackJack()){
+                            players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet());
+                            players.get(i).setBet(0);
+                            rd.setStatus(ConstantsMsg.RESULT_TIE);
+                        }else{
+                            rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
+                            players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*3);
+                            players.get(i).setBet(0);
+                        }
                     }
                 }else if(players.get(i).getStatus()==Constants.USER_SURRENDER || players.get(i).getStatus()==Constants.USER_OVER){
                     rd = new ResultDetail(player.getId(), player.getNickname(), player.getHand().computeValue(), player.getBet());
@@ -230,18 +236,23 @@ public class Room {
                 }else if(players.get(i).getStatus()==Constants.USER_STAND){
                     int playerFaceValue =player.getHand().computeValue();
                     int dealerFaceValue = dealer.getHand().computeValue();
-                    rd = new ResultDetail(player.getId(), player.getNickname(), playerFaceValue, player.getBet());
-                    if(playerFaceValue>dealerFaceValue){
-                        players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*2);
-                        players.get(i).setBet(0);
-                        rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
-                    }else if(playerFaceValue == dealerFaceValue){
-                        players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet());
-                        players.get(i).setBet(0);
-                        rd.setStatus(ConstantsMsg.RESULT_TIE);
-                    }else{
+                    if(dealer.getHand().isBlackJack()){
                         players.get(i).setBet(0);
                         rd.setStatus(ConstantsMsg.RESULT_FAILURE);
+                    }else{
+                        rd = new ResultDetail(player.getId(), player.getNickname(), playerFaceValue, player.getBet());
+                        if(playerFaceValue>dealerFaceValue){
+                            players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*2);
+                            players.get(i).setBet(0);
+                            rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
+                        }else if(playerFaceValue == dealerFaceValue){
+                            players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet());
+                            players.get(i).setBet(0);
+                            rd.setStatus(ConstantsMsg.RESULT_TIE);
+                        }else{
+                            players.get(i).setBet(0);
+                            rd.setStatus(ConstantsMsg.RESULT_FAILURE);
+                        }
                     }
                 }
             }
