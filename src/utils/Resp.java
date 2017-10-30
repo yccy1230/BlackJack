@@ -17,56 +17,26 @@ public class Resp implements Serializable {
 
     private int msgType;
     private String resMsg;
-    private int resCode;
+    private int roomId;
     private Object data;
     private Date resTime;
 
     public Resp() {}
 
     /**通常用于发生错误时返回数据体*/
-    public Resp(int resCode, String resMsg,int msgType) {
-        this.resCode = resCode;
+    public Resp(int roomId, String resMsg,int msgType) {
+        this.roomId = roomId;
         this.msgType = msgType;
         this.resMsg = resMsg;
         this.resTime = new Timestamp(System.currentTimeMillis());
     }
 
-    public Resp(int msgType, Object data) {
-        this.resCode = Constants.SUCCESS_CODE;
-        this.msgType = msgType;
-        this.data = data;
-        this.resTime = new Timestamp(System.currentTimeMillis());
+    public int getRoomId() {
+        return roomId;
     }
 
-    public Resp(int msgType, String resMsg, Date resTime) {
-        this.resCode = Constants.SUCCESS_CODE;
-        this.msgType = msgType;
-        this.resMsg = resMsg;
-        this.resTime = resTime;
-    }
-
-    public Resp(int msgType, String resMsg, Date resTime, Object data) {
-        this.resCode = Constants.SUCCESS_CODE;
-        this.msgType = msgType;
-        this.resMsg = resMsg;
-        this.resTime = resTime;
-        this.data = data;
-    }
-
-    public Resp(int msgType, String resMsg, Object data) {
-        this.resCode = Constants.SUCCESS_CODE;
-        this.msgType = msgType;
-        this.resMsg = resMsg;
-        this.data = data;
-        this.resTime = new Timestamp(System.currentTimeMillis());
-    }
-
-    public int getResCode() {
-        return resCode;
-    }
-
-    public void setResCode(int resCode) {
-        this.resCode = resCode;
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
     public Date getResTime() {
