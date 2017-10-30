@@ -31,19 +31,20 @@ public class GameController implements MsgReceiveListener {
         Map<String,Object> param = (Map<String, Object>) resp.getData();
         switch(resp.getMsgType()){
             case MsgType.METHOD_LOGIN:
-                int roomId =  resp.getRoomId();
-                if(rooms.get(roomId)==null){
-                    Room room =new Room(communicateService);
+                int roomId = resp.getRoomId();
+                Room room = rooms.get(roomId);
+                if(room==null){
+                    room =new Room(roomId,communicateService);
                     rooms.put(roomId,room);
                 }
-                if(rooms.get(roomId).playerFull()) {
-                    communicateService.sendUDPMsgWithoutResult(datagramPacket);
+                if(room.playerFull()) {
+                    communicateService.sendLoginErrorMsgWithoutResult(datagramPacket);
                     return;
                 }
                 String nickName = (String) param.get(Constants.PARAM_NICK_NAME);
-                Player player = rooms.get(roomId).addPlayers(nickName);
-                communicateService.sendLoginResult(player.getId(),rooms.get(roomId).getPlayers(),datagramPacket);
-                communicateService.userConnectedBroadcast(rooms.get(roomId),player,datagramPacket);
+                Player player = room.addPlayers(nickName);
+                communicateService.sendLoginResult(player.getId(),room.getPlayers(),datagramPacket);
+                communicateService.userConnectedBroadcast(room,player,datagramPacket);
                 break;
             case MsgType.METHOD_READY:
                 roomId =  resp.getRoomId();
@@ -77,7 +78,7 @@ public class GameController implements MsgReceiveListener {
                         break;
                     }
                 }
-                communicateService.sendUDPMsgWithoutResult(datagramPacket);
+                communicateService.sendSurrenderMsgWithoutResult(datagramPacket);
                 break;
             case MsgType.METHOD_USER_EXIT:
                 roomId =  resp.getRoomId();

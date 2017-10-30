@@ -18,6 +18,7 @@ public class Constants {
     public static final String PARAM_READY_RESULT = "readyresult";
     public static final String PARAM_CANCLE_READY_RESULT = "canclereadyresult";
     public static final String PARAM_ROOM_ID = "roomid";
+    public static final String PARAM_SURRENDER_MSG ="errormsg";
 
     /**用户状态*/
     public static final int USER_IDEL = 0;
@@ -31,9 +32,10 @@ public class Constants {
     /**返回结果*/
     public static final int LOGIN_SUCCESS = 200;
     public static final int READY_SUCCESS = 200;
+    public static final int SURRENDER_SUCCESS = 200;
     public static final int CANCLE_READY_SUCCESS = 200;
     public static final int SUCCESS_CODE= 200;
-
+    public static final int LOGIN_ERROR= 400;
     /**Player Panel Size*/
     public static final int PLAYER_PANEL_WIDTH = 360;
     public static final int PLAYER_PANEL_HEIGHT = 180;

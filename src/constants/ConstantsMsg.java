@@ -15,6 +15,7 @@ public class ConstantsMsg {
     public static final String MSG_SEND_UDPMSG_ERROR ="发送数据包出错~";
     public static final String MSG_CONFIRM_LOGOUT ="确认退出游戏？";
     public static final String MSG_CONFIRM_LOGOUT_TITLE ="提示？";
+    public static final String LOGIN_ERROR = "房间已满，登录失败";
     
     /**按钮文字常量*/
     public static final String BUTTON_READY = "准备";

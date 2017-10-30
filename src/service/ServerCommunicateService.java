@@ -2,6 +2,7 @@ package service;
 
 import com.sun.corba.se.impl.orbutil.closure.Constant;
 import constants.Constants;
+import constants.ConstantsMsg;
 import constants.MsgType;
 import entity.Player;
 import entity.Room;
@@ -68,18 +69,19 @@ public class ServerCommunicateService {
      */
     public void userConnectedBroadcast(Room room,Player player, DatagramPacket address){
         int roomId = room.getId();
-        for(Integer key : hashTable.keySet()){
-            if(key == roomId){
-               for(int i =0; i< hashTable.get(key).size(); i++){
-                   DatagramPacket dp = hashTable.get(key).get(i);
-                   Map<String,Object> param = new HashMap<>();
-                   param.put(Constants.PARAM_PLAYER,player);
-                   CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER,param,dp,socket);
-               }
-               hashTable.get(key).put(player.getId(),address);
-               return ;
-            }
+        HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
+        if(hashTable.get(roomId)!=null){
+            roomAddress.putAll(hashTable.get(roomId));
         }
+        for (DatagramPacket dp: roomAddress.values()) {
+            Map<String,Object> param = new HashMap<>();
+            param.put(Constants.PARAM_PLAYER,player);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER,param,dp,socket);
+        }
+        roomAddress.put(player.getId(),address);
+        hashTable.remove(roomId);
+        hashTable.put(roomId,roomAddress);
+       return ;
     }
 
     /**
@@ -104,11 +106,18 @@ public class ServerCommunicateService {
         return null;
     }
 
-    public void sendUDPMsgWithoutResult(DatagramPacket datagramPacket){
+    public void sendLoginErrorMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_RESULT,param,datagramPacket,socket);
+        param.put(Constants.PARAM_ERROR_MSG, ConstantsMsg.LOGIN_ERROR);
+        param.put(Constants.PARAM_LOGIN_RESULT, Constants.LOGIN_SUCCESS);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,datagramPacket,socket);
     }
 
+    public void sendSurrenderMsgWithoutResult(DatagramPacket datagramPacket){
+        Map<String,Object> param = new HashMap<>(16);
+        param.put(Constants.PARAM_SURRENDER_MSG,Constants.SURRENDER_SUCCESS);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_SURRENDER,param,datagramPacket,socket);
+    }
 
     public void sendReadyMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);

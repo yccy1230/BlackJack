@@ -22,8 +22,9 @@ public class Room {
         init();
     }
 
-    public Room(ServerCommunicateService serverCommunicateService) {
+    public Room(int roomID,ServerCommunicateService serverCommunicateService) {
         init();
+        this.id= roomID;
         this.serverCommunicateService = serverCommunicateService;
     }
 
