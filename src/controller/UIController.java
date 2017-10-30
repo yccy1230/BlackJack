@@ -39,7 +39,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 	@Override
     public void onReceiveMsg(Resp resp, DatagramPacket dp) {
 		Map<String,Object> param = (Map<String, Object>) resp.getData();
-		
+
 		switch (resp.getMsgType()) {
 			case MsgType.METHOD_NEWUSER:
 				Player playerParam = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);

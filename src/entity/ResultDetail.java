@@ -9,7 +9,6 @@ public class ResultDetail {
     private String nickName;    //昵称
     private String faceValue;   //牌面点数和
     private String bet;         //初始赌注
-    private String odds;        //赔率
     private String status;      //胜负
 
     public ResultDetail() {
@@ -45,14 +44,6 @@ public class ResultDetail {
 
     public void setBet(String bet) {
         this.bet = bet;
-    }
-
-    public String getOdds() {
-        return odds;
-    }
-
-    public void setOdds(String odds) {
-        this.odds = odds;
     }
 
     public String getStatus() {

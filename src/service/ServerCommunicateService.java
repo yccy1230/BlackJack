@@ -58,6 +58,7 @@ public class ServerCommunicateService {
         //创建并启动信息接受线程
         serverMsgReceiveThread = new MsgReceiveThread(socket,msgReceiveListener);
         serverMsgReceiveThread.start();
+        System.out.println("服务器已成功启动。IP："+socket.getLocalAddress().getHostAddress()+";Port:"+socket.getLocalPort());
     }
 
     /**

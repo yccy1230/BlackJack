@@ -120,6 +120,8 @@ public class MainFrame extends JFrame {
 			Player player = players.get(i);
 			addUserPanel(player);
 		}
+
+		showMessage(ConstantsMsg.MSG_USER_INIT_MONEY);
 	}
 
 	/**
