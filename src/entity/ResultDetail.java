@@ -9,17 +9,27 @@ public class ResultDetail {
     private String nickName;    //昵称
     private String faceValue;   //牌面点数和
     private String bet;         //初始赌注
+    private int property;         //初始赌注
     private String status;      //胜负
 
     public ResultDetail() {
     }
 
-    public ResultDetail(String userid, String nickName, String faceValue, String bet, String status) {
+    public ResultDetail(String userid, String nickName, String faceValue, String bet,int property, String status) {
         this.userid = userid;
         this.nickName = nickName;
         this.faceValue = faceValue;
         this.bet = bet;
         this.status = status;
+        this.property = property;
+    }
+
+    public int getProperty() {
+        return property;
+    }
+
+    public void setProperty(int property) {
+        this.property = property;
     }
 
     public String getUserid() {

@@ -40,7 +40,18 @@ public class DealerPanel extends PlayerPanel {
 		}
 		super.refreashCardView(cards);
 	}
-	
+
+
+	/**
+	 * 初始化玩家界面
+	 */
+	public void reInitUserPanel(){
+		for (int i = 0; i < cardData.size(); i++) {
+			cardData.clear();
+			super.refreashCardView(cardData);
+		}
+	}
+
 	private void initNameLabel(){
 	    nickNameLabel.setText("庄家");
 	    nickNameLabel.setForeground(Color.WHITE);

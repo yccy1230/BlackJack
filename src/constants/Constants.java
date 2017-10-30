@@ -5,7 +5,7 @@ public class Constants {
 
     /**系统参数*/
     public static final String APP_NAME = "Black Jack";
-    public static final String DEFAULT_IP = "172.30.207.188";
+    public static final String DEFAULT_IP = "192.168.253.7";
     public static final int MAX_PLAYER_NUM = 5;
     public static final int DEFAULT_PORT = 6666;
     

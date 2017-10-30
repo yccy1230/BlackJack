@@ -66,7 +66,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
                 break;
             //更新玩家UI
             case MsgType.METHOD_UPDATE_USER:
-                Player player = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_DEALER)).toJSONString(),Player.class);
+                Player player = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
                 if(player!=null){
                     mainFrame.onPlayerUpdate(player);
                 }
@@ -90,12 +90,19 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 			case MsgType.METHOD_STAND_RESULT:
                 if(Constants.SUCCESS_CODE != (int) param.get(Constants.PARAM_RESULT_CODE)){
                     mainFrame.onUserOperateError((String) param.get(Constants.PARAM_ERROR_MSG));
+                }else{
+                    mainFrame.showToastMsg("");
                 }
 			    break;
+            case MsgType.METHOD_BUST:
+                Player playerBust = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
+                mainFrame.onUserBoom(playerBust);
+                break;
             //其他用户操作结果广播
             case MsgType.METHOD_OTHER_HIT_RESULT:
             case MsgType.METHOD_OTHER_SURRENDER_RESULT:
             case MsgType.METHOD_OTHER_STAND_RESULT:
+            case MsgType.METHOD_OTHER_BUST:
                 if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_RESULT_CODE)){
                     Player playerOp = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
                     mainFrame.onOtherUserOperationSuccess(playerOp,resp.getMsgType());
@@ -127,9 +134,9 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 				break;
 			//有其他用户退出消息
 			case MsgType.METHOD_USER_EXIT:
-				String userId = (String) param.get(Constants.PARAM_USER_ID);
-				if(userId!=null){
-					mainFrame.onOtherUserExit(userId);
+                Player playerExit = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
+				if(playerExit!=null){
+					mainFrame.onOtherUserExit(playerExit);
 				}
 				break;
 			//登录结果返回

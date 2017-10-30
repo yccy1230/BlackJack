@@ -55,14 +55,14 @@ public class UserPanel extends JPanel {
 			}
 		}
 	}
-	
+
 	/**
 	 * 初始化玩家界面
-	 * @param players 玩家s
 	 */
-	public void initUserPanel(List<Player> players){
-		for (Player player : players) {
-			addUserPanel(player);
+	public void reInitUserPanel(){
+		for (int i = 0; i < playerData.size(); i++) {
+			playerData.get(i).getHand().getCards().clear();
+			updatePlayerPanel(playerData.get(i));
 		}
 	}
 	

@@ -138,6 +138,8 @@ public class MainFrame extends JFrame {
 	 * 用户准备成功
 	 */
 	public void onUserReadySuccess(){
+		userPanel.reInitUserPanel();
+		dealerPanel.reInitUserPanel();
 		operationPanel.showCancelReadyOperation();
 		showToastMsg(ConstantsMsg.MSG_WAIT_OTHER_USER);
 	}
@@ -148,7 +150,7 @@ public class MainFrame extends JFrame {
 	 */
 	public void onUserReadyError(String msg){
 		operationPanel.showReadyOperation();
-		showMessage(ConstantsMsg.MSG_WAIT_OTHER_USER);
+		showMessage(msg);
 	}
 
 	/**
@@ -164,7 +166,7 @@ public class MainFrame extends JFrame {
 	 * @param msg
 	 */
 	public void onUserCancelReadyError(String msg){
-		operationPanel.showCancelReadyOperation();
+		operationPanel.showReadyOperation();
 		showMessage(msg);
 	}
 
@@ -265,10 +267,11 @@ public class MainFrame extends JFrame {
 
 	/**
 	 * 其他用户退出房间
-	 * @param userid
+	 * @param player
 	 */
-	public void onOtherUserExit(String userid){
-		userPanel.removeUserPanel(userid);
+	public void onOtherUserExit(Player player){
+		userPanel.removeUserPanel(player.getId());
+		showToastMsg("玩家："+player.getNickname()+" 退出房间。");
 	}
 
 	/**
@@ -278,6 +281,10 @@ public class MainFrame extends JFrame {
 	public void onOtherUserEnterRoom(Player player){
 		addUserPanel(player);
 		showToastMsg("玩家："+player.getNickname()+" 进入房间。");
+	}
+
+	public void onUserBoom(Player player){
+		showMessage("您的手牌点数和为："+player.getHand().computeValue()+",输掉了你的押金。请等待其他用户结束进行清算。");
 	}
 
 	/**
@@ -293,7 +300,6 @@ public class MainFrame extends JFrame {
 	 * @param player
 	 */
 	public void onPlayerUpdate(Player player) {
-		showToastMsg("玩家："+player.getNickname()+",操作结束！");
 		userPanel.updatePlayerPanel(player);
 	}
 
