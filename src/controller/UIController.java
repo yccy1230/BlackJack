@@ -40,7 +40,9 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 		switch (resp.getMsgType()) {
 			case MsgType.METHOD_NEWUSER:
 				Player playerParam = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
-				mainFrame.addUserPanel(playerParam);
+				if(playerParam!=null){
+					mainFrame.onOtherUserEnterRoom(playerParam);
+				}
 				break;
 			case MsgType.METHOD_GAME_BEGIN:
 				mainFrame.onGameStart();
@@ -49,41 +51,40 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 				break;
 			case MsgType.METHOD_DOUBLE:
 				break;
+			//准备返回结果
 			case MsgType.METHOD_READY_RESULT:
 				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_READY_RESULT)){
-					mainFrame.showToastMsg(ConstantsMsg.MSG_WAIT_OTHER_USER);
-					mainFrame.onUserReady();
+					mainFrame.onUserReadySuccess();
 				}else{
-					mainFrame.showMessage(resp.getResMsg());
-					mainFrame.onUserLogin();
+					mainFrame.onUserReadyError((String) param.get(Constants.PARAM_ERROR_MSG));
 				}
 				break;
+			//取消准备返回结果
 			case MsgType.METHOD_CANCLE_READY_RESULT:
 				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_CANCLE_READY_RESULT)){
-					mainFrame.showToastMsg("");
-					mainFrame.onUserLogin();
+					mainFrame.onUserCancelReadySuccess();
 				}else{
-					mainFrame.showMessage(resp.getResMsg());
-					mainFrame.onUserReady();
+					mainFrame.onUserCancelReadyError((String) param.get(Constants.PARAM_ERROR_MSG));
 				}
 				break;
+			//有其他用户退出消息
 			case MsgType.METHOD_USER_EXIT:
-				String userid = (String) param.get(Constants.PARAM_USER_ID);
-				if(userid!=null){
-					mainFrame.removeUserPanel(userid);
+				String userId = (String) param.get(Constants.PARAM_USER_ID);
+				if(userId!=null){
+					mainFrame.onOtherUserExit(userId);
 				}
 				break;
+			//登录结果返回
 			case MsgType.METHOD_LOGIN_RESULT:
+				//登录成功
 				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_LOGIN_RESULT)){
 					communicateService.setDeviceID((String) param.get(Constants.PARAM_USER_ID));
-					mainFrame.showMainFrame();
 					List<Player> players = JSONObject.parseArray(((JSONArray)param.get(Constants.PARAM_INIT_USER)).toJSONString(),Player.class);
-					for (int i = 0; i < players.size(); i++) {
-						Player player = players.get(i);
-						mainFrame.addUserPanel(player);
-					}
-				}else{
-					mainFrame.showMessage((String) param.get(Constants.PARAM_ERROR_MSG));
+					mainFrame.onLoginSuccess(players);
+				}
+				//登录失败
+				else{
+					mainFrame.onLoginError((String) param.get(Constants.PARAM_ERROR_MSG));
 				}
 				break;
 			default:

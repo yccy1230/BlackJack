@@ -114,27 +114,67 @@ public class MainFrame extends JFrame {
 	/**
 	 * 显示主界面(With Ready Button)
 	 */
-	public void showMainFrame(){
+	private void showMainFrame(){
 		setVisible(true);
-		loginFrame.setVisible(false);
-	}
-	
-	/**
-	 * 显示用户 准备 按钮
-	 */
-	public void onUserLogin(){
-		setVisible(true);
-		operationPanel.showReadyOperation();
 		loginFrame.setVisible(false);
 	}
 
+
 	/**
-	 * 显示 取消准备 按钮
+	 * 用户登录成功
 	 */
-	public void onUserReady(){
+	public void onLoginSuccess(List<Player> players){
 		setVisible(true);
-		operationPanel.showCancelReadyOperation();
+		operationPanel.showReadyOperation();
 		loginFrame.setVisible(false);
+
+		for (int i = 0; i < players.size(); i++) {
+			Player player = players.get(i);
+			addUserPanel(player);
+		}
+	}
+
+	/**
+	 * 用户登录失败
+	 */
+	public void onLoginError(String msg){
+		loginFrame.showLoginBtn();
+		showMessage(msg);
+	}
+
+
+	/**
+	 * 用户准备成功
+	 */
+	public void onUserReadySuccess(){
+		operationPanel.showCancelReadyOperation();
+		showToastMsg(ConstantsMsg.MSG_WAIT_OTHER_USER);
+	}
+
+	/**
+	 * 用户准备失败
+	 * @param msg 错误消息
+	 */
+	public void onUserReadyError(String msg){
+		operationPanel.showReadyOperation();
+		showMessage(ConstantsMsg.MSG_WAIT_OTHER_USER);
+	}
+
+	/**
+	 * 用户取消准备成功
+	 */
+	public void onUserCancelReadySuccess(){
+		operationPanel.showReadyOperation();
+		showToastMsg("请准备...");
+	}
+
+	/**
+	 * 用户取消准备失败
+	 * @param msg
+	 */
+	public void onUserCancelReadyError(String msg){
+		operationPanel.showCancelReadyOperation();
+		showMessage(msg);
 	}
 
 	/**
@@ -142,26 +182,34 @@ public class MainFrame extends JFrame {
 	 */
 	public void onGameStart(){
 		operationPanel.hideAll();
+		showToastMsg("游戏开始！");
 		//TODO: 禁止窗口关闭 10/30
 	}
 
-	
-	/**
-	 * 添加用户
-	 * @param player
-	 */
-	public void addUserPanel(Player player){
-		userPanel.addUserPanel(player);
-	}
 
 	/**
 	 * 删除用户
 	 * @param userid
 	 */
-	public void removeUserPanel(String userid){
+	public void onOtherUserExit(String userid){
 		userPanel.removeUserPanel(userid);
 	}
 
+	/**
+	 * 用户进入房间
+	 * @param player
+	 */
+	public void onOtherUserEnterRoom(Player player){
+		addUserPanel(player);
+	}
+
+	/**
+	 * 添加用户
+	 * @param player
+	 */
+	private void addUserPanel(Player player){
+		userPanel.addUserPanel(player);
+	}
 
 	/**
 	 * 显示弹窗提示信息

@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import constants.Constants;
 import listener.OperationListener;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -84,6 +86,18 @@ public class LoginFrame extends JFrame implements ActionListener {
 		loginBtn.setBounds(100, 210, 106, 23);
 		loginBtn.addActionListener(this);
 		contentPane.add(loginBtn);
+
+		initText();
+	}
+
+	private void initText() {
+		portTextField.setText(Constants.DEFAULT_PORT+"");
+		ipTextField.setText(Constants.DEFAULT_IP+"");
+	}
+
+	public void showLoginBtn(){
+		loginBtn.setEnabled(true);
+		exitBtn.setEnabled(true);
 	}
 
 	@Override
