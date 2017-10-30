@@ -56,6 +56,7 @@ public class OperationPanel extends JPanel implements ActionListener{
 	 */
 	public void showOperationWithoutDouble(){
 		hideAll();
+		enableAll();
 		hitBtn.setVisible(true);
 		btnStand.setVisible(true);
 		btnSurrender.setVisible(true);

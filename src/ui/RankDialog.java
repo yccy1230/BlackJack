@@ -24,7 +24,7 @@ public class RankDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private DefaultTableModel model;
-	private String []title = {"序号","玩家", "点数", "起始赌注","余额","胜负"};
+	private String []title = {"序号","玩家", "点数", "当前赌注","余额","胜负"};
     private Object [][]data;
 
 	public RankDialog() {
@@ -74,9 +74,11 @@ public class RankDialog extends JDialog {
      */
     public void initResult(List<ResultDetail> resultDetails){
 		for (ResultDetail resultDetail: resultDetails) {
+			String bet = resultDetail.getBet()==-1?"*":resultDetail.getBet()+"";
+			String property = resultDetail.getProperty()==-1?"*":resultDetail.getProperty()+"";
 			Object []row = {model.getRowCount()+1,resultDetail.getNickName(),
-					resultDetail.getFaceValue(),resultDetail.getBet(),
-					resultDetail.getProperty(),resultDetail.getStatus()};
+					resultDetail.getFaceValue(),bet,
+					property,resultDetail.getStatus()};
 			model.addRow(row);
 		}
         table.validate();

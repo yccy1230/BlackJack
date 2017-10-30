@@ -30,6 +30,7 @@ public class MainFrame extends JFrame {
     private DealerPanel dealerPanel;
 	private UserPanel userPanel;
 	private JLabel msgLabel;
+	private boolean isDouble;
 	
 	private OperationListener operationListener;
 	private WindowAdapter windowAdapter;
@@ -38,7 +39,7 @@ public class MainFrame extends JFrame {
 	public MainFrame(OperationListener operationListener) {
 		this.operationListener = operationListener;
 		this.loginFrame = new LoginFrame(operationListener);
-
+		this.isDouble=false;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 		setBounds(new Rectangle(0, 0, 1200, 780));
@@ -210,8 +211,13 @@ public class MainFrame extends JFrame {
 	 * 用户操作轮次
 	 */
 	public void onUserTurns(){
-		showToastMsg(ConstantsMsg.MSG_USER_TURN);
-		operationPanel.showTurnOperation();
+		if(isDouble){
+			operationPanel.showOperationWithoutDouble();
+			this.isDouble = false;
+		}else{
+			showToastMsg(ConstantsMsg.MSG_USER_TURN);
+			operationPanel.showTurnOperation();
+		}
 	}
 
 	/**
@@ -235,6 +241,7 @@ public class MainFrame extends JFrame {
 	public void onDoubleOperateSuccess(){
 		showToastMsg(ConstantsMsg.MSG_OPERATION_DOUBLE_SUCCESS);
 		operationPanel.showOperationWithoutDouble();
+		this.isDouble= true;
 	}
 
 	/**
@@ -261,6 +268,7 @@ public class MainFrame extends JFrame {
 		RankDialog resultDialog = new RankDialog();
 		resultDialog.initResult(resultDetails);
 		resultDialog.setVisible(true);
+		addWindowListener(windowAdapter);
 		operationPanel.showReadyOperation();
 	}
 
