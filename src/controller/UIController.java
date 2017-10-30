@@ -63,6 +63,10 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
                 if(dealer!=null){
                     mainFrame.onDealerUpdate(dealer);
                 }
+                break;
+            //用户操作轮次
+            case MsgType.METHOD_USER_TURN:
+                mainFrame.onUserTurns();
             //用户操作结果返回
             case MsgType.METHOD_HIT_RESULT:
             case MsgType.METHOD_SURRENDER_RESULT:

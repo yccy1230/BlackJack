@@ -32,4 +32,5 @@ public class MsgType {
     public static final int METHOD_STAND_RESULT =  21;      //停牌结果
     public static final int METHOD_DOUBLE_RESULT =  22;     //加倍，输本金+加倍金，赢两倍结果
     public static final int METHOD_SURRENDER_RESULT =  23;  //投降，输一半结果
+    public static final int METHOD_USER_TURN =  24;  //用户轮次开始
 }

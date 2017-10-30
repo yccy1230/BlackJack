@@ -175,7 +175,13 @@ public class MainFrame extends JFrame {
 		showToastMsg(ConstantsMsg.MSG_OPERATION_ERROR);
 		operationPanel.showTurnOperation();
 	}
-
+	/**
+	 * 用户操作轮次
+	 */
+	public void onUserTurns(){
+		showToastMsg(ConstantsMsg.MSG_USER_TURN);
+		operationPanel.showTurnOperation();
+	}
 
 	/**
 	 * 用户(加倍)操作成功

@@ -20,6 +20,7 @@ public class ConstantsMsg {
     public static final String MSG_OPERATION_ERROR = "操作失败，请重新尝试！";
     public static final String MSG_OPERATION_DOUBLE_SUCCESS = "加倍成功，请继续操作！";
     public static final String MSG_USER_INIT_MONEY = "赠送您起始金额1000元，重新进入游戏后重置。";
+    public static final String MSG_USER_TURN = "现在是您的轮次，请点击按钮操作。";
     
     /**按钮文字常量*/
     public static final String BUTTON_READY = "准备";
