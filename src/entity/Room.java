@@ -89,7 +89,7 @@ public class Room {
         //第一次发牌
         for(int i=0;i<players.size();i++){
             deck.deal2Player(players.get(i));
-            serverCommunicateService.sendBroadcast();
+            serverCommunicateService.sendDealCardBroadcast(id,players.get(i));
         }
         deck.deal2Dealer(dealer,true);
         serverCommunicateService.sendBroadcast();

@@ -159,6 +159,19 @@ public class ServerCommunicateService {
         return ;
     }
 
+    public void sendDealCardBroadcast(int roomId,Player player) {
+        HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
+        if(hashTable.get(roomId)!=null){
+            roomAddress.putAll(hashTable.get(roomId));
+        }
+        for (DatagramPacket dp: roomAddress.values()) {
+            Map<String,Object> param = new HashMap<>();
+            param.put(Constants.PARAM_START_GAME,Constants.START_SUCCESS);
+            param.put(Constants.PARAM_PLAYER,player);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_HIT,param,dp,socket);
+        }
+        return ;
+    }
 
     public void sendBroadcast() {
             for (Integer key : hashTable.keySet()) {
