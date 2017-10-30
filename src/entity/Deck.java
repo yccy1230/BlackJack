@@ -85,7 +85,11 @@ public class Deck {
         Card newCard = cards.remove(random);
         player.getHand().getCards().add(newCard);
         leftCardsNum --;
-
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deal2Dealer(Dealer dealer,boolean visible){
@@ -93,6 +97,11 @@ public class Deck {
         Card newCard = cards.remove(random);
         dealer.getHand().getCards().add(newCard);
         leftCardsNum --;
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

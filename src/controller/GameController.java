@@ -51,7 +51,6 @@ public class GameController implements MsgReceiveListener {
                 if(rooms.get(roomId)==null){
                     return;
                 }
-                communicateService.sendReadyMsgWithoutResult(datagramPacket);
                 int bet = (int)param.get(Constants.PARAM_BET);
                 String userId = (String) param.get(Constants.PARAM_USER_ID);
                 rooms.get(roomId).userReady(userId,bet);
@@ -72,8 +71,9 @@ public class GameController implements MsgReceiveListener {
                     return;
                 }
                 userId = (String) param.get(Constants.PARAM_USER_ID);
+                Player playerExit = rooms.get(roomId).getPlayer(userId);
                 rooms.get(roomId).userExit(userId);
-                communicateService.sendExitMsgWithoutResult(roomId,userId);
+                communicateService.sendExitMsgWithoutResult(roomId,playerExit);
                 break;
             case MsgType.METHOD_HIT:
             case MsgType.METHOD_DOUBLE:

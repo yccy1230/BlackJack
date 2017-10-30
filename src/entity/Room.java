@@ -50,6 +50,14 @@ public class Room {
         return players;
     }
 
+    public Player getPlayer(String playerId){
+        for(int i=0;i<players.size();i++){
+            if(players.get(i).getId().equals(playerId)){
+                return players.get(i);
+            }
+        }
+        return null;
+    }
     public void setPlayers(List<Player> players) {
         this.players = players;
     }
@@ -124,32 +132,29 @@ public class Room {
                 if(players.get(currentId).getHand().bust()){
                     players.get(currentId).setStatus(Constants.USER_OVER);
                     serverCommunicateService.sendNewUI(players.get(currentId),id);
-                    serverCommunicateService.sendOperationResult(MsgType.METHOD_BUST,players.get(currentId).getId(),id);
-                    return;
+                    serverCommunicateService.sendOperationResult(MsgType.METHOD_BUST,players.get(currentId),id);
+                    break;
                 }
                 serverCommunicateService.sendNewUI(players.get(currentId),id);
-                serverCommunicateService.sendOperationResult(MsgType.METHOD_HIT_RESULT,players.get(currentId).getId(),id);
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_HIT_RESULT,players.get(currentId),id);
                 break;
             case MsgType.METHOD_STAND:
                 players.get(currentId).setStatus(Constants.USER_STAND);
-                serverCommunicateService.sendOperationResult(MsgType.METHOD_STAND_RESULT,players.get(currentId).getId(),id);
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_STAND_RESULT,players.get(currentId),id);
                 break;
             case MsgType.METHOD_DOUBLE:
                 players.get(currentId).doubleBet();
-                serverCommunicateService.sendOperationResult(MsgType.METHOD_DOUBLE_RESULT,players.get(currentId).getId(),id);
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_DOUBLE_RESULT,players.get(currentId),id);
                 break;
             case MsgType.METHOD_SURRENDER:
                 players.get(currentId).setStatus(Constants.USER_SURRENDER);
-                serverCommunicateService.sendOperationResult(MsgType.METHOD_SURRENDER_RESULT,players.get(currentId).getId(),id);
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_SURRENDER_RESULT,players.get(currentId),id);
                 break;
             default:
                 break;
         }
         if(isPlaying){
             nextUser();
-        }else{
-            //发送游戏结果(用户状态置为结束)
-            sendResult();
         }
     }
 
@@ -165,12 +170,22 @@ public class Room {
             //电脑操作
             while(!dealer.dealerStand()){
                 deck.deal2Dealer(dealer,true);
-                serverCommunicateService.sendBroadcast();
+                serverCommunicateService.sendDealCard2DealerBroadcast(id,dealer);
             }
+            //发送游戏结果(用户状态置为结束)
+            sendResult();
             isPlaying =false;
+            reInitRoom();
         }
     }
 
+    public void reInitRoom(){
+        for(int i=0;i<players.size();i++){
+            players.get(i).getHand().getCards().clear();
+            players.get(i).setStatus(Constants.USER_IDEL);
+        }
+        dealer.getHand().getCards().clear();
+    }
 
     //计算牌局结果
     public void sendResult(){
@@ -178,36 +193,60 @@ public class Room {
         for(int i=0;i<players.size();i++){
             ResultDetail rd = new ResultDetail();
             Player player = players.get(i);
-            if(players.get(i).getStatus()==Constants.USER_BLACKJACK){
-                rd = new ResultDetail(player.getId(), player.getNickname(), "21", player.getBet()+"", ConstantsMsg.RESULT_FAILURE);
-                if(dealer.getHand().getCards().size()>= 5) {
-                    players.get(i).setBet(0);
-                }else{
-                    rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
-                    players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*2);
-                    players.get(i).setBet(0);
-                }
-            }else if(players.get(i).getStatus()==Constants.USER_SURRENDER || players.get(i).getStatus()==Constants.USER_OVER){
-                rd = new ResultDetail(player.getId(), player.getNickname(), player.getHand().computeValue()+"", player.getBet()+"",ConstantsMsg.RESULT_FAILURE);
-                players.get(i).setBet(0);
-            }else if(players.get(i).getStatus()==Constants.USER_STAND){
-                int playerFaceValue =player.getHand().computeValue();
-                int dealerFaceValue = dealer.getHand().computeValue();
-                rd = new ResultDetail(player.getId(), player.getNickname(), playerFaceValue+"", player.getBet()+"",ConstantsMsg.RESULT_SUCCESS);
-                if(playerFaceValue>dealerFaceValue){
-                    players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*2);
-                    players.get(i).setBet(0);
-                }else if(playerFaceValue == dealerFaceValue){
+            if(dealer.getHand().computeValue()>21){
+                rd = new ResultDetail(player.getId(), player.getNickname(), player.getHand().computeValue(), player.getBet());
+                if(players.get(i).getHand().computeValue()>21){
                     players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet());
                     players.get(i).setBet(0);
                     rd.setStatus(ConstantsMsg.RESULT_TIE);
                 }else{
+                    if(players.get(i).getStatus()==Constants.USER_BLACKJACK){
+                        rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
+                        players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*3);
+                        players.get(i).setBet(0);
+                    }else {
+                        rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
+                        players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*2);
+                        players.get(i).setBet(0);
+                    }
+                }
+            }else{
+                if(players.get(i).getStatus()==Constants.USER_BLACKJACK){
+                    rd = new ResultDetail(player.getId(), player.getNickname(), 21, player.getBet());
+                    if(dealer.getHand().getCards().size()>= 5) {
+                        players.get(i).setBet(0);
+                    }else{
+                        rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
+                        players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*3);
+                        players.get(i).setBet(0);
+                    }
+                }else if(players.get(i).getStatus()==Constants.USER_SURRENDER || players.get(i).getStatus()==Constants.USER_OVER){
+                    rd = new ResultDetail(player.getId(), player.getNickname(), player.getHand().computeValue(), player.getBet());
                     players.get(i).setBet(0);
                     rd.setStatus(ConstantsMsg.RESULT_FAILURE);
+                }else if(players.get(i).getStatus()==Constants.USER_STAND){
+                    int playerFaceValue =player.getHand().computeValue();
+                    int dealerFaceValue = dealer.getHand().computeValue();
+                    rd = new ResultDetail(player.getId(), player.getNickname(), playerFaceValue, player.getBet());
+                    if(playerFaceValue>dealerFaceValue){
+                        players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*2);
+                        players.get(i).setBet(0);
+                        rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
+                    }else if(playerFaceValue == dealerFaceValue){
+                        players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet());
+                        players.get(i).setBet(0);
+                        rd.setStatus(ConstantsMsg.RESULT_TIE);
+                    }else{
+                        players.get(i).setBet(0);
+                        rd.setStatus(ConstantsMsg.RESULT_FAILURE);
+                    }
                 }
             }
+            rd.setProperty(players.get(i).getProperty());
+            resultDetails.add(rd);
         }
-        serverCommunicateService.sendBroadcast();
+
+        serverCommunicateService. sendGameResultBroadcast(id,resultDetails);
     }
 
     //判断是否所有玩家均结束
@@ -225,11 +264,13 @@ public class Room {
             if(players.get(i).getId().equals(userID)) {
                 if(players.get(i).getProperty() >= bet) {
                     players.get(i).setStatus(Constants.USER_READY);
+                    players.get(i).setProperty(players.get(i).getProperty()-bet);
                     players.get(i).setBet(bet);
                     return;
                 }else{
                     serverCommunicateService.sendPropertyNotEnoughMsg(id,players.get(i).getId());
-                    return;                }
+                    return;
+                }
             }
         }
     }

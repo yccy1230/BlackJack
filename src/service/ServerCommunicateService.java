@@ -5,6 +5,7 @@ import constants.ConstantsMsg;
 import constants.MsgType;
 import entity.Dealer;
 import entity.Player;
+import entity.ResultDetail;
 import entity.Room;
 import jdk.management.resource.internal.inst.DatagramDispatcherRMHooks;
 import listener.MsgReceiveListener;
@@ -131,19 +132,17 @@ public class ServerCommunicateService {
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCEL_READY_RESULT,param,datagramPacket,socket);
     }
 
-    public void sendExitMsgWithoutResult(int roomId,String userID){
-        for(Integer key : hashTable.keySet()){
-            if(key == roomId){
-                hashTable.get(key).remove(userID);
-                for(int i =0; i< hashTable.get(key).size(); i++){
-                    DatagramPacket dp = hashTable.get(key).get(i);
-                    Map<String,Object> param = new HashMap<>();
-                    param.put(Constants.PARAM_USER_ID,userID);
-                    CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_USER_EXIT,param,dp,socket);
-                }
-                return ;
-            }
+    public void sendExitMsgWithoutResult(int roomId,Player player){
+        HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
+        if(hashTable.get(roomId)!=null){
+            roomAddress.putAll(hashTable.get(roomId));
         }
+        for (DatagramPacket dp: roomAddress.values()) {
+            Map<String,Object> param = new HashMap<>();
+            param.put(Constants.PARAM_PLAYER,player);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_USER_EXIT,param,dp,socket);
+        }
+        return ;
     }
 
     public void sendStartGameBroadcast(int roomId) {
@@ -167,7 +166,20 @@ public class ServerCommunicateService {
         for (DatagramPacket dp: roomAddress.values()) {
             Map<String,Object> param = new HashMap<>();
             param.put(Constants.PARAM_PLAYER,player);
-            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_HIT,param,dp,socket);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_UPDATE_USER,param,dp,socket);
+        }
+        return ;
+    }
+
+    public void sendGameResultBroadcast(int roomId, List<ResultDetail> resultDetails) {
+        HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
+        if(hashTable.get(roomId)!=null){
+            roomAddress.putAll(hashTable.get(roomId));
+        }
+        for (DatagramPacket dp: roomAddress.values()) {
+            Map<String,Object> param = new HashMap<>();
+            param.put(Constants.PARAM_GAME_RESULT,resultDetails);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_GAME_OVER,param,dp,socket);
         }
         return ;
     }
@@ -191,7 +203,7 @@ public class ServerCommunicateService {
         Map<String,Object> param = new HashMap<>();
         param.put(Constants.PARAM_RESULT_CODE,Constants.ERROR_CODE);
         param.put(Constants.PARAM_ERROR_MSG,ConstantsMsg.MSG_PROPERTY_NOT_ENOUGH );
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,dp,socket);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_READY_RESULT,param,dp,socket);
     }
 
     public void sendUserTurnMsg(int roomId,String userID){
@@ -219,16 +231,17 @@ public class ServerCommunicateService {
         }
     }
 
-    public void sendOperationResult(int msgType,String userId,int roomId){
+    public void sendOperationResult(int msgType,Player player,int roomId){
         HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
         if(hashTable.get(roomId)!=null){
             roomAddress.putAll(hashTable.get(roomId));
         }
         for (String  uid : roomAddress.keySet()) {
             DatagramPacket dp = roomAddress.get(uid);
-            if(uid.equals(userId)){
+            if(uid.equals(player.getId())){
                 Map<String,Object> param = new HashMap<>();
                 param.put(Constants.PARAM_RESULT_CODE,Constants.SUCCESS_CODE);
+                param.put(Constants.PARAM_PLAYER,player);
                 CommunicateUtil.sendUDPMsgWithoutResult(msgType,param,dp,socket);
                 continue;
             }
