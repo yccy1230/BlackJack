@@ -31,6 +31,8 @@ public class ClientCommunicateService {
 
     /**标识ID*/
     private String deviceID;
+    /**通讯房间ID*/
+    private int roomID;
     /**套接字*/
     private DatagramSocket socket;
     /**通讯结果回调*/
@@ -68,6 +70,7 @@ public class ClientCommunicateService {
     public void connectServer(String nickName){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_NICK_NAME,nickName);
+        param.put(Constants.PARAM_ROOM_ID,roomID);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN,param,serverIP,serverPort,socket);
     }
 
@@ -121,7 +124,8 @@ public class ClientCommunicateService {
     public void setDeviceID(String deviceID) {
         this.deviceID = deviceID;
     }
-    
-    
-    
+
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
+    }
 }

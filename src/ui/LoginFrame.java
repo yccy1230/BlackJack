@@ -22,6 +22,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 	private JTextField ipTextField;
 	private JTextField portTextField;
 	private JTextField nameTextField;
+	private JTextField roomTextField;
+
 	private JButton loginBtn;
 	private JButton exitBtn;
 	
@@ -53,24 +55,33 @@ public class LoginFrame extends JFrame implements ActionListener {
 		portTextField.setBounds(184, 94, 129, 21);
 		contentPane.add(portTextField);
 		portTextField.setColumns(10);
-		
+
 		JLabel label_1 = new JLabel(ConstantsMsg.LABEL_NICKNAME);
 		label_1.setBounds(100, 137, 74, 15);
 		contentPane.add(label_1);
-		
+
 		nameTextField = new JTextField();
 		nameTextField.setColumns(10);
 		nameTextField.setBounds(184, 134, 129, 21);
 		contentPane.add(nameTextField);
+
+		JLabel label_2 = new JLabel(ConstantsMsg.LABEL_ROOM_ID);
+		label_2.setBounds(100, 174, 74, 15);
+		contentPane.add(label_2);
+
+		roomTextField = new JTextField();
+		roomTextField.setColumns(10);
+		roomTextField.setBounds(184, 174, 129, 21);
+		contentPane.add(roomTextField);
 		
 		exitBtn = new JButton(ConstantsMsg.BUTTON_EXIT);
-		exitBtn.setBounds(229, 170, 106, 23);
+		exitBtn.setBounds(229, 210, 106, 23);
 		exitBtn.addActionListener(this);
 
 		contentPane.add(exitBtn);
 		
 		loginBtn = new JButton(ConstantsMsg.BUTTON_CONNECT_SERVER);
-		loginBtn.setBounds(100, 170, 106, 23);
+		loginBtn.setBounds(100, 210, 106, 23);
 		loginBtn.addActionListener(this);
 		contentPane.add(loginBtn);
 	}
@@ -82,8 +93,10 @@ public class LoginFrame extends JFrame implements ActionListener {
 				String ip = ipTextField.getText();
 				String port = portTextField.getText();
 				String nickName = nameTextField.getText();
+				String roomId = roomTextField.getText();
 				if(ip==null||"".equals(ip)||port==null|!port.matches("\\d+")
-						||nickName==null||"".equals(nickName)){
+						||nickName==null||"".equals(nickName)
+						||roomId==null||"".equals(roomId)){
 					JOptionPane.showMessageDialog(contentPane,ConstantsMsg.MSG_EMPTY_INPUT);
 					return;
 				}
@@ -93,7 +106,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
-							operationListener.onConnectClicked(ip,Integer.parseInt(port),nickName);
+							operationListener.onConnectClicked(ip,Integer.parseInt(port),
+									nickName,Integer.parseInt(roomId));
 						}
 					}).start();
 				}

@@ -41,7 +41,7 @@ public interface OperationListener {
     /**
      * 点击连接服务器按钮回调
      */
-    void onConnectClicked(String ip, int port, String nickName);
+    void onConnectClicked(String ip, int port, String nickName,int roomId);
 
     /**
      * 退出游戏回调

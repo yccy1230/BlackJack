@@ -129,9 +129,10 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 	}
 
 	@Override
-	public void onConnectClicked(String ip, int port, String nickName) {
+	public void onConnectClicked(String ip, int port, String nickName,int roomId) {
 		communicateService.setServerIP(ip);
 		communicateService.setServerPort(port);
+		communicateService.setRoomID(roomId);
 		communicateService.connectServer(nickName);
 	}
 

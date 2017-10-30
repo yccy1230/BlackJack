@@ -30,6 +30,7 @@ public class ConstantsMsg {
     public static final String LABEL_IP = "服务器IP：";
     public static final String LABEL_PORT = "服务器Port:";
     public static final String LABEL_NICKNAME = "昵称：";
+    public static final String LABEL_ROOM_ID = "房间号：";
     
     /**系统错误消息*/
     public static final String ERROR_PLAYER_FULL = "系统出错：玩家人数已满！";
