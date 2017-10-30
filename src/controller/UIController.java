@@ -103,6 +103,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
             case MsgType.METHOD_OTHER_SURRENDER_RESULT:
             case MsgType.METHOD_OTHER_STAND_RESULT:
             case MsgType.METHOD_OTHER_BUST:
+            case MsgType.METHOD_OTHER_DOUBLE_RESULT:
                 if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_RESULT_CODE)){
                     Player playerOp = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
                     mainFrame.onOtherUserOperationSuccess(playerOp,resp.getMsgType());
