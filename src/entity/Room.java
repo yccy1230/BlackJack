@@ -129,33 +129,36 @@ public class Room {
     }
 
     public void handlerUser(int opreationType) {
+
         switch (opreationType) {
             case MsgType.METHOD_HIT:
                 deck.deal2Player(players.get(currentId));
-                if(players.get(currentId).getHand().bust()){
+                if (players.get(currentId).getHand().bust()) {
                     players.get(currentId).setStatus(Constants.USER_OVER);
-                    serverCommunicateService.sendNewUI(players.get(currentId),id);
-                    serverCommunicateService.sendOperationResult(MsgType.METHOD_BUST,players.get(currentId),id);
+                    serverCommunicateService.sendNewUI(players.get(currentId), id);
+                    serverCommunicateService.sendOperationResult(MsgType.METHOD_BUST, players.get(currentId), id);
                     break;
                 }
-                serverCommunicateService.sendNewUI(players.get(currentId),id);
-                serverCommunicateService.sendOperationResult(MsgType.METHOD_HIT_RESULT,players.get(currentId),id);
+                serverCommunicateService.sendNewUI(players.get(currentId), id);
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_HIT_RESULT, players.get(currentId), id);
                 break;
             case MsgType.METHOD_STAND:
                 players.get(currentId).setStatus(Constants.USER_STAND);
-                serverCommunicateService.sendOperationResult(MsgType.METHOD_STAND_RESULT,players.get(currentId),id);
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_STAND_RESULT, players.get(currentId), id);
                 break;
             case MsgType.METHOD_DOUBLE:
                 players.get(currentId).doubleBet();
-                serverCommunicateService.sendOperationResult(MsgType.METHOD_DOUBLE_RESULT,players.get(currentId),id);
-                break;
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_DOUBLE_RESULT, players.get(currentId), id);
+                serverCommunicateService.sendUserTurnMsg(id,players.get(currentId).getId());
+                return;
             case MsgType.METHOD_SURRENDER:
                 players.get(currentId).setStatus(Constants.USER_SURRENDER);
-                serverCommunicateService.sendOperationResult(MsgType.METHOD_SURRENDER_RESULT,players.get(currentId),id);
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_SURRENDER_RESULT, players.get(currentId), id);
                 break;
             default:
                 break;
         }
+
         if(isPlaying){
             nextUser();
         }
