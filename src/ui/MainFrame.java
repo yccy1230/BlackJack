@@ -255,6 +255,7 @@ public class MainFrame extends JFrame {
 	 * 游戏开始
 	 */
 	public void onGameStart(){
+		this.isDouble=false;
 		operationPanel.hideAll();
 		showToastMsg(ConstantsMsg.MSG_GAME_START);
 		removeWindowListener(windowAdapter);
