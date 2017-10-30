@@ -3,6 +3,7 @@ package service;
 import constants.Constants;
 import constants.ConstantsMsg;
 import constants.MsgType;
+import entity.Dealer;
 import entity.Player;
 import entity.Room;
 import listener.MsgReceiveListener;
@@ -11,6 +12,7 @@ import thread.MsgReceiveThread;
 import utils.CommunicateUtil;
 import utils.Resp;
 
+import javax.xml.crypto.Data;
 import java.net.*;
 import java.util.HashMap;
 import java.util.List;
@@ -163,7 +165,41 @@ public class ServerCommunicateService {
         }
         for (DatagramPacket dp: roomAddress.values()) {
             Map<String,Object> param = new HashMap<>();
-            param.put(Constants.PARAM_START_GAME,Constants.SUCCESS_CODE);
+            param.put(Constants.PARAM_PLAYER,player);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_HIT,param,dp,socket);
+        }
+        return ;
+    }
+
+    public void sendDealCard2DealerBroadcast(int roomId, Dealer dealer) {
+        HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
+        if(hashTable.get(roomId)!=null){
+            roomAddress.putAll(hashTable.get(roomId));
+        }
+        for (DatagramPacket dp: roomAddress.values()) {
+            Map<String,Object> param = new HashMap<>();
+            param.put(Constants.PARAM_DEALER,dealer);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_UPDATE_DEALER,param,dp,socket);
+        }
+        return ;
+    }
+
+    public void sendPropertyNotEnoughMsg(int roomId,String userID){
+        HashMap<String,DatagramPacket> userAddress= hashTable.get(roomId);
+        DatagramPacket dp = userAddress.get(userID);
+        Map<String,Object> param = new HashMap<>();
+        param.put(Constants.PARAM_RESULT_CODE,Constants.ERROR_CODE);
+        param.put(Constants.PARAM_ERROR_MSG,ConstantsMsg.MSG_PROPERTY_NOT_ENOUGH );
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,dp,socket);
+    }
+
+    public void sendUserBlackJackBroadcast(int roomId,Player player) {
+        HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
+        if(hashTable.get(roomId)!=null){
+            roomAddress.putAll(hashTable.get(roomId));
+        }
+        for (DatagramPacket dp: roomAddress.values()) {
+            Map<String,Object> param = new HashMap<>();
             param.put(Constants.PARAM_PLAYER,player);
             CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_HIT,param,dp,socket);
         }
@@ -171,12 +207,11 @@ public class ServerCommunicateService {
     }
 
     public void sendBroadcast() {
-            for (Integer key : hashTable.keySet()) {
-                DatagramPacket dp = hashTable.get(key).get(key);
-                Map<String, Object> param = new HashMap<>();
-                CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER, param, dp, socket);
-            }
-
+        for (Integer key : hashTable.keySet()) {
+            DatagramPacket dp = hashTable.get(key).get(key);
+            Map<String, Object> param = new HashMap<>();
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_NEWUSER, param, dp, socket);
+        }
     }
 
     public void sendLoginResult(String userId,List<Player> players,DatagramPacket datagramPacket){

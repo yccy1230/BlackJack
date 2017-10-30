@@ -57,6 +57,7 @@ public class Room {
         player.setId(UUID.randomUUID().toString());
         player.setHand(new Hand());
         player.setNickname(nickName);
+        player.setProperty(1000);
         player.setStatus(Constants.USER_IDEL);
         players.add(player);
         return player;
@@ -92,13 +93,14 @@ public class Room {
             serverCommunicateService.sendDealCardBroadcast(id,players.get(i));
         }
         deck.deal2Dealer(dealer,true);
-        serverCommunicateService.sendBroadcast();
+        serverCommunicateService.sendDealCard2DealerBroadcast(id,dealer);
+
         for(int i=0;i<players.size();i++){
             deck.deal2Player(players.get(i));
-            serverCommunicateService.sendBroadcast();
+            serverCommunicateService.sendDealCardBroadcast(id,players.get(i));
         }
         deck.deal2Dealer(dealer,false);
-        serverCommunicateService.sendBroadcast();
+        serverCommunicateService.sendDealCard2DealerBroadcast(id,dealer);
 
         //轮流请求用户操作
         while(playersOver(players) != players.size()) {
@@ -107,7 +109,7 @@ public class Room {
                     if (players.get(i).getHand().isBlackJack()) {
                         players.get(i).getHand().show();
                         players.get(i).setStatus(Constants.USER_BLACKJACK);
-                        serverCommunicateService.requireUserOperate();
+                        serverCommunicateService.sendUserBlackJackBroadcast(id,players.get(i));
                     }else{
                         //获取用户消息,再进行不同操作
                         handlerUser(i);
@@ -191,9 +193,13 @@ public class Room {
     public void userReady(String userID,int bet){
         for (int i=0;i<players.size();i++) {
             if(players.get(i).getId().equals(userID)) {
-                players.get(i).setStatus(Constants.USER_READY);
-                players.get(i).setBet(bet);
-                return;
+                if(players.get(i).getProperty() >= bet) {
+                    players.get(i).setStatus(Constants.USER_READY);
+                    players.get(i).setBet(bet);
+                    return;
+                }else{
+                    serverCommunicateService.sendPropertyNotEnoughMsg(id,players.get(i).getId());
+                    return;                }
             }
         }
     }
