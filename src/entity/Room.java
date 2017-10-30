@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public class Room {
     private int id;
+    private int currentId ;
     private List<Player> players;
     private Deck deck;
     private Dealer dealer;
@@ -25,6 +26,7 @@ public class Room {
     public Room(int roomID,ServerCommunicateService serverCommunicateService) {
         init();
         this.id= roomID;
+        this.currentId=-1;
         this.serverCommunicateService = serverCommunicateService;
     }
 
@@ -102,18 +104,22 @@ public class Room {
         deck.deal2Dealer(dealer,false);
         serverCommunicateService.sendDealCard2DealerBroadcast(id,dealer);
 
+        //判断是否有BlackJack
+        for(int i = 0; i<players.size(); i++){
+            if (players.get(i).getHand().isBlackJack()) {
+                players.get(i).getHand().show();
+                players.get(i).setStatus(Constants.USER_BLACKJACK);
+                serverCommunicateService.sendUserBlackJackBroadcast(id,players.get(i));
+            }
+        }
+
         //轮流请求用户操作
         while(playersOver(players) != players.size()) {
             for (int i = 0; i < players.size(); i++) {
                 if (players.get(i).getStatus() == Constants.USER_READY) {
-                    if (players.get(i).getHand().isBlackJack()) {
-                        players.get(i).getHand().show();
-                        players.get(i).setStatus(Constants.USER_BLACKJACK);
-                        serverCommunicateService.sendUserBlackJackBroadcast(id,players.get(i));
-                    }else{
-                        //获取用户消息,再进行不同操作
-                        handlerUser(i);
-                    }
+                    //获取用户消息,再进行不同操作
+                    serverCommunicateService.
+                    handlerUser(i);
                 }
             }
         }
@@ -130,34 +136,31 @@ public class Room {
         isPlaying=false;
     }
 
-    private void handlerUser(int i) {
-        Resp resp = null;
-        do {
-            resp = serverCommunicateService.requireUserOperate();
-                switch (resp.getMsgType()) {
-                    case MsgType.METHOD_HIT:
-                        deck.deal2Player(players.get(i));
-                        if(players.get(i).getHand().bust()){
-                            players.get(i).setStatus(Constants.USER_OVER);
-                        }
-                        serverCommunicateService.requireUserOperate();
-                        break;
-                    case MsgType.METHOD_STAND:
-                        players.get(i).setStatus(Constants.USER_STAND);
-                        serverCommunicateService.requireUserOperate();
-                        break;
-                    case MsgType.METHOD_DOUBLE:
-                        players.get(i).doubleBet();
-                        serverCommunicateService.requireUserOperate();
-                        break;
-                    case MsgType.METHOD_SURRENDER:
-                        players.get(i).setStatus(Constants.USER_SURRENDER);
-                        serverCommunicateService.requireUserOperate();
-                        break;
-                    default:
-                        break;
+    public void handlerUser(int opreationType) {
+        switch (opreationType) {
+            case MsgType.METHOD_HIT:
+                deck.deal2Player(players.get(currentId));
+                if(players.get(currentId).getHand().bust()){
+                    players.get(currentId).setStatus(Constants.USER_OVER);
+                    serverCommunicateService.sendOperationResult(MsgType.)
                 }
-        }while (resp.getMsgType() == MsgType.METHOD_DOUBLE);
+                serverCommunicateService.requireUserOperate();
+                break;
+            case MsgType.METHOD_STAND:
+                players.get(currentId).setStatus(Constants.USER_STAND);
+                serverCommunicateService.requireUserOperate();
+                break;
+            case MsgType.METHOD_DOUBLE:
+                players.get(currentId).doubleBet();
+                serverCommunicateService.requireUserOperate();
+                break;
+            case MsgType.METHOD_SURRENDER:
+                players.get(currentId).setStatus(Constants.USER_SURRENDER);
+                serverCommunicateService.requireUserOperate();
+                break;
+            default:
+                break;
+    }
     }
 
     //计算牌局结果

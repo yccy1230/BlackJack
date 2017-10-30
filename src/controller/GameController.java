@@ -89,6 +89,12 @@ public class GameController implements MsgReceiveListener {
                 rooms.get(roomId).userExit(userId);
                 communicateService.sendExitMsgWithoutResult(roomId,userId);
                 break;
+            case MsgType.METHOD_HIT:
+            case MsgType.METHOD_DOUBLE:
+            case MsgType.METHOD_STAND:
+            case MsgType.METHOD_SURRENDER:
+                Room theRoom = rooms.get(resp.getRoomId());
+                theRoom.handlerUser(resp.getMsgType());
             default:
                 break;
         }

@@ -6,6 +6,7 @@ import constants.MsgType;
 import entity.Dealer;
 import entity.Player;
 import entity.Room;
+import jdk.management.resource.internal.inst.DatagramDispatcherRMHooks;
 import listener.MsgReceiveListener;
 import listener.NetworkListener;
 import thread.MsgReceiveThread;
@@ -193,17 +194,38 @@ public class ServerCommunicateService {
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,dp,socket);
     }
 
+
     public void sendUserBlackJackBroadcast(int roomId,Player player) {
         HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
         if(hashTable.get(roomId)!=null){
             roomAddress.putAll(hashTable.get(roomId));
         }
-        for (DatagramPacket dp: roomAddress.values()) {
+        for (String userId : roomAddress.keySet()) {
+            DatagramPacket dp = roomAddress.get(userId);
+            if(userId.equals(player.getId())){
+                Map<String,Object> param = new HashMap<>();
+                CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_BLACK_JACK,param,dp,socket);
+                continue;
+            }
             Map<String,Object> param = new HashMap<>();
             param.put(Constants.PARAM_PLAYER,player);
-            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_HIT,param,dp,socket);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_BLACK_JACK,param,dp,socket);
         }
-        return ;
+    }
+
+    public void sendOperationResult(int msgType,String userId,int roomId){
+        HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
+        if(hashTable.get(roomId)!=null){
+            roomAddress.putAll(hashTable.get(roomId));
+        }
+        for (String  uid : roomAddress.keySet()) {
+            DatagramPacket dp = roomAddress.get(uid);
+            if(uid.equals(userId)){
+                Map<String,Object> param = new HashMap<>();
+                CommunicateUtil.sendUDPMsgWithoutResult(msgType,param,dp,socket);
+                return;
+            }
+        }
     }
 
     public void sendBroadcast() {

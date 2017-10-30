@@ -33,4 +33,6 @@ public class MsgType {
     public static final int METHOD_DOUBLE_RESULT =  22;     //加倍，输本金+加倍金，赢两倍结果
     public static final int METHOD_SURRENDER_RESULT =  23;  //投降，输一半结果
     public static final int METHOD_USER_TURN =  24;  //用户轮次开始
+    public static final int METHOD_BLACK_JACK =  25;  //用户轮次开始
+    public static final int METHOD_BUST =  26;  //用户手牌爆掉
 }
