@@ -17,6 +17,7 @@ public class Constants {
     public static final String PARAM_ERROR_MSG ="errormsg";
     public static final String PARAM_READY_RESULT = "readyresult";
     public static final String PARAM_CANCLE_READY_RESULT = "canclereadyresult";
+    public static final String PARAM_ROOM_ID = "roomid";
 
     /**用户状态*/
     public static final int USER_IDEL = 0;
