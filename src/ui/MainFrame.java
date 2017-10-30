@@ -107,15 +107,6 @@ public class MainFrame extends JFrame {
 		setVisible(false);
 		loginFrame.setVisible(true);
 	}
-	
-	/**
-	 * 显示主界面(With Ready Button)
-	 */
-	private void showMainFrame(){
-		setVisible(true);
-		loginFrame.setVisible(false);
-	}
-
 
 	/**
 	 * 用户登录成功
@@ -175,6 +166,39 @@ public class MainFrame extends JFrame {
 	}
 
 	/**
+	 * 用户(单次)操作失败
+	 * @param msg
+	 */
+	public void onUserOperateError(String msg){
+		showToastMsg(ConstantsMsg.MSG_OPERATION_ERROR);
+		operationPanel.showTurnOperation();
+	}
+
+
+	/**
+	 * 用户(加倍)操作成功
+	 */
+	public void onDoubleOperateSuccess(){
+		showToastMsg(ConstantsMsg.MSG_OPERATION_DOUBLE_SUCCESS);
+		operationPanel.showOperationWithoutDouble();
+	}
+
+	/**
+	 * 用户(加倍)操作失败
+	 */
+	public void onDoubleOperateError(String msg){
+		onUserOperateError(msg);
+	}
+
+	/**
+	 * 接受到其他用户操作，更新用户UI
+	 */
+	public void onReceiveOtherOperate(Player player){
+		userPanel.updatePlayerPanel(player);
+		showToastMsg("玩家："+player.getNickname()+" 操作结束！");
+	}
+
+	/**
 	 * 游戏开始
 	 */
 	public void onGameStart(){
@@ -210,6 +234,14 @@ public class MainFrame extends JFrame {
 	public void onOtherUserEnterRoom(Player player){
 		addUserPanel(player);
 		showToastMsg("玩家："+player.getNickname()+" 进入房间。");
+	}
+
+	/**
+	 * 刷新Dealer UI
+	 * @param dealer
+	 */
+	public void onDealerUpdate(Dealer dealer) {
+		dealerPanel.refreshCardView(dealer);
 	}
 
 	/**

@@ -3,6 +3,7 @@ package controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import constants.MsgType;
+import entity.Dealer;
 import entity.ResultDetail;
 import listener.MsgReceiveListener;
 import listener.NetworkListener;
@@ -38,6 +39,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 	@Override
     public void onReceiveMsg(Resp resp, DatagramPacket dp) {
 		Map<String,Object> param = (Map<String, Object>) resp.getData();
+		
 		switch (resp.getMsgType()) {
 			case MsgType.METHOD_NEWUSER:
 				Player playerParam = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
@@ -54,14 +56,27 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
                 List<ResultDetail> resultDetails = JSONObject.parseArray(((JSONArray)param.get(Constants.PARAM_GAME_RESULT)).toJSONString(),ResultDetail.class);
                 mainFrame.onGameOver(resultDetails);
                 break;
+            //更新庄家UI
+            case MsgType.METHOD_UPDATE_DEALER:
+                Dealer dealer = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Dealer.class);
+                if(dealer!=null){
+                    mainFrame.onDealerUpdate(dealer);
+                }
+            //用户操作结果返回
             case MsgType.METHOD_HIT_RESULT:
-                break;
             case MsgType.METHOD_SURRENDER_RESULT:
-
-                break;
 			case MsgType.METHOD_STAND_RESULT:
-				break;
+                if(Constants.SUCCESS_CODE != (int) param.get(Constants.PARAM_RESULT_CODE)){
+                    mainFrame.onUserOperateError((String) param.get(Constants.PARAM_ERROR_MSG));
+                }
+			    break;
+            //用户加倍操作返回
 			case MsgType.METHOD_DOUBLE_RESULT:
+                if(Constants.SUCCESS_CODE != (int) param.get(Constants.PARAM_RESULT_CODE)){
+                    mainFrame.onDoubleOperateError((String) param.get(Constants.PARAM_ERROR_MSG));
+                }else{
+                    mainFrame.onDoubleOperateSuccess();
+                }
 				break;
 			//准备返回结果
 			case MsgType.METHOD_READY_RESULT:

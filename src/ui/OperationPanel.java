@@ -49,7 +49,17 @@ public class OperationPanel extends JPanel implements ActionListener{
 		btnDouble.setVisible(true);
 		btnSurrender.setVisible(true);
 	}
-	
+
+	/**
+	 * 显示不含加倍的操作界面
+	 */
+	public void showOperationWithoutDouble(){
+		hideAll();
+		hitBtn.setVisible(true);
+		btnStand.setVisible(true);
+		btnSurrender.setVisible(true);
+	}
+
 	/**
 	 * 显示准备操作界面
 	 */

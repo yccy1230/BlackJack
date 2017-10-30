@@ -75,7 +75,7 @@ public class ClientCommunicateService {
     }
 
     /**
-     * 断开服务器（退出房间）
+     * 断开服务器（退出房间）,强退==认输
      * @return 返回结果
      */
     public void disconnectServer(){
@@ -106,11 +106,10 @@ public class ClientCommunicateService {
     /**
      * 发送操作请求(By IP Address)    
      */
-    public Resp sendUserOperation(int msgType){
+    public void sendUserOperation(int msgType){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_USER_ID,deviceID);
-        Resp resp = CommunicateUtil.sendUDPMsgByIP(msgType,param,serverIP,serverPort,roomID,socket);
-        return resp;
+        CommunicateUtil.sendUDPMsgWithoutResult(msgType,param,serverIP,serverPort,roomID,socket);
     }
 
 	public void setServerIP(String serverIP) {

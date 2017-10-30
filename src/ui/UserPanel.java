@@ -75,7 +75,7 @@ public class UserPanel extends JPanel {
 			Player player = playerData.get(i);
 			if(player.getProperty()!=Constants.EMPTY_USER
 					&&player.getId().equals(playerParam.getId())){
-				playerPanels.get(i).refreashPlayerView(playerParam);
+				playerPanels.get(i).refreshPlayerView(playerParam);
 			}
 		}
 	}

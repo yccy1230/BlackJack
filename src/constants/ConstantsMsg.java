@@ -17,6 +17,8 @@ public class ConstantsMsg {
     public static final String MSG_CONFIRM_LOGOUT_TITLE ="提示？";
     public static final String MSG_USER_FULL = "房间已满，登录失败";
     public static final String MSG_GAME_START = "游戏开始!";
+    public static final String MSG_OPERATION_ERROR = "操作失败，请重新尝试！";
+    public static final String MSG_OPERATION_DOUBLE_SUCCESS = "加倍成功，请继续操作！";
     
     /**按钮文字常量*/
     public static final String BUTTON_READY = "准备";

@@ -33,7 +33,7 @@ public class DealerPanel extends PlayerPanel {
 	/**
 	 * 刷新Dealer UI
 	 */
-	public void refreashCardView(Dealer dealer){
+	public void refreshCardView(Dealer dealer){
 		List<Card> cards = new ArrayList<>();
 		if(dealer != null&& dealer.getHand()!=null&&dealer.getHand().getCards()!=null){
 			cards.addAll(dealer.getHand().getCards());

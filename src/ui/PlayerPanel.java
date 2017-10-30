@@ -57,8 +57,8 @@ public class PlayerPanel extends JPanel {
 
 		add(nameLabel);
 		add(nickNameLabel);
-		
-		refreashPlayerView(player);
+
+		refreshPlayerView(player);
 		
 		setInUsed(true);//启用Panel
 	}
@@ -77,7 +77,7 @@ public class PlayerPanel extends JPanel {
 	/**
 	 * 刷新Player界面
 	 */
-	public void refreashPlayerView(Player player){
+	public void refreshPlayerView(Player player){
 		List<Card> cards = new ArrayList<>();
 		if(player != null&& player.getHand()!=null&&player.getHand().getCards()!=null){
 			cards.addAll(player.getHand().getCards());
