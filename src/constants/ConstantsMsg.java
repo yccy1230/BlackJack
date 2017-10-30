@@ -35,7 +35,12 @@ public class ConstantsMsg {
     public static final String BUTTON_STAND = "停牌";
     public static final String BUTTON_DOUBLE = "加倍";
     public static final String BUTTON_SURRENDER = "认输";
-    
+
+    /**游戏结果常量*/
+    public static final String RESULT_SUCCESS="胜利";
+    public static final String RESULT_TIE="平局";
+    public static final String RESULT_FAILURE="失败";
+
     /**Label文字常量*/
     public static final String LABEL_IP = "服务器IP：";
     public static final String LABEL_PORT = "服务器Port:";

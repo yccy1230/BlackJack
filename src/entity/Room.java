@@ -1,6 +1,7 @@
 package entity;
 
 import constants.Constants;
+import constants.ConstantsMsg;
 import constants.MsgType;
 import service.ServerCommunicateService;
 import utils.Resp;
@@ -112,28 +113,8 @@ public class Room {
                 serverCommunicateService.sendUserBlackJackBroadcast(id,players.get(i));
             }
         }
-
-        //轮流请求用户操作
-        while(playersOver(players) != players.size()) {
-            for (int i = 0; i < players.size(); i++) {
-                if (players.get(i).getStatus() == Constants.USER_READY) {
-                    //获取用户消息,再进行不同操作
-                    serverCommunicateService.
-                    handlerUser(i);
-                }
-            }
-        }
-
-        //电脑操作
-        while(!dealer.dealerStand()){
-            deck.deal2Dealer(dealer,true);
-            serverCommunicateService.sendBroadcast();
-        }
-
-        //发送游戏结果(用户状态置为结束)
-        sendResult();
-
-        isPlaying=false;
+        //启动游戏
+        nextUser();
     }
 
     public void handlerUser(int opreationType) {
@@ -142,55 +123,101 @@ public class Room {
                 deck.deal2Player(players.get(currentId));
                 if(players.get(currentId).getHand().bust()){
                     players.get(currentId).setStatus(Constants.USER_OVER);
-                    serverCommunicateService.sendOperationResult(MsgType.)
+                    serverCommunicateService.sendNewUI(players.get(currentId),id);
+                    serverCommunicateService.sendOperationResult(MsgType.METHOD_BUST,players.get(currentId).getId(),id);
+                    return;
                 }
-                serverCommunicateService.requireUserOperate();
+                serverCommunicateService.sendNewUI(players.get(currentId),id);
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_HIT_RESULT,players.get(currentId).getId(),id);
                 break;
             case MsgType.METHOD_STAND:
                 players.get(currentId).setStatus(Constants.USER_STAND);
-                serverCommunicateService.requireUserOperate();
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_STAND_RESULT,players.get(currentId).getId(),id);
                 break;
             case MsgType.METHOD_DOUBLE:
                 players.get(currentId).doubleBet();
-                serverCommunicateService.requireUserOperate();
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_DOUBLE_RESULT,players.get(currentId).getId(),id);
                 break;
             case MsgType.METHOD_SURRENDER:
                 players.get(currentId).setStatus(Constants.USER_SURRENDER);
-                serverCommunicateService.requireUserOperate();
+                serverCommunicateService.sendOperationResult(MsgType.METHOD_SURRENDER_RESULT,players.get(currentId).getId(),id);
                 break;
             default:
                 break;
+        }
+        if(isPlaying){
+            nextUser();
+        }else{
+            //发送游戏结果(用户状态置为结束)
+            sendResult();
+        }
     }
+
+    private void nextUser(){
+        currentId = (++currentId) % players.size();
+        if(!playersOver()) {
+            while(players.get(currentId).getStatus() != Constants.USER_READY){
+                currentId = (++currentId) % players.size();
+            }
+            serverCommunicateService.sendUserTurnMsg(id,players.get(currentId).getId());
+            isPlaying =true;
+        }else{
+            //电脑操作
+            while(!dealer.dealerStand()){
+                deck.deal2Dealer(dealer,true);
+                serverCommunicateService.sendBroadcast();
+            }
+            isPlaying =false;
+        }
     }
+
 
     //计算牌局结果
     public void sendResult(){
+        List<ResultDetail> resultDetails = new ArrayList<>();
         for(int i=0;i<players.size();i++){
+            ResultDetail rd = new ResultDetail();
+            Player player = players.get(i);
             if(players.get(i).getStatus()==Constants.USER_BLACKJACK){
+                rd = new ResultDetail(player.getId(), player.getNickname(), "21", player.getBet()+"", ConstantsMsg.RESULT_FAILURE);
                 if(dealer.getHand().getCards().size()>= 5) {
                     players.get(i).setBet(0);
                 }else{
+                    rd.setStatus(ConstantsMsg.RESULT_SUCCESS);
                     players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*2);
                     players.get(i).setBet(0);
                 }
             }else if(players.get(i).getStatus()==Constants.USER_SURRENDER || players.get(i).getStatus()==Constants.USER_OVER){
+                rd = new ResultDetail(player.getId(), player.getNickname(), player.getHand().computeValue()+"", player.getBet()+"",ConstantsMsg.RESULT_FAILURE);
                 players.get(i).setBet(0);
             }else if(players.get(i).getStatus()==Constants.USER_STAND){
-                players.get(i).getHand().computeValue();
+                int playerFaceValue =player.getHand().computeValue();
+                int dealerFaceValue = dealer.getHand().computeValue();
+                rd = new ResultDetail(player.getId(), player.getNickname(), playerFaceValue+"", player.getBet()+"",ConstantsMsg.RESULT_SUCCESS);
+                if(playerFaceValue>dealerFaceValue){
+                    players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet()*2);
+                    players.get(i).setBet(0);
+                }else if(playerFaceValue == dealerFaceValue){
+                    players.get(i).setProperty(players.get(i).getProperty()+players.get(i).getBet());
+                    players.get(i).setBet(0);
+                    rd.setStatus(ConstantsMsg.RESULT_TIE);
+                }else{
+                    players.get(i).setBet(0);
+                    rd.setStatus(ConstantsMsg.RESULT_FAILURE);
+                }
             }
         }
         serverCommunicateService.sendBroadcast();
     }
 
     //判断是否所有玩家均结束
-    public int playersOver(List<Player> players){
-        int count=0;
+    public boolean playersOver(){
         for (int i=0;i<players.size();i++){
-            if(players.get(i).getStatus()!=Constants.USER_READY) {
-                count++;
+            if(players.get(i).getStatus()==Constants.USER_READY) {
+                return false;
             }
         }
-        return count;
+        return true;
     }
 
     public void userReady(String userID,int bet){

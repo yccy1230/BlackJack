@@ -14,6 +14,14 @@ public class ResultDetail {
     public ResultDetail() {
     }
 
+    public ResultDetail(String userid, String nickName, String faceValue, String bet, String status) {
+        this.userid = userid;
+        this.nickName = nickName;
+        this.faceValue = faceValue;
+        this.bet = bet;
+        this.status = status;
+    }
+
     public String getUserid() {
         return userid;
     }

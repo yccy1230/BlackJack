@@ -194,6 +194,12 @@ public class ServerCommunicateService {
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,dp,socket);
     }
 
+    public void sendUserTurnMsg(int roomId,String userID){
+        HashMap<String,DatagramPacket> userAddress= hashTable.get(roomId);
+        DatagramPacket dp = userAddress.get(userID);
+        Map<String,Object> param = new HashMap<>();
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_USER_TURN,param,dp,socket);
+    }
 
     public void sendUserBlackJackBroadcast(int roomId,Player player) {
         HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
@@ -209,7 +215,7 @@ public class ServerCommunicateService {
             }
             Map<String,Object> param = new HashMap<>();
             param.put(Constants.PARAM_PLAYER,player);
-            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_BLACK_JACK,param,dp,socket);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_OTHER_BLACK_JACK,param,dp,socket);
         }
     }
 
@@ -222,9 +228,26 @@ public class ServerCommunicateService {
             DatagramPacket dp = roomAddress.get(uid);
             if(uid.equals(userId)){
                 Map<String,Object> param = new HashMap<>();
+                param.put(Constants.PARAM_RESULT_CODE,Constants.SUCCESS_CODE);
                 CommunicateUtil.sendUDPMsgWithoutResult(msgType,param,dp,socket);
-                return;
+                continue;
             }
+            Map<String,Object> param = new HashMap<>();
+            param.put(Constants.PARAM_RESULT_CODE,Constants.SUCCESS_CODE);
+            CommunicateUtil.sendUDPMsgWithoutResult(msgType-4,param,dp,socket);
+        }
+    }
+
+    public void sendNewUI(Player player,int roomId){
+        HashMap<String,DatagramPacket> roomAddress = new HashMap<>();
+        if(hashTable.get(roomId)!=null){
+            roomAddress.putAll(hashTable.get(roomId));
+        }
+        for (String  uid : roomAddress.keySet()) {
+            DatagramPacket dp = roomAddress.get(uid);
+            Map<String,Object> param = new HashMap<>();
+            param.put(Constants.PARAM_PLAYER,player);
+            CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_UPDATE_USER,param,dp,socket);
         }
     }
 

@@ -66,20 +66,6 @@ public class GameController implements MsgReceiveListener {
                 rooms.get(roomId).userCancleReady(userId);
                 communicateService.sendCancleReadyMsgWithoutResult(datagramPacket);
                 break;
-            case MsgType.METHOD_SURRENDER:
-                String id = (String) param.get(Constants.PARAM_USER_ID);
-                roomId =  resp.getRoomId();
-                if(rooms.get(roomId)==null){
-                    return;
-                }
-                for(int i=0; i<rooms.get(roomId).getPlayers().size();i++){
-                    if(rooms.get(roomId).getPlayers().get(i).getId().equals(id)) {
-                        rooms.get(roomId).getPlayers().get(i).setStatus(Constants.USER_SURRENDER);
-                        break;
-                    }
-                }
-                communicateService.sendSurrenderMsgWithoutResult(datagramPacket);
-                break;
             case MsgType.METHOD_USER_EXIT:
                 roomId =  resp.getRoomId();
                 if(rooms.get(roomId)==null){
