@@ -57,7 +57,7 @@ public class GameController implements MsgReceiveListener {
                 rooms.get(roomId).userReady(userId,bet);
                 rooms.get(roomId).checkAllReady();
                 break;
-            case MsgType.METHOD_CANCLE_READY:
+            case MsgType.METHOD_CANCEL_READY:
                 roomId =  resp.getRoomId();
                 if(rooms.get(roomId)==null){
                     return;

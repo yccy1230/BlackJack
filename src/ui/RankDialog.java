@@ -1,9 +1,12 @@
 package ui;
 
+import entity.ResultDetail;
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,7 +24,7 @@ public class RankDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private DefaultTableModel model;
-	private String []title = {"玩家", "点数", "起始赌注", "倍率", "胜负"};
+	private String []title = {"序号","玩家", "点数", "起始赌注", "倍率", "胜负"};
     private Object [][]data;
 
 	public RankDialog() {
@@ -67,11 +70,15 @@ public class RankDialog extends JDialog {
 	}
 	
     /**
-     * 向Rank List添加一条结果
+     * 初始化 RankList
      */
-    public void addResult(){
-        Object []row = {model.getRowCount()+1,"1","2","2","1"};
-        model.addRow(row);
+    public void initResult(List<ResultDetail> resultDetails){
+		for (ResultDetail resultDetail: resultDetails) {
+			Object []row = {model.getRowCount()+1,resultDetail.getNickName(),
+					resultDetail.getFaceValue(),resultDetail.getBet(),
+					resultDetail.getOdds(),resultDetail.getStatus()};
+			model.addRow(row);
+		}
         table.validate();
     }
 }

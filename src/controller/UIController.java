@@ -3,6 +3,7 @@ package controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import constants.MsgType;
+import entity.ResultDetail;
 import listener.MsgReceiveListener;
 import listener.NetworkListener;
 import listener.OperationListener;
@@ -44,24 +45,35 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 					mainFrame.onOtherUserEnterRoom(playerParam);
 				}
 				break;
+            //游戏正式开始
 			case MsgType.METHOD_GAME_BEGIN:
 				mainFrame.onGameStart();
 				break;
-			case MsgType.METHOD_STAND:
+            //游戏结束
+            case MsgType.METHOD_GAME_OVER:
+                List<ResultDetail> resultDetails = JSONObject.parseArray(((JSONArray)param.get(Constants.PARAM_GAME_RESULT)).toJSONString(),ResultDetail.class);
+                mainFrame.onGameOver(resultDetails);
+                break;
+            case MsgType.METHOD_HIT_RESULT:
+                break;
+            case MsgType.METHOD_SURRENDER_RESULT:
+
+                break;
+			case MsgType.METHOD_STAND_RESULT:
 				break;
-			case MsgType.METHOD_DOUBLE:
+			case MsgType.METHOD_DOUBLE_RESULT:
 				break;
 			//准备返回结果
 			case MsgType.METHOD_READY_RESULT:
-				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_READY_RESULT)){
+				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_RESULT_CODE)){
 					mainFrame.onUserReadySuccess();
 				}else{
 					mainFrame.onUserReadyError((String) param.get(Constants.PARAM_ERROR_MSG));
 				}
 				break;
 			//取消准备返回结果
-			case MsgType.METHOD_CANCLE_READY_RESULT:
-				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_CANCLE_READY_RESULT)){
+			case MsgType.METHOD_CANCEL_READY_RESULT:
+				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_RESULT_CODE)){
 					mainFrame.onUserCancelReadySuccess();
 				}else{
 					mainFrame.onUserCancelReadyError((String) param.get(Constants.PARAM_ERROR_MSG));
@@ -77,12 +89,11 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 			//登录结果返回
 			case MsgType.METHOD_LOGIN_RESULT:
 				//登录成功
-				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_LOGIN_RESULT)){
+				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_RESULT_CODE)){
 					communicateService.setDeviceID((String) param.get(Constants.PARAM_USER_ID));
-					List<Player> players = JSONObject.parseArray(((JSONArray)param.get(Constants.PARAM_INIT_USER)).toJSONString(),Player.class);
+					List<Player> players = JSONObject.parseArray(((JSONArray)param.get(Constants.PARAM_PLAYERS)).toJSONString(),Player.class);
 					mainFrame.onLoginSuccess(players);
 				}
-				//登录失败
 				else{
 					mainFrame.onLoginError((String) param.get(Constants.PARAM_ERROR_MSG));
 				}
@@ -94,26 +105,22 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 
 	@Override
 	public void onHitClicked() {
-		mainFrame.showToastMsg("hit clicked");
-		mainFrame.showMessage("hit clicked");
+        communicateService.sendUserOperation(MsgType.METHOD_HIT);
 	}
 
 	@Override
 	public void onStandClicked() {
-		mainFrame.showToastMsg("onStandClicked");
-		mainFrame.showMessage("onStandClicked");
+        communicateService.sendUserOperation(MsgType.METHOD_STAND);
     }
 
 	@Override
 	public void onDoubleClicked() {
-		mainFrame.showToastMsg("onDoubleClicked");
-		mainFrame.showMessage("onDoubleClicked");
+        communicateService.sendUserOperation(MsgType.METHOD_DOUBLE);
     }
 
 	@Override
 	public void onSurrenderClicked() {
-		mainFrame.showToastMsg("onSurrenderClicked");
-		mainFrame.showMessage("onSurrenderClicked");
+        communicateService.sendUserOperation(MsgType.METHOD_SURRENDER);
 	}
 
 	@Override

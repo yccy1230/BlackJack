@@ -124,7 +124,7 @@ public class test extends JFrame {
 		playerPanel1.setBounds(19, 3, 216, 209);
 		userPanel.add(playerPanel1);
 		playerPanel1.setLayout(null);
-		ImageIcon image = new ImageIcon(CardView.class.getResource("/assets/Diamod1.png"));
+		ImageIcon image = new ImageIcon(CardView.class.getResource("/assets/Diamod_1.png"));
 		image.setImage(image.getImage().getScaledInstance(77, 111,Image.SCALE_DEFAULT ));
 		
 		JLabel label_1 = new JLabel("");

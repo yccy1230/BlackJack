@@ -100,7 +100,7 @@ public class ClientCommunicateService {
     public void sendUserCancelReady(){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_USER_ID,deviceID);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCLE_READY,param,serverIP,serverPort,roomID,socket);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCEL_READY,param,serverIP,serverPort,roomID,socket);
     }
 
     /**

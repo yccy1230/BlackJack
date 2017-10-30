@@ -108,27 +108,27 @@ public class ServerCommunicateService {
 
     public void sendLoginErrorMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);
-        param.put(Constants.PARAM_LOGIN_RESULT, Constants.LOGIN_ERROR);
+        param.put(Constants.PARAM_RESULT_CODE, Constants.ERROR_CODE);
         param.put(Constants.PARAM_ERROR_MSG, ConstantsMsg.MSG_USER_FULL);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,datagramPacket,socket);
     }
 
     public void sendSurrenderMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);
-        param.put(Constants.PARAM_SURRENDER_MSG,Constants.SURRENDER_SUCCESS);
+        param.put(Constants.PARAM_SURRENDER_MSG,Constants.SUCCESS_CODE);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_SURRENDER,param,datagramPacket,socket);
     }
 
     public void sendReadyMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);
-        param.put(Constants.PARAM_READY_RESULT, Constants.READY_SUCCESS);
+        param.put(Constants.PARAM_RESULT_CODE, Constants.SUCCESS_CODE);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_READY_RESULT,param,datagramPacket,socket);
     }
 
     public void sendCancleReadyMsgWithoutResult(DatagramPacket datagramPacket){
         Map<String,Object> param = new HashMap<>(16);
-        param.put(Constants.PARAM_CANCLE_READY_RESULT, Constants.CANCLE_READY_SUCCESS);
-        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCLE_READY_RESULT,param,datagramPacket,socket);
+        param.put(Constants.PARAM_RESULT_CODE, Constants.SUCCESS_CODE);
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_CANCEL_READY_RESULT,param,datagramPacket,socket);
     }
 
     public void sendExitMsgWithoutResult(int roomId,String userID){
@@ -153,7 +153,7 @@ public class ServerCommunicateService {
         }
         for (DatagramPacket dp: roomAddress.values()) {
             Map<String,Object> param = new HashMap<>();
-            param.put(Constants.PARAM_START_GAME,Constants.START_SUCCESS);
+            param.put(Constants.PARAM_START_GAME,Constants.SUCCESS_CODE);
             CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_GAME_BEGIN,param,dp,socket);
         }
         return ;
@@ -166,7 +166,7 @@ public class ServerCommunicateService {
         }
         for (DatagramPacket dp: roomAddress.values()) {
             Map<String,Object> param = new HashMap<>();
-            param.put(Constants.PARAM_START_GAME,Constants.START_SUCCESS);
+            param.put(Constants.PARAM_START_GAME,Constants.SUCCESS_CODE);
             param.put(Constants.PARAM_PLAYER,player);
             CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_HIT,param,dp,socket);
         }
@@ -184,9 +184,9 @@ public class ServerCommunicateService {
 
     public void sendLoginResult(String userId,List<Player> players,DatagramPacket datagramPacket){
         Map<String,Object> param =new HashMap<>();
-        param.put(Constants.PARAM_INIT_USER,players);
+        param.put(Constants.PARAM_PLAYERS,players);
         param.put(Constants.PARAM_USER_ID,userId);
-        param.put(Constants.PARAM_LOGIN_RESULT, Constants.LOGIN_SUCCESS);
+        param.put(Constants.PARAM_RESULT_CODE, Constants.SUCCESS_CODE);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,datagramPacket,socket);
     }
 }

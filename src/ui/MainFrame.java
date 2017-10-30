@@ -12,10 +12,7 @@ import javax.swing.*;
 
 import constants.Constants;
 import constants.ConstantsMsg;
-import entity.Card;
-import entity.Dealer;
-import entity.Hand;
-import entity.Player;
+import entity.*;
 import listener.OperationListener;
 
 /**
@@ -189,8 +186,12 @@ public class MainFrame extends JFrame {
 	/**
 	 * 游戏结束
 	 */
-	public void onGameOver(){
-
+	public void onGameOver(List<ResultDetail> resultDetails){
+		//展示游戏结果
+		RankDialog resultDialog = new RankDialog();
+		resultDialog.initResult(resultDetails);
+		resultDialog.setVisible(true);
+		operationPanel.showReadyOperation();
 	}
 
 

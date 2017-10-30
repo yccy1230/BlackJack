@@ -11,17 +11,16 @@ public class Constants {
     
     /**参数变量名*/
     public static final String PARAM_NICK_NAME ="nickname";
-    public static final String PARAM_INIT_USER ="inituser";
+    public static final String PARAM_PLAYERS ="players";
     public static final String PARAM_PLAYER ="player";
     public static final String PARAM_USER_ID = "userid";
-    public static final String PARAM_LOGIN_RESULT = "loginresult";
     public static final String PARAM_BET ="bet";
     public static final String PARAM_ERROR_MSG ="errormsg";
-    public static final String PARAM_READY_RESULT = "readyresult";
-    public static final String PARAM_CANCLE_READY_RESULT = "canclereadyresult";
+    public static final String PARAM_RESULT_CODE = "resultcode";
     public static final String PARAM_ROOM_ID = "roomid";
     public static final String PARAM_SURRENDER_MSG ="errormsg";
     public static final String PARAM_START_GAME = "startgame";
+    public static final String PARAM_GAME_RESULT = "gameresult";
 
     /**用户状态*/
     public static final int USER_IDEL = 0;
@@ -33,13 +32,8 @@ public class Constants {
     public static final int EMPTY_USER = -1;//UI使用
 
     /**返回结果*/
-    public static final int LOGIN_SUCCESS = 200;
-    public static final int START_SUCCESS = 200;
-    public static final int READY_SUCCESS = 200;
-    public static final int SURRENDER_SUCCESS = 200;
-    public static final int CANCLE_READY_SUCCESS = 200;
     public static final int SUCCESS_CODE= 200;
-    public static final int LOGIN_ERROR= 400;
+    public static final int ERROR_CODE= 400;
 
     /**Player Panel Size*/
     public static final int PLAYER_PANEL_WIDTH = 360;
@@ -61,7 +55,7 @@ public class Constants {
 
 
     /**卡牌定义类*/
-    public static final String CLUBS_1 = "Clubs_A";
+    public static final String CLUBS_1 = "Clubs_1";
     public static final String CLUBS_2 = "Clubs_2";
     public static final String CLUBS_3 = "Clubs_3";
     public static final String CLUBS_4 = "Clubs_4";
@@ -74,7 +68,7 @@ public class Constants {
     public static final String CLUBS_J = "Clubs_J";
     public static final String CLUBS_Q = "Clubs_Q";
     public static final String CLUBS_K = "Clubs_K";
-    public static final String DIAMONDS_1 = "Diamonds_A";
+    public static final String DIAMONDS_1 = "Diamonds_1";
     public static final String DIAMONDS_2 = "Diamonds_2";
     public static final String DIAMONDS_3 = "Diamonds_3";
     public static final String DIAMONDS_4 = "Diamonds_4";
@@ -87,7 +81,7 @@ public class Constants {
     public static final String DIAMONDS_J = "Diamonds_J";
     public static final String DIAMONDS_Q = "Diamonds_Q";
     public static final String DIAMONDS_K = "Diamonds_K";
-    public static final String HEARTS_1 = "Hearts_A";
+    public static final String HEARTS_1 = "Hearts_1";
     public static final String HEARTS_2 = "Hearts_2";
     public static final String HEARTS_3 = "Hearts_3";
     public static final String HEARTS_4 = "Hearts_4";
@@ -100,7 +94,7 @@ public class Constants {
     public static final String HEARTS_J = "Hearts_J";
     public static final String HEARTS_Q = "Hearts_Q";
     public static final String HEARTS_K = "Hearts_K";
-    public static final String SPADES_1 = "Spades_A";
+    public static final String SPADES_1 = "Spades_1";
     public static final String SPADES_2 = "Spades_2";
     public static final String SPADES_3 = "Spades_3";
     public static final String SPADES_4 = "Spades_4";
