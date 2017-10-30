@@ -33,12 +33,13 @@ public class MsgType {
     public static final int METHOD_OTHER_DOUBLE_RESULT =  22;     //加倍，输本金+加倍金，赢两倍结果
     public static final int METHOD_OTHER_SURRENDER_RESULT =  23;  //投降，输一半结果
 
+    public static final int METHOD_BUST =  30;  //用户手牌爆掉
+    public static final int METHOD_OTHER_BUST =  34;  //用户手牌爆掉
     public static final int METHOD_HIT_RESULT =  24;        //要牌结果
     public static final int METHOD_STAND_RESULT =  25;      //停牌结果
     public static final int METHOD_DOUBLE_RESULT =  26;     //加倍，输本金+加倍金，赢两倍结果
     public static final int METHOD_SURRENDER_RESULT =  27;  //投降，输一半结果
     public static final int METHOD_USER_TURN =  28;  //用户轮次开始
     public static final int METHOD_BLACK_JACK =  29;  //用户轮次开始
-    public static final int METHOD_BUST =  30;  //用户手牌爆掉
     public static final int METHOD_OTHER_BLACK_JACK =  31;  //其他用户BlackJack
 }

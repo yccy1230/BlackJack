@@ -12,6 +12,7 @@ import javax.swing.*;
 
 import constants.Constants;
 import constants.ConstantsMsg;
+import constants.MsgType;
 import entity.*;
 import listener.OperationListener;
 
@@ -175,6 +176,34 @@ public class MainFrame extends JFrame {
 		showToastMsg(ConstantsMsg.MSG_OPERATION_ERROR);
 		operationPanel.showTurnOperation();
 	}
+
+	/**
+	 * 其他用户操作相应
+	 * @param player
+	 */
+	public void onOtherUserOperationSuccess(Player player,int msgType){
+		String msg = "玩家："+player.getNickname()+",";
+		switch(msgType){
+			case MsgType.METHOD_OTHER_BUST:
+				msg+="爆炸了！";
+				break;
+			case MsgType.METHOD_OTHER_DOUBLE_RESULT:
+				msg+="加倍了！";
+				break;
+			case MsgType.METHOD_OTHER_HIT_RESULT:
+				msg+="要牌了！";
+				break;
+			case MsgType.METHOD_OTHER_STAND_RESULT:
+				msg+="停牌了！";
+				break;
+			case MsgType.METHOD_OTHER_SURRENDER_RESULT:
+				msg+="投降了！";
+				break;
+		}
+		showToastMsg(msg);
+	}
+
+
 	/**
 	 * 用户操作轮次
 	 */
@@ -211,14 +240,6 @@ public class MainFrame extends JFrame {
 	 */
 	public void onDoubleOperateError(String msg){
 		onUserOperateError(msg);
-	}
-
-	/**
-	 * 接受到其他用户操作，更新用户UI
-	 */
-	public void onReceiveOtherOperate(Player player){
-		userPanel.updatePlayerPanel(player);
-		showToastMsg("玩家："+player.getNickname()+" 操作结束！");
 	}
 
 	/**
@@ -265,6 +286,15 @@ public class MainFrame extends JFrame {
 	 */
 	public void onDealerUpdate(Dealer dealer) {
 		dealerPanel.refreshCardView(dealer);
+	}
+
+	/**
+	 * 刷新Player UI
+	 * @param player
+	 */
+	public void onPlayerUpdate(Player player) {
+		showToastMsg("玩家："+player.getNickname()+",操作结束！");
+		userPanel.updatePlayerPanel(player);
 	}
 
 	/**

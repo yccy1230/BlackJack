@@ -64,6 +64,13 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
                     mainFrame.onDealerUpdate(dealer);
                 }
                 break;
+            //更新玩家UI
+            case MsgType.METHOD_UPDATE_USER:
+                Player player = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_DEALER)).toJSONString(),Player.class);
+                if(player!=null){
+                    mainFrame.onPlayerUpdate(player);
+                }
+                break;
             //BlackJack
             case MsgType.METHOD_BLACK_JACK:
                 mainFrame.onUserBlackJack();
@@ -85,6 +92,15 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
                     mainFrame.onUserOperateError((String) param.get(Constants.PARAM_ERROR_MSG));
                 }
 			    break;
+            //其他用户操作结果广播
+            case MsgType.METHOD_OTHER_HIT_RESULT:
+            case MsgType.METHOD_OTHER_SURRENDER_RESULT:
+            case MsgType.METHOD_OTHER_STAND_RESULT:
+                if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_RESULT_CODE)){
+                    Player playerOp = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
+                    mainFrame.onOtherUserOperationSuccess(playerOp,resp.getMsgType());
+                }
+                break;
             //用户加倍操作返回
 			case MsgType.METHOD_DOUBLE_RESULT:
                 if(Constants.SUCCESS_CODE != (int) param.get(Constants.PARAM_RESULT_CODE)){
@@ -93,7 +109,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
                     mainFrame.onDoubleOperateSuccess();
                 }
 				break;
-			//准备返回结果
+			//准备操作 返回结果
 			case MsgType.METHOD_READY_RESULT:
 				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_RESULT_CODE)){
 					mainFrame.onUserReadySuccess();
@@ -101,7 +117,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 					mainFrame.onUserReadyError((String) param.get(Constants.PARAM_ERROR_MSG));
 				}
 				break;
-			//取消准备返回结果
+			//取消准备 返回结果
 			case MsgType.METHOD_CANCEL_READY_RESULT:
 				if(Constants.SUCCESS_CODE == (int) param.get(Constants.PARAM_RESULT_CODE)){
 					mainFrame.onUserCancelReadySuccess();
