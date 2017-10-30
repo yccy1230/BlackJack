@@ -224,7 +224,7 @@ public class MainFrame extends JFrame {
 	 * 用户BlackJack
 	 */
 	public void onUserBlackJack(){
-		showMessage(ConstantsMsg.MSG_OTHER_USER_BLACK_JACK);
+		showMessage(ConstantsMsg.MSG_USER_BLACK_JACK);
 	}
 
 	/**
