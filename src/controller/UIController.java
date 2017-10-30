@@ -41,6 +41,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
 		Map<String,Object> param = (Map<String, Object>) resp.getData();
 
 		switch (resp.getMsgType()) {
+		    //新增用户
 			case MsgType.METHOD_NEWUSER:
 				Player playerParam = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Player.class);
 				if(playerParam!=null){
@@ -58,7 +59,7 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
                 break;
             //更新庄家UI
             case MsgType.METHOD_UPDATE_DEALER:
-                Dealer dealer = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_PLAYER)).toJSONString(),Dealer.class);
+                Dealer dealer = JSONObject.parseObject(((JSONObject)param.get(Constants.PARAM_DEALER)).toJSONString(),Dealer.class);
                 if(dealer!=null){
                     mainFrame.onDealerUpdate(dealer);
                 }

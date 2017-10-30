@@ -13,6 +13,7 @@ public class Constants {
     public static final String PARAM_NICK_NAME ="nickname";
     public static final String PARAM_PLAYERS ="players";
     public static final String PARAM_PLAYER ="player";
+    public static final String PARAM_DEALER ="dealer";
     public static final String PARAM_USER_ID = "userid";
     public static final String PARAM_BET ="bet";
     public static final String PARAM_ERROR_MSG ="errormsg";
