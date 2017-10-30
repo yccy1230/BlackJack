@@ -86,7 +86,7 @@ public class Deck {
         player.getHand().getCards().add(newCard);
         leftCardsNum --;
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -98,7 +98,7 @@ public class Deck {
         dealer.getHand().getCards().add(newCard);
         leftCardsNum --;
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

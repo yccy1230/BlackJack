@@ -245,7 +245,13 @@ public class Room {
             rd.setProperty(players.get(i).getProperty());
             resultDetails.add(rd);
         }
-
+        ResultDetail dealerRD = new ResultDetail();
+        dealerRD.setNickName("庄家");
+        dealerRD.setFaceValue(dealer.getHand().computeValue());
+        dealerRD.setBet(-1);
+        dealerRD.setProperty(-1);
+        dealerRD.setStatus("*");
+        resultDetails.add(dealerRD);
         serverCommunicateService. sendGameResultBroadcast(id,resultDetails);
     }
 
