@@ -53,7 +53,7 @@ public class PlayerPanel extends JPanel {
 		
 		nickNameLabel.setForeground(Color.WHITE);
 	    nickNameLabel.setFont(new Font("宋体", Font.PLAIN, 16));
-		nickNameLabel.setBounds(110, 188, 54, 15);
+		nickNameLabel.setBounds(110, 188, 100, 15);
 
 		add(nameLabel);
 		add(nickNameLabel);
