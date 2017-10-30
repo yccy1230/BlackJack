@@ -107,10 +107,10 @@ public class ServerCommunicateService {
         return null;
     }
 
-    public void sendLoginErrorMsgWithoutResult(DatagramPacket datagramPacket){
+    public void sendLoginErrorMsgWithoutResult(DatagramPacket datagramPacket,String msg){
         Map<String,Object> param = new HashMap<>(16);
         param.put(Constants.PARAM_RESULT_CODE, Constants.ERROR_CODE);
-        param.put(Constants.PARAM_ERROR_MSG, ConstantsMsg.MSG_USER_FULL);
+        param.put(Constants.PARAM_ERROR_MSG, msg);
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_LOGIN_RESULT,param,datagramPacket,socket);
     }
 
@@ -247,6 +247,7 @@ public class ServerCommunicateService {
             }
             Map<String,Object> param = new HashMap<>();
             param.put(Constants.PARAM_RESULT_CODE,Constants.SUCCESS_CODE);
+            param.put(Constants.PARAM_PLAYER,player);
             CommunicateUtil.sendUDPMsgWithoutResult(msgType-4,param,dp,socket);
         }
     }

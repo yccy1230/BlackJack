@@ -24,6 +24,7 @@ public class ConstantsMsg {
     public static final String MSG_USER_TURN = "现在是您的轮次，请点击按钮操作。";
     public static final String MSG_USER_BLACK_JACK = "恭喜您获得BlackJack，游戏结束后将赋予您双倍赌注金额";
     public static final String MSG_OTHER_USER_BLACK_JACK = "，获得BlackJack，让我们恭喜他吧！";
+    public static final String MSG_IS_PLAYING = "房间正在游戏中！";
 
 
     /**按钮文字常量*/

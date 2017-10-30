@@ -1,6 +1,7 @@
 package controller;
 
 import constants.Constants;
+import constants.ConstantsMsg;
 import constants.MsgType;
 import entity.Player;
 import entity.Room;
@@ -38,7 +39,11 @@ public class GameController implements MsgReceiveListener {
                     rooms.put(roomId,room);
                 }
                 if(room.playerFull()) {
-                    communicateService.sendLoginErrorMsgWithoutResult(datagramPacket);
+                    communicateService.sendLoginErrorMsgWithoutResult(datagramPacket, ConstantsMsg.MSG_USER_FULL);
+                    return;
+                }
+                if(room.isPlaying()){
+                    communicateService.sendLoginErrorMsgWithoutResult(datagramPacket,ConstantsMsg.MSG_IS_PLAYING);
                     return;
                 }
                 String nickName = (String) param.get(Constants.PARAM_NICK_NAME);
@@ -53,8 +58,11 @@ public class GameController implements MsgReceiveListener {
                 }
                 int bet = (int)param.get(Constants.PARAM_BET);
                 String userId = (String) param.get(Constants.PARAM_USER_ID);
+                communicateService.sendReadyMsgWithoutResult(datagramPacket);
                 rooms.get(roomId).userReady(userId,bet);
-                rooms.get(roomId).checkAllReady();
+                if(rooms.get(roomId).checkAllReady()){
+                    rooms.get(roomId).startGame();
+                }
                 break;
             case MsgType.METHOD_CANCEL_READY:
                 roomId =  resp.getRoomId();

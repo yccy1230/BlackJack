@@ -35,9 +35,7 @@ public class Hand {
 
     //是否BlackJack
     public boolean isBlackJack(){
-        if(cards.size()<2)
-            return false;
-        if(cards.get(0).getValue()+cards.get(1).getValue()==21){
+        if( cards.size()==2 && computeValue()==21){
             return true;
         }else{
             return false;

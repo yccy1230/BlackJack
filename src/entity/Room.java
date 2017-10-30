@@ -80,13 +80,13 @@ public class Room {
     }
 
     //检查是否所有用户都已准备好
-    public void checkAllReady() {
+    public boolean checkAllReady() {
         for(int i=0; i< players.size();i++){
             if(players.get(i).getStatus()!= Constants.USER_READY) {
-                return;
+                return false;
             }
         }
-        startGame();
+        return true;
     }
 
     //开始游戏
@@ -116,13 +116,16 @@ public class Room {
         //判断是否有BlackJack
         for(int i = 0; i<players.size(); i++){
             if (players.get(i).getHand().isBlackJack()) {
-                players.get(i).getHand().show();
                 players.get(i).setStatus(Constants.USER_BLACKJACK);
                 serverCommunicateService.sendUserBlackJackBroadcast(id,players.get(i));
             }
         }
         //启动游戏
         nextUser();
+    }
+
+    public boolean isPlaying(){
+        return isPlaying;
     }
 
     public void handlerUser(int opreationType) {
