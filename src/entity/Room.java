@@ -147,10 +147,13 @@ public class Room {
                 serverCommunicateService.sendOperationResult(MsgType.METHOD_STAND_RESULT, players.get(currentId), id);
                 break;
             case MsgType.METHOD_DOUBLE:
-                players.get(currentId).doubleBet();
-                serverCommunicateService.sendOperationResult(MsgType.METHOD_DOUBLE_RESULT, players.get(currentId), id);
-                serverCommunicateService.sendUserTurnMsg(id,players.get(currentId).getId());
-                return;
+                if(players.get(currentId).doubleBet()){
+                    serverCommunicateService.sendOperationResult(MsgType.METHOD_DOUBLE_RESULT, players.get(currentId), id);
+                    serverCommunicateService.sendUserTurnMsg(id,players.get(currentId).getId());
+                }else {
+                    serverCommunicateService.sendDoubleFailureMsg(id,players.get(currentId).getId());
+                    serverCommunicateService.sendUserTurnMsg(id, players.get(currentId).getId());
+                }return;
             case MsgType.METHOD_SURRENDER:
                 players.get(currentId).setStatus(Constants.USER_SURRENDER);
                 serverCommunicateService.sendOperationResult(MsgType.METHOD_SURRENDER_RESULT, players.get(currentId), id);

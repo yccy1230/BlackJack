@@ -68,7 +68,7 @@ public class Player {
     }
 
     public boolean doubleBet(){
-        if(property-bet>=0) {
+        if(property >= bet) {
             property =property -bet;
             bet = bet * 2;
             return true;

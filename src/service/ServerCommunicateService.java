@@ -206,6 +206,14 @@ public class ServerCommunicateService {
         CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_READY_RESULT,param,dp,socket);
     }
 
+    public void sendDoubleFailureMsg(int roomId,String userID){
+        HashMap<String,DatagramPacket> userAddress= hashTable.get(roomId);
+        DatagramPacket dp = userAddress.get(userID);
+        Map<String,Object> param = new HashMap<>();
+        param.put(Constants.PARAM_ERROR_MSG,ConstantsMsg.MSG_PROPERTY_NOT_ENOUGH );
+        CommunicateUtil.sendUDPMsgWithoutResult(MsgType.METHOD_DOUBLE_FAILURE,param,dp,socket);
+    }
+
     public void sendUserTurnMsg(int roomId,String userID){
         HashMap<String,DatagramPacket> userAddress= hashTable.get(roomId);
         DatagramPacket dp = userAddress.get(userID);

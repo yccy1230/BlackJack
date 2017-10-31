@@ -32,8 +32,9 @@ public class MsgType {
     public static final int METHOD_OTHER_STAND_RESULT =  21;      //停牌结果
     public static final int METHOD_OTHER_DOUBLE_RESULT =  22;     //加倍，输本金+加倍金，赢两倍结果
     public static final int METHOD_OTHER_SURRENDER_RESULT =  23;  //投降，输一半结果
+    public static final int METHOD_DOUBLE_FAILURE = 39; //加倍失败
 
-    public static final int METHOD_BUST =  30;  //用户手牌爆掉
+    public static final int METHOD_BUST =  38;  //用户手牌爆掉
     public static final int METHOD_OTHER_BUST =  34;  //用户手牌爆掉
     public static final int METHOD_HIT_RESULT =  24;        //要牌结果
     public static final int METHOD_STAND_RESULT =  25;      //停牌结果

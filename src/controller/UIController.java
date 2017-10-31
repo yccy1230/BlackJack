@@ -111,11 +111,10 @@ public class UIController implements MsgReceiveListener,OperationListener, Netwo
                 break;
             //用户加倍操作返回
 			case MsgType.METHOD_DOUBLE_RESULT:
-                if(Constants.SUCCESS_CODE != (int) param.get(Constants.PARAM_RESULT_CODE)){
-                    mainFrame.onDoubleOperateError((String) param.get(Constants.PARAM_ERROR_MSG));
-                }else{
                     mainFrame.onDoubleOperateSuccess();
-                }
+				break;
+			case MsgType.METHOD_DOUBLE_FAILURE:
+				mainFrame.onDoubleOperateError((String) param.get(Constants.PARAM_ERROR_MSG));
 				break;
 			//准备操作 返回结果
 			case MsgType.METHOD_READY_RESULT:
