@@ -176,7 +176,7 @@ public class MainFrame extends JFrame {
 	 * @param msg
 	 */
 	public void onUserOperateError(String msg){
-		showToastMsg(ConstantsMsg.MSG_OPERATION_ERROR);
+		showToastMsg(msg);
 		operationPanel.showTurnOperation();
 	}
 
